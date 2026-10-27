@@ -33,7 +33,10 @@
       <button type="submit" id="login-submit"></button>
       <p id="login-error"></p>
     </form>
-    <main id="app" hidden>
+    <div id="shell" hidden>
+    <aside id="clips"></aside>
+    <button type="button" id="clips-backdrop"></button>
+    <main id="app">
       <header>
         <div class="brand">
           <span id="logo"></span>
@@ -47,12 +50,14 @@
         </div>
         <div class="header-side">
           <div class="tools">
+            <button type="button" id="clips-toggle" class="theme-toggle"></button>
             <div class="lang" id="lang"></div>
             <div id="theme"></div>
           </div>
           <p id="recorder"></p>
         </div>
       </header>
+      <section id="attached" hidden></section>
       <section id="stack"></section>
       <section id="plan"></section>
       <section id="legend"></section>
@@ -71,6 +76,7 @@
       <section id="breakdowns"></section>
       <section id="organizations"></section>
     </main>
+    </div>
     <script src="/app.js"></script>
   </body>
 </html>

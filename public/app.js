@@ -1,5 +1,10 @@
 const login = document.querySelector('#login')
-const app = document.querySelector('#app')
+const shell = document.querySelector('#shell')
+
+// Drop each mp4 in public/clips and add it here. id stays stable so an attachment survives a reload.
+const clips = [
+  // { id: 'welcome', title: 'Welcome', file: 'welcome.mp4' },
+]
 const labels = { ringomarket: 'RIngomarket', soittamo: 'soittamo', staging: 'Staging' }
 
 const fieldTerms = {
@@ -97,6 +102,12 @@ const copy = {
     dbOut: 'Calls, tries, calls nobody took, sales',
     dbIn: 'People still to call, how many lines are allowed, the 3% limit or soittamo’s recent stretch',
     later: 'Waiting for connection',
+    clips: 'Clips',
+    clipsEmpty: 'Video clips will be added here. Attach one and it stays on this page.',
+    attach: 'Attach',
+    attached: 'Attached',
+    removeClip: 'Remove',
+    clipsClose: 'Close',
     chart: 'RIngomarket calls, last 14 days',
     feed: 'New activity',
     feedHelp: 'Only calls, leads, and sales that arrived after this page was opened.',
@@ -180,6 +191,12 @@ const copy = {
     dbOut: 'Puhelut, yritykset, ilman soittajaa jääneet ja kaupat',
     dbIn: 'Vielä soittamatta olevat, linjojen katto, 3 % raja tai soittamon tuore jakso',
     later: 'Odottaa yhteyttä',
+    clips: 'Leikkeet',
+    clipsEmpty: 'Videoleikkeet lisätään tähän. Liitetty leike jää tälle sivulle.',
+    attach: 'Liitä',
+    attached: 'Liitetty',
+    removeClip: 'Poista',
+    clipsClose: 'Sulje',
     chart: 'RIngomarketin puhelut, 14 päivää',
     feed: 'Uusi toiminta',
     feedHelp: 'Vain puhelut, liidit ja kaupat, jotka ovat tulleet tämän sivun avaamisen jälkeen.',
@@ -321,6 +338,9 @@ const marks = {
   due: '<svg viewBox="0 0 16 16"><rect x="2.2" y="3.2" width="11.6" height="10.6" rx="1.6" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M2.2 6.4h11.6M5.2 2.2v2.2M10.8 2.2v2.2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>',
   track: '<svg viewBox="0 0 16 16"><circle cx="3.2" cy="8" r="1.5" fill="currentColor"/><path d="M6.2 8h7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>',
   arrow: '<svg viewBox="0 0 16 16"><path d="M2 8h11M9.2 4.6 13 8 9.2 11.4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+  clip: '<svg viewBox="0 0 16 16"><rect x="2" y="3.2" width="12" height="9.6" rx="1.6" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M6.8 6.1v3.8L10.6 8z" fill="currentColor"/></svg>',
+  attach: '<svg viewBox="0 0 16 16"><path d="M6.4 8.7 10.2 4.9a2 2 0 0 1 2.8 2.8L7.8 12.9a3.1 3.1 0 0 1-4.4-4.4l4.9-4.9" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+  close: '<svg viewBox="0 0 16 16"><path d="M4.6 4.6 11.4 11.4M11.4 4.6 4.6 11.4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>',
 }
 
 function svgEl(name) {
@@ -532,6 +552,149 @@ function renderPlan() {
   root.append(bar, body)
 }
 
+function attachedIds() {
+  try {
+    const saved = JSON.parse(localStorage.getItem('ringo_attached') || '[]')
+    if (!Array.isArray(saved)) return []
+    const known = new Set(clips.map((clip) => clip.id))
+    return saved.filter((id) => known.has(id))
+  } catch {
+    return []
+  }
+}
+
+function setAttached(ids) {
+  localStorage.setItem('ringo_attached', JSON.stringify(ids))
+  renderClips()
+}
+
+function toggleAttached(id) {
+  const ids = attachedIds()
+  const next = ids.includes(id) ? ids.filter((item) => item !== id) : [...ids, id]
+  setAttached(next)
+  if (!next.includes(id)) return
+  if (window.matchMedia('(max-width: 900px)').matches) closeClips()
+}
+
+function closeClips() {
+  shell.classList.remove('clips-open')
+  const toggle = document.querySelector('#clips-toggle')
+  if (toggle) toggle.setAttribute('aria-expanded', 'false')
+}
+
+function clipSrc(clip) {
+  return `/clips/${encodeURIComponent(clip.file)}`
+}
+
+function clipLength(node, file, seconds) {
+  if (!Number.isFinite(seconds) || seconds <= 0) {
+    node.textContent = file
+    return
+  }
+  const total = Math.round(seconds)
+  const minutes = Math.floor(total / 60)
+  const remain = String(total % 60).padStart(2, '0')
+  node.textContent = `${file} · ${minutes}:${remain}`
+}
+
+function clipButton(on) {
+  const button = el('button', null, 'clip-attach')
+  button.type = 'button'
+  const mark = svgEl(on ? 'close' : 'attach')
+  mark.classList.add('tiny')
+  button.append(mark, el('span', on ? t('removeClip') : t('attach')))
+  return button
+}
+
+function renderClips() {
+  const aside = document.querySelector('#clips')
+  aside.replaceChildren()
+  aside.setAttribute('aria-label', t('clips'))
+  const head = el('div', null, 'clips-head')
+  head.append(el('h2', t('clips')))
+  const close = el('button', null, 'ghost clips-close')
+  close.type = 'button'
+  const closeMark = svgEl('close')
+  closeMark.classList.add('tiny')
+  close.append(closeMark, el('span', t('clipsClose')))
+  close.addEventListener('click', closeClips)
+  head.append(close)
+  aside.append(head)
+
+  const on = new Set(attachedIds())
+  if (!clips.length) {
+    const empty = el('div', null, 'clips-empty')
+    const mark = svgEl('clip')
+    mark.classList.add('tiny')
+    empty.append(mark, el('p', t('clipsEmpty')))
+    aside.append(empty)
+  } else {
+    const list = el('div', null, 'clip-list')
+    for (const clip of clips) list.append(clipRow(clip, on.has(clip.id)))
+    aside.append(list)
+  }
+
+  const stage = document.querySelector('#attached')
+  const shown = clips.filter((clip) => on.has(clip.id))
+  stage.replaceChildren()
+  stage.hidden = shown.length === 0
+  for (const clip of shown) stage.append(attachmentCard(clip))
+
+  const toggle = document.querySelector('#clips-toggle')
+  if (!toggle) return
+  const mark = svgEl('clip')
+  mark.classList.add('tiny')
+  toggle.replaceChildren(mark, el('span', t('clips')))
+  toggle.setAttribute('aria-expanded', shell.classList.contains('clips-open') ? 'true' : 'false')
+}
+
+function clipRow(clip, on) {
+  const row = el('article', null, on ? 'clip is-on' : 'clip')
+  const frame = el('div', null, 'clip-frame')
+  const video = document.createElement('video')
+  video.preload = 'metadata'
+  video.muted = true
+  video.playsInline = true
+  video.src = clipSrc(clip)
+  frame.append(video)
+  const meta = el('div', null, 'clip-meta')
+  const file = el('span', clip.file)
+  video.addEventListener('loadedmetadata', () => clipLength(file, clip.file, video.duration))
+  meta.append(el('strong', clip.title))
+  if (on) meta.append(el('span', t('attached'), 'clip-state'))
+  meta.append(file)
+  const button = clipButton(on)
+  button.addEventListener('click', () => toggleAttached(clip.id))
+  row.append(frame, meta, button)
+  return row
+}
+
+function attachmentCard(clip) {
+  const card = el('article', null, 'attachment')
+  const video = document.createElement('video')
+  video.controls = true
+  video.playsInline = true
+  video.preload = 'metadata'
+  video.src = clipSrc(clip)
+  const bar = el('div', null, 'attachment-bar')
+  const mark = svgEl('clip')
+  mark.classList.add('tiny')
+  const name = el('div', null, 'attachment-name')
+  const file = el('span', clip.file)
+  video.addEventListener('loadedmetadata', () => clipLength(file, clip.file, video.duration))
+  name.append(el('strong', clip.title), file)
+  const remove = el('button', null, 'attachment-remove')
+  remove.type = 'button'
+  remove.setAttribute('aria-label', t('removeClip'))
+  const close = svgEl('close')
+  close.classList.add('tiny')
+  remove.append(close)
+  remove.addEventListener('click', () => toggleAttached(clip.id))
+  bar.append(mark, name, remove)
+  card.append(video, bar)
+  return card
+}
+
 function applyStatic() {
   document.documentElement.lang = lang === 'fi' ? 'fi' : 'en'
   document.title = 'Ringo Market'
@@ -555,6 +718,7 @@ function applyStatic() {
   document.querySelector('#login-logo').replaceChildren(svgEl('ringo'))
   document.querySelector('#logo').replaceChildren(svgEl('ringo'))
   renderPlan()
+  renderClips()
 }
 
 function setLang(next) {
@@ -821,11 +985,11 @@ async function refresh() {
   const response = await fetch('/api/summary')
   if (response.status === 401) {
     login.hidden = false
-    app.hidden = true
+    shell.hidden = true
     return
   }
   login.hidden = true
-  app.hidden = false
+  shell.hidden = false
   render(await response.json())
   if (started) return
   started = true
@@ -850,6 +1014,15 @@ login.addEventListener('submit', async (event) => {
     return
   }
   refresh()
+})
+
+document.querySelector('#clips-toggle').addEventListener('click', () => {
+  shell.classList.toggle('clips-open')
+  document.querySelector('#clips-toggle').setAttribute('aria-expanded', shell.classList.contains('clips-open') ? 'true' : 'false')
+})
+document.querySelector('#clips-backdrop').addEventListener('click', closeClips)
+document.addEventListener('keydown', (event) => {
+  if (event.key === 'Escape') closeClips()
 })
 
 applyStatic()
