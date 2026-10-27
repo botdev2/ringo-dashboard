@@ -73,6 +73,15 @@ body::before {
   pointer-events: none;
   background: linear-gradient(168deg, var(--bg-top) 0%, var(--bg) 46%, var(--bg-bottom) 100%);
 }
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: url("/backdrop.png") center / cover no-repeat;
+  opacity: 0.2;
+}
 
 #shell {
   display: grid;
