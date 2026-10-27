@@ -422,6 +422,7 @@ const plan = {
     predictive: 'Predictive calling',
     tracking: 'Tracking, ready 31.10.2026',
     due: 'Everything still open is ready on 31.10.2026.',
+    connect: 'Connection',
     states: { done: 'In place', next: 'Next', wait: 'Waiting', later: 'Later', due: '31.10.2026' },
     objectives: [
       ['done', 'Show RIngomarket, soittamo, and Staging together, with the latest call on each.'],
@@ -462,6 +463,7 @@ const plan = {
     predictive: 'Ennakoiva soitto',
     tracking: 'Seuranta, valmis 31.10.2026',
     due: 'Kaikki kesken oleva on valmis 31.10.2026.',
+    connect: 'Yhteys',
     states: { done: 'Käytössä', next: 'Seuraavaksi', wait: 'Odottaa', later: 'Myöhemmin', due: '31.10.2026' },
     objectives: [
       ['done', 'Näytä RIngomarket, soittamo ja Staging yhdessä, ja jokaisen viimeisin puhelu.'],
@@ -497,8 +499,95 @@ const plan = {
   },
 }
 
+let planIndex = 0
+let planCount = 0
+let planShow = () => {}
+let planGen = 0
+let planOrigin = 0
+let planPaused = false
+let planPauseAt = 0
+let planPausedFor = 0
+const planMs = 30000
+
+function planGoals(text) {
+  return [
+    {
+      state: 'done',
+      name: text.steps[0][1],
+      paragraphs: [text.steps[0][2]],
+      lines: text.objectives.slice(0, 3).map((row) => row[1]),
+    },
+    {
+      state: 'done',
+      name: text.steps[1][1],
+      paragraphs: [text.steps[1][2]],
+    },
+    {
+      state: 'due',
+      name: text.connect,
+      paragraphs: [text.objectives[3][1]],
+    },
+    {
+      state: 'due',
+      name: text.predictive,
+      paragraphs: [text.lead, text.where],
+      formulas: text.formulas,
+    },
+    {
+      state: 'due',
+      name: text.steps[3][1],
+      paragraphs: [text.steps[3][2]],
+      lines: text.tracks,
+    },
+  ]
+}
+
+function paintPlanMeter(ratio) {
+  const fill = document.querySelector('#plan-fill')
+  const count = document.querySelector('#plan-count')
+  const clamped = Math.max(0, Math.min(1, ratio))
+  if (fill) fill.style.width = `${clamped * 100}%`
+  if (count) count.textContent = `${Math.ceil((1 - clamped) * (planMs / 1000))}s`
+}
+
+function resetPlanClock() {
+  planOrigin = performance.now()
+  planPausedFor = 0
+  if (planPaused) planPauseAt = planOrigin
+  paintPlanMeter(0)
+}
+
+function armPlanClock() {
+  const gen = ++planGen
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  if (reduced) {
+    paintPlanMeter(0)
+    return
+  }
+  const loop = (now) => {
+    if (gen !== planGen) return
+    if (!planOrigin) planOrigin = now
+    const frozen = planPaused ? planPauseAt : now
+    const elapsed = Math.max(0, frozen - planOrigin - planPausedFor)
+    if (!planPaused && elapsed >= planMs) {
+      planIndex = (planIndex + 1) % planCount
+      planShow(planIndex)
+      planOrigin = now
+      planPausedFor = 0
+      paintPlanMeter(0)
+    } else {
+      paintPlanMeter(elapsed / planMs)
+    }
+    requestAnimationFrame(loop)
+  }
+  requestAnimationFrame(loop)
+}
+
 function renderPlan() {
   const text = plan[lang]
+  const goals = planGoals(text)
+  planCount = goals.length
+  if (planIndex >= planCount) planIndex = 0
   const root = document.querySelector('#plan')
   root.className = 'window'
   root.replaceChildren()
@@ -506,63 +595,101 @@ function renderPlan() {
   const dots = el('span', null, 'dots')
   dots.append(document.createElement('i'), document.createElement('i'), document.createElement('i'))
   bar.append(dots, el('strong', text.title))
-  const body = el('div', null, 'plan-body')
 
-  const split = el('div', null, 'plan-split')
-  const now = el('div')
-  now.append(el('h2', text.now))
-  const objectives = el('ul', null, 'plan-list')
-  for (const [state, line] of text.objectives) {
-    const item = document.createElement('li')
-    item.append(statusMark(state, text.states[state]), el('p', line))
-    objectives.append(item)
-  }
-  now.append(objectives)
+  const tabs = el('div', null, 'plan-tabs')
+  tabs.setAttribute('role', 'tablist')
+  const panels = el('div', null, 'plan-panels')
+  const buttons = []
 
-  const road = el('div')
-  road.append(el('h2', text.road), el('p', text.due, 'due-line'))
-  const steps = el('ol', null, 'steps')
-  text.steps.forEach((step, index) => {
-    const [state, name, detail] = step
-    const item = document.createElement('li')
-    item.append(el('span', String(index + 1), 'step-no'))
-    const block = el('div')
-    const head = el('div', null, 'meta')
-    head.append(el('b', name), statusMark(state, text.states[state]))
-    block.append(head, el('p', detail))
-    item.append(block)
-    steps.append(item)
-  })
-  road.append(steps)
-  split.append(now, road)
-
-  const predict = el('div')
-  predict.append(el('h2', text.predictive), el('p', text.lead), el('p', text.where))
-  const formulas = el('div', null, 'formulas')
-  for (const [name, formula, note] of text.formulas) {
-    const card = el('article', null, 'formula')
-    card.append(el('h3', name))
-    const code = document.createElement('code')
-    code.textContent = formula
-    card.append(code, el('p', note))
-    formulas.append(card)
-  }
-  predict.append(formulas)
-
-  const tracking = el('div')
-  tracking.append(el('h2', text.tracking))
-  const chips = el('ul', null, 'chips')
-  for (const line of text.tracks) {
-    const item = document.createElement('li')
-    const mark = svgEl('track')
+  goals.forEach((goal, index) => {
+    const button = document.createElement('button')
+    button.type = 'button'
+    button.setAttribute('role', 'tab')
+    button.setAttribute('aria-selected', index === planIndex ? 'true' : 'false')
+    const mark = svgEl(goal.state)
     mark.classList.add('tiny')
-    item.append(mark, el('span', line))
-    chips.append(item)
-  }
-  tracking.append(chips)
+    button.append(mark, el('span', goal.name))
+    button.addEventListener('click', () => {
+      planIndex = index
+      planShow(index)
+      resetPlanClock()
+    })
+    buttons.push(button)
+    tabs.append(button)
 
-  body.append(split, predict, tracking)
-  root.append(bar, body)
+    const panel = el('div', null, 'plan-panel')
+    panel.setAttribute('role', 'tabpanel')
+    panel.hidden = index !== planIndex
+    const head = el('div', null, 'meta')
+    head.append(el('h2', goal.name), statusMark(goal.state, text.states[goal.state]))
+    panel.append(head)
+    for (const paragraph of goal.paragraphs || []) panel.append(el('p', paragraph))
+    if (goal.formulas) {
+      const formulas = el('div', null, 'formulas')
+      for (const [name, formula, note] of goal.formulas) {
+        const card = el('article', null, 'formula')
+        card.append(el('h3', name))
+        const code = document.createElement('code')
+        code.textContent = formula
+        card.append(code, el('p', note))
+        formulas.append(card)
+      }
+      panel.append(formulas)
+    }
+    if (goal.lines) {
+      const list = el('ul', null, 'plan-lines')
+      for (const line of goal.lines) {
+        const item = document.createElement('li')
+        const mark = svgEl(goal.state === 'due' ? 'track' : 'done')
+        mark.classList.add('tiny')
+        item.append(mark, el('span', line))
+        list.append(item)
+      }
+      panel.append(list)
+    }
+    panels.append(panel)
+  })
+
+  const meter = el('div', null, 'plan-meter')
+  const timer = el('div', null, 'plan-timer')
+  const fill = document.createElement('i')
+  fill.id = 'plan-fill'
+  timer.append(fill)
+  const count = el('span', '30s', 'plan-count')
+  count.id = 'plan-count'
+  meter.append(timer, count)
+  meter.setAttribute('aria-hidden', 'true')
+
+  const due = el('p', text.due, 'plan-due')
+  root.append(bar, due, tabs, meter, panels)
+
+  planShow = (index) => {
+    buttons.forEach((button, i) => button.setAttribute('aria-selected', i === index ? 'true' : 'false'))
+    panels.querySelectorAll('.plan-panel').forEach((panel, i) => {
+      panel.hidden = i !== index
+    })
+    const selected = buttons[index]
+    if (!selected) return
+    const strip = selected.parentElement
+    const start = selected.offsetLeft
+    const end = start + selected.offsetWidth
+    if (start < strip.scrollLeft || end > strip.scrollLeft + strip.clientWidth) {
+      strip.scrollTo({ left: Math.max(0, start - 12), behavior: 'smooth' })
+    }
+  }
+
+  root.onpointerenter = () => {
+    if (planPaused) return
+    planPaused = true
+    planPauseAt = performance.now()
+  }
+  root.onpointerleave = () => {
+    if (!planPaused) return
+    planPausedFor += performance.now() - planPauseAt
+    planPaused = false
+  }
+
+  armPlanClock()
 }
 
 function attachedIds() {
