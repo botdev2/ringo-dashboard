@@ -65,6 +65,9 @@ body {
   -webkit-font-smoothing: antialiased;
   background: transparent;
 }
+h1, h2, h3, h4, h5, h6, strong, b, th {
+  font-weight: 400;
+}
 body::before {
   content: "";
   position: fixed;
@@ -141,7 +144,7 @@ body::after {
 }
 .clip-frame video { width: 100%; height: 100%; object-fit: cover; display: block; }
 .clip-meta { min-width: 0; align-self: center; }
-.clip-meta strong, .attachment-name strong { display: block; font-size: 14px; font-weight: 600; color: var(--text); }
+.clip-meta strong, .attachment-name strong { display: block; font-size: 14px; font-weight: 400; color: var(--text); }
 .clip-meta span, .attachment-name span { display: block; color: var(--faint); font-size: 12px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .clip-meta .clip-state { color: var(--ok); }
 .clip-attach, .clips-close {
@@ -226,7 +229,7 @@ form {
   font-size: 12px;
   color: var(--faint);
 }
-h1 { font-size: 26px; margin: 0; font-weight: 600; letter-spacing: -0.02em; }
+h1 { font-size: 26px; margin: 0; font-weight: 400; letter-spacing: -0.02em; }
 .wordmark span { color: var(--text); }
 h2 { font-size: 16px; margin: 0 0 10px; }
 h3 { margin: 18px 0 8px; font-size: 14px; }
@@ -264,7 +267,7 @@ header {
   background: transparent;
   color: var(--muted);
   font-size: 15px;
-  font-weight: 650;
+  font-weight: 400;
 }
 .workspace-tabs button[aria-selected="true"] {
   color: var(--text);
@@ -278,7 +281,7 @@ header {
   flex: 1 0 100%;
   margin: 0;
   font-size: 12px;
-  font-weight: 650;
+  font-weight: 400;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--faint);
@@ -286,12 +289,12 @@ header {
 .due-clock {
   color: var(--text);
   font-size: 56px;
-  font-weight: 650;
+  font-weight: 400;
   line-height: 1;
   font-variant-numeric: tabular-nums;
   letter-spacing: -0.03em;
 }
-.due-left { color: var(--text); font-size: 22px; font-weight: 650; }
+.due-left { color: var(--text); font-size: 22px; font-weight: 400; }
 .due-when { flex: 1 0 100%; color: var(--faint); font-size: 15px; }
 .budget {
   display: grid;
@@ -303,12 +306,12 @@ header {
 .budget dt {
   margin: 0;
   font-size: 12px;
-  font-weight: 650;
+  font-weight: 400;
   letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--faint);
 }
-.budget dd { margin: 2px 0 0; font-size: 20px; font-weight: 600; color: var(--text); }
+.budget dd { margin: 2px 0 0; font-size: 20px; font-weight: 400; color: var(--text); }
 .people { display: grid; justify-items: end; gap: 6px; }
 .people-label { margin: 0; font-size: 12px; color: var(--faint); }
 .members { display: flex; flex-wrap: wrap; gap: 8px 14px; list-style: none; margin: 0; padding: 0; }
@@ -321,7 +324,7 @@ header {
   border: 0;
   color: var(--text);
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 400;
 }
 .avatar {
   width: 32px;
@@ -332,13 +335,13 @@ header {
   background: var(--wash);
   border: 1px solid var(--line);
   font-size: 11px;
-  font-weight: 700;
+  font-weight: 400;
   letter-spacing: 0.02em;
 }
 .avatar.tone-0 { color: var(--market); }
 .avatar.tone-1 { color: var(--soittamo); }
 .avatar.tone-2 { color: var(--staging); }
-.workspace { margin: 0 0 16px; color: var(--text); font-size: 15px; font-weight: 700; letter-spacing: -0.02em; }
+.workspace { margin: 0 0 16px; color: var(--text); font-size: 15px; font-weight: 400; letter-spacing: -0.02em; }
 
 .lang, #theme, #login-theme { display: flex; gap: 6px; }
 .lang button, .theme-toggle, button.ghost, #logout, #share {
@@ -367,7 +370,7 @@ form button[type="submit"] {
   background: var(--text);
   color: var(--bg);
   border: 0;
-  font-weight: 600;
+  font-weight: 400;
 }
 
 .window {
@@ -405,14 +408,14 @@ form button[type="submit"] {
   border: 1px solid var(--line);
 }
 .node.middle, .node.clusters { background: transparent; }
-.node .role { margin: 0 0 4px; font-size: 12px; font-weight: 650; color: var(--faint); }
+.node .role { margin: 0 0 4px; font-size: 12px; font-weight: 400; color: var(--faint); }
 .node .status { margin-top: 8px; }
 a.ext {
   display: inline-block;
   margin-top: 8px;
   color: var(--text);
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 400;
   text-underline-offset: 3px;
   overflow-wrap: anywhere;
 }
@@ -420,15 +423,15 @@ a.ext {
 .lane { display: grid; grid-template-columns: 16px minmax(0, 1fr); column-gap: 8px; row-gap: 1px; margin: 0; align-items: center; }
 .lane .logo { grid-row: 1 / span 2; }
 .lane .logo svg { width: 16px; height: 16px; }
-.lane .dir { font-size: 12px; font-weight: 650; color: var(--text); line-height: 1.2; }
+.lane .dir { font-size: 12px; font-weight: 400; color: var(--text); line-height: 1.2; }
 .lane .cargo { font-size: 12px; line-height: 1.35; color: var(--muted); }
 .lane.to, .lane.back { color: var(--text); }
 .lane.back .logo svg { transform: scaleX(-1); }
 .tech { display: flex; flex-wrap: wrap; gap: 6px 10px; margin: 4px 0 2px; }
-.tech-chip { display: inline-flex; align-items: center; gap: 5px; color: var(--text); font-size: 13px; font-weight: 650; }
+.tech-chip { display: inline-flex; align-items: center; gap: 5px; color: var(--text); font-size: 13px; font-weight: 400; }
 .tech-chip .logo { display: inline-flex; }
 .arch { margin: 0 16px 16px; padding-top: 8px; border-top: 1px solid var(--line); }
-.arch-title { margin: 8px 0 12px; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--faint); font-weight: 650; }
+.arch-title { margin: 8px 0 12px; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--faint); font-weight: 400; }
 .arch-row { display: flex; align-items: stretch; gap: 8px; }
 .arch-box { flex: 1; min-width: 0; border: 1px solid var(--line); border-radius: 10px; padding: 12px; }
 .arch-box strong { display: block; font-size: 14px; color: var(--text); }
@@ -481,7 +484,7 @@ a.ext {
   align-items: center;
   gap: 6px;
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 400;
   line-height: 1.2;
   color: var(--text);
 }
@@ -499,11 +502,11 @@ article strong + span { display: block; margin-top: 0; letter-spacing: 0; text-t
 .about { min-height: 4.2em; }
 .ratio { color: var(--text); font-variant-numeric: tabular-nums; }
 .latest { margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--line); }
-.latest b { color: var(--text); font-weight: 650; }
+.latest b { color: var(--text); font-weight: 400; }
 
 table { width: 100%; border-collapse: collapse; }
 th, td { text-align: left; padding: 7px 8px; border-bottom: 1px solid var(--line); font-size: 13px; color: var(--muted); }
-th { color: var(--text); font-weight: 650; }
+th { color: var(--text); font-weight: 400; }
 td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
 td:first-child { color: var(--text); }
 
@@ -519,9 +522,9 @@ td:first-child { color: var(--text); }
   line-height: 1;
   opacity: 0.5;
   color: var(--text);
-  font-weight: 500;
+  font-weight: 400;
 }
-.bar .term b { display: block; color: var(--text); font-size: 13px; font-weight: 650; line-height: 1.15; }
+.bar .term b { display: block; color: var(--text); font-size: 13px; font-weight: 400; line-height: 1.15; }
 .bar .count { text-align: right; font-variant-numeric: tabular-nums; }
 .bar i {
   display: block;
@@ -551,7 +554,7 @@ td:first-child { color: var(--text); }
   background: transparent;
   color: var(--muted);
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 400;
 }
 .plan-tabs button[aria-selected="true"] {
   color: var(--text);
@@ -592,7 +595,7 @@ td:first-child { color: var(--text); }
   min-width: 52px;
   color: var(--text);
   font-size: 22px;
-  font-weight: 600;
+  font-weight: 400;
   font-variant-numeric: tabular-nums;
   text-align: right;
   letter-spacing: -0.02em;
@@ -657,7 +660,7 @@ td:first-child { color: var(--text); }
   margin: 0 0 4px;
   color: var(--faint);
   font-size: 12px;
-  font-weight: 650;
+  font-weight: 400;
   letter-spacing: 0.06em;
   text-transform: uppercase;
 }
@@ -841,14 +844,14 @@ li { padding: 8px 0; border-bottom: 1px solid var(--line); color: var(--muted); 
   }
   .table-scroll td { display: block; border: 0; padding: 0; text-align: left; }
   .table-scroll td.num { text-align: left; }
-  .table-scroll td:first-child { grid-column: 1 / -1; font-weight: 650; }
+  .table-scroll td:first-child { grid-column: 1 / -1; font-weight: 400; }
   .table-scroll td:not(:first-child)::before {
     content: attr(data-label);
     display: block;
     margin-bottom: 1px;
     color: var(--faint);
     font-size: 10px;
-    font-weight: 650;
+    font-weight: 400;
     letter-spacing: 0.04em;
     text-transform: uppercase;
   }
