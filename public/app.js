@@ -93,12 +93,15 @@ const copy = {
     quietRule: 'Calls exist, and the latest is more than 6 hours old.',
     emptyRule: 'No calls in this book.',
     frontendRole: 'What people open',
+    frontendKind: 'Frontend',
     frontendTitle: 'Ringo Market',
     frontendBody: 'Where callers and sellers work.',
     middleRole: 'In the middle',
+    middleKind: 'Middleware',
     middleTitle: 'The calling desk',
     middleBody: 'Decides how many lines to open, and passes each call between the people and the books.',
     clusterRole: 'The books',
+    clusterKind: 'Databases',
     clusterTitle: 'Three call books',
     clusterBody: 'Ringo Market DB is the one being written now. soittamo is retired. Staging is a practice copy and has no calls yet.',
     flowToApp: 'From the people',
@@ -110,7 +113,7 @@ const copy = {
     dbOut: 'Calls, tries, calls nobody took, sales',
     dbIn: 'People still to call, how many lines are allowed, the 3% limit or soittamo’s recent stretch',
     later: 'Waiting for connection',
-    clips: 'Clips',
+    clips: 'Clips & Notes',
     clipsEmpty: 'Video clips will be added here. Attach one and it stays on this page.',
     attach: 'Attach',
     attached: 'Attached',
@@ -195,12 +198,15 @@ const copy = {
     quietRule: 'Puheluita on, ja viimeisin on yli 6 tuntia vanha.',
     emptyRule: 'Tässä kirjassa ei ole puheluita.',
     frontendRole: 'Mitä ihmiset avaavat',
+    frontendKind: 'Frontend',
     frontendTitle: 'Ringo Market',
     frontendBody: 'Täällä soittajat ja myyjät työskentelevät.',
     middleRole: 'Keskellä',
+    middleKind: 'Middleware',
     middleTitle: 'Soitontyö',
     middleBody: 'Päättää, montako linjaa avataan, ja välittää puhelut ihmisten ja kirjojen välillä.',
     clusterRole: 'Kirjat',
+    clusterKind: 'Databases',
     clusterTitle: 'Kolme puhelukirjaa',
     clusterBody: 'Ringo Market DB on se, jota kirjoitetaan nyt. soittamo on poistettu käytöstä. Staging on harjoituskopio, eikä siinä ole vielä puheluita.',
     flowToApp: 'Ihmisiltä',
@@ -212,7 +218,7 @@ const copy = {
     dbOut: 'Puhelut, yritykset, ilman soittajaa jääneet ja kaupat',
     dbIn: 'Vielä soittamatta olevat, linjojen katto, 3 % raja tai soittamon tuore jakso',
     later: 'Odottaa yhteyttä',
-    clips: 'Leikkeet',
+    clips: 'Clips & Notes',
     clipsEmpty: 'Videoleikkeet lisätään tähän. Liitetty leike jää tälle sivulle.',
     attach: 'Liitä',
     attached: 'Liitetty',
@@ -1096,17 +1102,11 @@ function renderStack(sources) {
   const grid = el('div', null, 'stack')
 
   const front = el('article', null, 'node frontend')
-  const frontTitle = el('div', null, 'named')
-  frontTitle.append(svgEl('frontend'), el('h2', t('frontendTitle')))
-  front.append(el('p', t('frontendRole'), 'role'), frontTitle, el('p', t('frontendBody')), statusMark('later', t('later')))
+  front.append(el('p', t('frontendRole'), 'role'), nodeHeading('frontend', t('frontendKind'), t('frontendTitle')), el('p', t('frontendBody')), statusMark('later', t('later')))
   const mid = el('article', null, 'node middle')
-  const midTitle = el('div', null, 'named')
-  midTitle.append(svgEl('backend'), el('h2', t('middleTitle')))
-  mid.append(el('p', t('middleRole'), 'role'), midTitle, el('p', t('middleBody')), statusMark('later', t('later')))
+  mid.append(el('p', t('middleRole'), 'role'), nodeHeading('backend', t('middleKind'), t('middleTitle')), el('p', t('middleBody')), statusMark('later', t('later')))
   const clusters = el('article', null, 'node clusters')
-  const clusterTitle = el('div', null, 'named')
-  clusterTitle.append(svgEl('database'), el('h2', t('clusterTitle')))
-  clusters.append(el('p', t('clusterRole'), 'role'), clusterTitle, el('p', t('clusterBody')))
+  clusters.append(el('p', t('clusterRole'), 'role'), nodeHeading('database', t('clusterKind'), t('clusterTitle')), el('p', t('clusterBody')))
   const list = el('ul', null, 'cluster-list')
   for (const [key, source] of Object.entries(sources)) {
     const item = document.createElement('li')
@@ -1128,6 +1128,14 @@ function renderStack(sources) {
     clusters,
   )
   root.append(bar, grid)
+}
+
+function nodeHeading(icon, kind, desc) {
+  const title = el('div', null, 'named')
+  const label = el('div', null, 'node-label')
+  label.append(el('h2', kind), el('p', desc, 'node-desc'))
+  title.append(svgEl(icon), label)
+  return title
 }
 
 function lane(kind, dir, cargo) {

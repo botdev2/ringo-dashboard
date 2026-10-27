@@ -163,6 +163,16 @@ form {
 .tools { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
 .named { display: flex; align-items: center; gap: 8px; }
 .named h2 { margin: 0; }
+.node .named { align-items: flex-start; }
+.node-label { position: relative; min-width: 0; }
+.node-desc {
+  position: relative;
+  margin: 1px 0 0;
+  font-size: 12px;
+  line-height: 1.25;
+  font-weight: 400;
+  color: var(--muted);
+}
 
 .logo svg { width: 36px; height: 36px; display: block; }
 .logo.tiny svg { width: 18px; height: 18px; }
