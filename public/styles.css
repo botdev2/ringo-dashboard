@@ -174,15 +174,7 @@ form button[type="submit"] {
 }
 .node.middle, .node.clusters { background: transparent; }
 .node .role { margin: 0 0 4px; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--faint); }
-.wait {
-  display: inline-block;
-  margin: 8px 0 0;
-  padding: 4px 8px;
-  border-radius: 99px;
-  background: var(--wash);
-  color: var(--amber-text);
-  font-size: 12px;
-}
+.node .status { margin-top: 8px; }
 .link {
   align-self: center;
   height: 1px;
