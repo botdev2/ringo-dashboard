@@ -96,7 +96,7 @@ const copy = {
     frontendBody: 'Where callers and sellers work.',
     middleRole: 'In the middle',
     middleKind: 'Middleware',
-    middleTitle: 'The calling desk',
+    middleTitle: 'Calling Facilitator',
     middleBody: 'Decides how many lines to open, and passes each call between the people and the databases.',
     clusterRole: 'The databases',
     clusterKind: 'Databases',
@@ -127,7 +127,10 @@ const copy = {
     tabActivityHint: 'Calls over the last 14 days, and what arrived after this page was opened.',
     tabResultsHint: 'How the calls turned out over the last 14 days.',
     tabPeopleHint: 'Sellers, call centres, and operators.',
-    tabPiecesHint: 'How Ringo Market, the calling desk, and the databases pass the work.',
+    tabPiecesHint: 'How Ringo Market, the Calling Facilitator, and the databases pass the work.',
+    archTitle: 'Technical architecture',
+    archPeople: 'People',
+    archPeopleBody: 'Callers and sellers',
     tabGoalsHint: 'What is already in place, and what is still open until 31.10.2026.',
     footer: 'A project platform by EB Systech for projects.',
     chart: 'Ringo Market DB calls, last 14 days',
@@ -200,7 +203,7 @@ const copy = {
     frontendBody: 'Täällä soittajat ja myyjät työskentelevät.',
     middleRole: 'Keskellä',
     middleKind: 'Middleware',
-    middleTitle: 'Soitontyö',
+    middleTitle: 'Soitonvälittäjä',
     middleBody: 'Päättää, montako linjaa avataan, ja välittää puhelut ihmisten ja tietokantojen välillä.',
     clusterRole: 'Tietokannat',
     clusterKind: 'Tietokannat',
@@ -231,7 +234,10 @@ const copy = {
     tabActivityHint: 'Puhelut viimeiseltä 14 päivältä, ja se mikä on tullut tämän sivun avaamisen jälkeen.',
     tabResultsHint: 'Miten puhelut päättyivät viimeisen 14 päivän aikana.',
     tabPeopleHint: 'Myyjät, puhelukeskukset ja operaattorit.',
-    tabPiecesHint: 'Miten Ringo Market, soitontyö ja tietokannat välittävät työn.',
+    tabPiecesHint: 'Miten Ringo Market, soitonvälittäjä ja tietokannat välittävät työn.',
+    archTitle: 'Tekninen arkkitehtuuri',
+    archPeople: 'Ihmiset',
+    archPeopleBody: 'Soittajat ja myyjät',
     tabGoalsHint: 'Mikä on jo käytössä, ja mikä on kesken 31.10.2026 asti.',
     footer: 'EB Systechin projektialusta projekteille.',
     chart: 'Ringo Market DB, puhelut 14 päivää',
@@ -361,6 +367,10 @@ const marks = {
   frontend: '<svg viewBox="0 0 32 32"><rect x="4" y="6" width="24" height="20" rx="3" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M4 12h24" stroke="currentColor" stroke-width="2.2"/><circle cx="8" cy="9" r="1" fill="currentColor"/></svg>',
   backend: '<svg viewBox="0 0 32 32"><circle cx="8" cy="16" r="3" fill="currentColor"/><circle cx="24" cy="8" r="3" fill="currentColor"/><circle cx="24" cy="24" r="3" fill="currentColor"/><path d="M11 15.2 21 9.2M11 16.8 21 22.8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>',
   database: '<svg viewBox="0 0 32 32"><ellipse cx="16" cy="8" rx="8" ry="3.2" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M8 8v16c0 1.8 3.6 3.2 8 3.2s8-1.4 8-3.2V8" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M8 16c0 1.8 3.6 3.2 8 3.2s8-1.4 8-3.2" fill="none" stroke="currentColor" stroke-width="2.2"/></svg>',
+  typescript: '<svg viewBox="0 0 32 32"><rect x="4" y="4" width="24" height="24" rx="4" fill="none" stroke="currentColor" stroke-width="2"/><path d="M9 12.5h9M13.5 12.5V22M18.5 17.2h4.6a2.2 2.2 0 0 1 0 4.4H18.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+  react: '<svg viewBox="0 0 32 32"><circle cx="16" cy="16" r="2.1" fill="currentColor"/><ellipse cx="16" cy="16" rx="11" ry="4.2" fill="none" stroke="currentColor" stroke-width="1.5"/><ellipse cx="16" cy="16" rx="11" ry="4.2" transform="rotate(60 16 16)" fill="none" stroke="currentColor" stroke-width="1.5"/><ellipse cx="16" cy="16" rx="11" ry="4.2" transform="rotate(120 16 16)" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>',
+  node: '<svg viewBox="0 0 32 32"><path d="M16 3.6 27.2 10v12L16 28.4 4.8 22V10Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M11.2 17.4 16 12.8l4.8 4.6" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+  postgres: '<svg viewBox="0 0 32 32"><path d="M8.2 18.4c.2-5.4 3.8-9.6 9.2-9.6 2.6 0 4.4.8 5.6 2 1-1.1 2.3-1.5 3.4-.6.7.6.8 1.6.2 2.4-1.1.1-2 .8-2.5 1.7 1.3 1.1 2 2.6 2 4.3 0 3.8-2.8 6.4-7.2 6.4h-.8" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M15.2 22.2c.3 2.1-.3 3.8-1.6 5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><path d="M11.4 16.6c1.5 1.2 2.2 2.6 2 4.3" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><circle cx="20.6" cy="13.8" r="0.9" fill="currentColor"/></svg>',
   sun: '<svg viewBox="0 0 32 32"><circle cx="16" cy="16" r="5" fill="currentColor"/><path d="M16 4v4M16 24v4M4 16h4M24 16h4M7.5 7.5l2.8 2.8M21.7 21.7l2.8 2.8M24.5 7.5l-2.8 2.8M10.3 21.7l-2.8 2.8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>',
   moon: '<svg viewBox="0 0 32 32"><path d="M20 5a10 10 0 1 0 7 17A8 8 0 0 1 20 5z" fill="currentColor"/></svg>',
   live: '<svg viewBox="0 0 16 16"><circle cx="8" cy="8" r="6.2" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="8" cy="8" r="2.4" fill="currentColor"/></svg>',
@@ -452,7 +462,7 @@ const plan = {
       ['done', 'Show Ringo Market DB, soittamo, and Staging together, with the latest call on each.'],
       ['done', 'Name the seller, call centre, and operator behind the calls, leads, and sales.'],
       ['done', 'Record new calls, leads, and sales as they arrive, and keep phone numbers and personal details off this page.'],
-      ['due', 'Connect the Ringo Market page to the calling desk. The picture is already drawn. The addresses come when they are ready.'],
+      ['due', 'Connect the Ringo Market page to the Calling Facilitator. The picture is already drawn. The addresses come when they are ready.'],
       ['due', 'Show predictive calling in plain numbers: how many extra lines are open, how often a person answers with nobody free, and when calling drops to one line.'],
     ],
     steps: [
@@ -463,8 +473,8 @@ const plan = {
     lead: 'Predictive calling rings more lines than there are free callers. Most lines are not answered by a person. The extra lines are there so that, when a person does answer, a caller is already free. If the person answers and no caller is free, that call is left waiting. We call that an abandoned call.',
     where: 'Ringo Market DB keeps each round of calling: how many lines were tried, how many reached a person, how many were left with nobody free, how many extra lines were open, and the running share of abandoned answers against a limit. If that share gets too high, calling drops to one line per free caller until it cools. soittamo kept an older count: calls made, answers, people, machines, abandoned calls, and a short recent stretch of the same.',
     formulas: [
-      ['How often someone answers', '(people reached + calls left waiting) ÷ lines tried', 'The share of tries that reached a person. Lines nobody answered, and answering machines, stay in the count of tries. This is the share the calling desk uses.'],
-      ['Extra lines', 'keep it between the lowest and highest allowed, around 1 ÷ how often someone answers', 'Lines to ring = free callers × extra lines. If one try in five reaches a person, about five lines are rung. The desk will not go under its lowest setting or over its highest.'],
+      ['How often someone answers', '(people reached + calls left waiting) ÷ lines tried', 'The share of tries that reached a person. Lines nobody answered, and answering machines, stay in the count of tries. This is the share the Calling Facilitator uses.'],
+      ['Extra lines', 'keep it between the lowest and highest allowed, around 1 ÷ how often someone answers', 'Lines to ring = free callers × extra lines. If one try in five reaches a person, about five lines are rung. The Calling Facilitator will not go under its lowest setting or over its highest.'],
       ['Calls left waiting', 'calls left waiting ÷ (calls left waiting + calls joined to a caller)', 'People who answered and were not joined to a caller, divided by every person who answered. This running share is compared with the limit saved for that round of calling. Many markets keep it near 3% of answered calls. The saved limit is the one this desk uses.'],
       ['soittamo’s recent stretch', 'abandoned calls in the stretch ÷ calls made in the stretch', 'This counts abandoned calls per call made, so the number looks smaller than the share of people who answered and were left waiting. The limit should use that answer-based share.'],
       ['Back to one line', 'if too many answered calls are left waiting, ring only one line per free caller', 'No extra lines until the share cools, or someone turns the extra lines back on.'],
@@ -492,7 +502,7 @@ const plan = {
       ['done', 'Näytä Ringo Market DB, soittamo ja Staging yhdessä, ja jokaisen viimeisin puhelu.'],
       ['done', 'Nimeä myyjä, puhelukeskus ja operaattori puheluiden, liidien ja kauppojen takana.'],
       ['done', 'Tallenna uudet puhelut, liidit ja kaupat sitä mukaa kun ne syntyvät, ilman puhelinnumeroita ja henkilötietoja.'],
-      ['due', 'Yhdistä Ringo Marketin sivu soitontyöhön. Kuva on jo valmis. Osoitteet tulevat, kun ne annetaan.'],
+      ['due', 'Yhdistä Ringo Marketin sivu soitonvälittäjään. Kuva on jo valmis. Osoitteet tulevat, kun ne annetaan.'],
       ['due', 'Näytä ennakoiva soitto selvin luvuin: montako ylimääräistä linjaa on auki, kuinka usein ihminen vastaa eikä soittajaa ole vapaana, ja milloin soitto pudotetaan yhteen linjaan.'],
     ],
     steps: [
@@ -503,9 +513,9 @@ const plan = {
     lead: 'Ennakoiva soitto soittaa useampia linjoja kuin vapaita soittajia on. Suurin osa linjoista ei päädy ihmiselle. Ylimääräiset linjat ovat sitä varten, että ihmisen vastatessa soittaja on jo vapaa. Jos ihminen vastaa eikä soittajaa ole vapaana, puhelu jää odottamaan. Sitä kutsutaan hylätyksi puheluksi.',
     where: 'Ringo Market DB pitää kirjaa jokaisesta soittojaksosta: montako linjaa yritettiin, montako tavoitti ihmisen, montako jäi ilman vapaata soittajaa, montako ylimääräistä linjaa oli auki, ja miten hylättyjen vastausten osuus liikkuu rajaa vasten. Jos osuus nousee liian korkeaksi, soitto pudotetaan yhteen linjaan vapaata soittajaa kohden, kunnes osuus jäähtyy. soittamo piti vanhempaa lukua: soitetut, vastaukset, ihmiset, koneet, hylätyt puhelut ja lyhyt tuore jakso samoista.',
     formulas: [
-      ['Kuinka usein joku vastaa', '(tavoitetut ihmiset + odottamaan jääneet) ÷ yritetyt linjat', 'Osuus yrityksistä, jotka tavoittivat ihmisen. Linjat, joihin kukaan ei vastannut, ja puhelinvastaajat jäävät yritysten joukkoon. Tätä osuutta soitontyö käyttää.'],
-      ['Ylimääräiset linjat', 'pysy alimman ja ylimmän sallitun välissä, noin 1 ÷ kuinka usein joku vastaa', 'Soitot = vapaat soittajat × ylimääräiset linjat. Jos joka viides yritys tavoittaa ihmisen, linjoja soitetaan noin viisi. Soitontyö ei laske alle alimman eikä nouse yli ylimmän asetuksen.'],
-      ['Odottamaan jääneet', 'odottamaan jääneet ÷ (odottamaan jääneet + soittajalle kytketyt)', 'Ihmiset, jotka vastasivat eikä heitä kytketty soittajalle, jaettuna kaikilla vastanneilla. Tätä liikkuvaa osuutta verrataan sille soittojaksolle tallennettuun rajaan. Monilla markkinoilla katto on noin 3 % vastanneista. Tallennettu raja on se, jota tämä soitontyö käyttää.'],
+      ['Kuinka usein joku vastaa', '(tavoitetut ihmiset + odottamaan jääneet) ÷ yritetyt linjat', 'Osuus yrityksistä, jotka tavoittivat ihmisen. Linjat, joihin kukaan ei vastannut, ja puhelinvastaajat jäävät yritysten joukkoon. Tätä osuutta soitonvälittäjä käyttää.'],
+      ['Ylimääräiset linjat', 'pysy alimman ja ylimmän sallitun välissä, noin 1 ÷ kuinka usein joku vastaa', 'Soitot = vapaat soittajat × ylimääräiset linjat. Jos joka viides yritys tavoittaa ihmisen, linjoja soitetaan noin viisi. Soitonvälittäjä ei laske alle alimman eikä nouse yli ylimmän asetuksen.'],
+      ['Odottamaan jääneet', 'odottamaan jääneet ÷ (odottamaan jääneet + soittajalle kytketyt)', 'Ihmiset, jotka vastasivat eikä heitä kytketty soittajalle, jaettuna kaikilla vastanneilla. Tätä liikkuvaa osuutta verrataan sille soittojaksolle tallennettuun rajaan. Monilla markkinoilla katto on noin 3 % vastanneista. Tallennettu raja on se, jota soitonvälittäjä käyttää.'],
       ['soittamon tuore jakso', 'jakson hylätyt puhelut ÷ jakson soitot', 'Tämä laskee hylätyt puhelut per soitto, joten luku näyttää pienemmältä kuin niiden osuus, jotka vastasivat ja jäivät odottamaan. Rajan pitäisi käyttää tuota vastauksiin perustuvaa osuutta.'],
       ['Takaisin yhteen linjaan', 'jos liian moni vastannut jää odottamaan, soi vain yksi linja vapaata soittajaa kohden', 'Ei ylimääräisiä linjoja, ennen kuin osuus jäähtyy tai joku kytkee ylimääräiset linjat takaisin.'],
       ['Ihmiset, eivät koneet', 'ihmiset ÷ (ihmiset + koneet)', 'Oliko vastaus ihminen vai kone. Koneen ei pidä viedä soittajaa. soittamo laski molemmat. Ringo Market DB merkitsee tuloksen jokaiseen yritykseen.'],
@@ -1091,11 +1101,11 @@ function renderStack(sources) {
   const grid = el('div', null, 'stack')
 
   const front = el('article', null, 'node frontend')
-  front.append(el('p', t('frontendRole'), 'role'), nodeHeading('frontend', t('frontendKind'), t('frontendTitle')), el('p', t('frontendBody')), statusMark('later', t('later')))
+  front.append(el('p', t('frontendRole'), 'role'), nodeHeading('frontend', t('frontendKind'), t('frontendTitle'), [{ icon: 'typescript', name: 'TypeScript' }, { icon: 'react', name: 'React' }]), el('p', t('frontendBody')), statusMark('later', t('later')))
   const mid = el('article', null, 'node middle')
-  mid.append(el('p', t('middleRole'), 'role'), nodeHeading('backend', t('middleKind'), t('middleTitle')), el('p', t('middleBody')), statusMark('later', t('later')))
+  mid.append(el('p', t('middleRole'), 'role'), nodeHeading('backend', t('middleKind'), t('middleTitle'), [{ icon: 'node', name: 'Node.js' }]), el('p', t('middleBody')), statusMark('later', t('later')))
   const clusters = el('article', null, 'node clusters')
-  clusters.append(el('p', t('clusterRole'), 'role'), nodeHeading('database', t('clusterKind'), t('clusterTitle')), el('p', t('clusterBody')))
+  clusters.append(el('p', t('clusterRole'), 'role'), nodeHeading('database', t('clusterKind'), t('clusterTitle'), [{ icon: 'postgres', name: 'PostgresDB' }]), el('p', t('clusterBody')))
   const list = el('ul', null, 'cluster-list')
   for (const [key, source] of Object.entries(sources)) {
     const item = document.createElement('li')
@@ -1114,15 +1124,67 @@ function renderStack(sources) {
     flow(t('flowToData'), t('dbOut'), t('flowFromData'), t('dbIn')),
     clusters,
   )
-  root.append(bar, grid)
+  root.append(bar, grid, architecture(sources))
 }
 
-function nodeHeading(icon, kind, desc) {
+function techRow(items) {
+  const row = el('p', null, 'tech')
+  for (const item of items) {
+    const chip = el('span', null, 'tech-chip')
+    const mark = svgEl(item.icon)
+    mark.classList.add('tiny')
+    chip.append(mark, el('span', item.name))
+    row.append(chip)
+  }
+  return row
+}
+
+function nodeHeading(icon, kind, desc, tech) {
   const title = el('div', null, 'named')
   const label = el('div', null, 'node-label')
-  label.append(el('h2', kind), el('p', desc, 'node-desc'))
+  label.append(el('h2', kind))
+  if (tech) label.append(techRow(tech))
+  label.append(el('p', desc, 'node-desc'))
   title.append(svgEl(icon), label)
   return title
+}
+
+function archBox(title, lines, tech) {
+  const box = el('div', null, 'arch-box')
+  box.append(el('strong', title))
+  if (tech) box.append(techRow(tech))
+  for (const line of lines) box.append(el('p', line))
+  return box
+}
+
+function archLink() {
+  const link = el('div', null, 'arch-link')
+  const back = svgEl('arrow')
+  back.classList.add('back')
+  link.append(back, svgEl('arrow'))
+  return link
+}
+
+function architecture(sources) {
+  const wrap = el('div', null, 'arch')
+  wrap.append(el('p', t('archTitle'), 'arch-title'))
+  const row = el('div', null, 'arch-row')
+  const data = el('div', null, 'arch-box')
+  data.append(techRow([{ icon: 'postgres', name: 'PostgresDB' }]))
+  const list = el('ul', null, 'arch-dbs')
+  for (const key of Object.keys(sources)) list.append(el('li', labels[key] || key))
+  data.append(list)
+  row.append(
+    archBox(t('archPeople'), [t('archPeopleBody')]),
+    archLink(),
+    archBox('Frontend', [t('frontendTitle')], [{ icon: 'typescript', name: 'TypeScript' }, { icon: 'react', name: 'React' }]),
+    archLink(),
+    archBox(t('middleTitle'), [], [{ icon: 'node', name: 'Node.js' }]),
+    archLink(),
+    data,
+  )
+  wrap.append(row)
+  return wrap
 }
 
 function lane(kind, dir, cargo) {

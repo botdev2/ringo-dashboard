@@ -366,6 +366,20 @@ form button[type="submit"] {
 .lane .cargo { font-size: 12px; line-height: 1.35; color: var(--muted); }
 .lane.to, .lane.back { color: var(--text); }
 .lane.back .logo svg { transform: scaleX(-1); }
+.tech { display: flex; flex-wrap: wrap; gap: 6px 10px; margin: 4px 0 2px; }
+.tech-chip { display: inline-flex; align-items: center; gap: 5px; color: var(--text); font-size: 13px; font-weight: 650; }
+.tech-chip .logo { display: inline-flex; }
+.arch { margin: 0 16px 16px; padding-top: 8px; border-top: 1px solid var(--line); }
+.arch-title { margin: 8px 0 12px; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--faint); font-weight: 650; }
+.arch-row { display: flex; align-items: stretch; gap: 8px; }
+.arch-box { flex: 1; min-width: 0; border: 1px solid var(--line); border-radius: 10px; padding: 12px; }
+.arch-box strong { display: block; font-size: 14px; color: var(--text); }
+.arch-box p { margin: 4px 0 0; font-size: 13px; }
+.arch-link { display: flex; align-items: center; gap: 2px; color: var(--faint); flex: none; }
+.arch-link .logo svg { width: 16px; height: 16px; }
+.arch-link .back svg { transform: scaleX(-1); }
+.arch-dbs { list-style: none; margin: 8px 0 0; padding: 0; }
+.arch-dbs li { padding: 5px 0; border-bottom: 1px solid var(--line); font-size: 13px; color: var(--muted); }
 .cluster-list { list-style: none; margin: 10px 0 0; padding: 0; display: grid; gap: 8px; }
 .cluster-list li {
   display: flex;
@@ -665,6 +679,9 @@ li { padding: 8px 0; border-bottom: 1px solid var(--line); color: var(--muted); 
   #cards article .about { order: 5; margin-top: 12px; }
   article strong { font-size: 36px; }
   #cards, #breakdowns, .split, .stack, .plan-split, .formulas, .legend-row { display: grid; grid-template-columns: 1fr; }
+  .arch-row { flex-direction: column; }
+  .arch-link { justify-content: center; }
+  .arch-link .logo svg, .arch-link .back svg { transform: rotate(90deg); }
   .window, .panel, #cards article, #breakdowns article, #organizations article { border-radius: 10px; }
   .stack, .plan-body { padding: 12px; }
   .flow { gap: 12px; padding: 2px 2px 2px 8px; }
