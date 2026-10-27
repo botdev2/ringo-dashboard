@@ -113,7 +113,6 @@ body {
 .clip-meta span, .attachment-name span { display: block; color: var(--faint); font-size: 12px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .clip-meta .clip-state { color: var(--ok); }
 .clip-attach, .clips-close {
-  display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 6px;
@@ -121,6 +120,8 @@ body {
   color: var(--text);
   border: 1px solid var(--line);
 }
+.clip-attach { display: inline-flex; }
+.clips-head .clips-close { display: none; }
 .clip-attach { grid-column: 1 / -1; min-height: 36px; padding: 6px 10px; }
 .clip-attach .logo svg, .attachment-remove .logo svg, #clips-toggle .logo svg, .clips-close .logo svg { width: 16px; height: 16px; }
 #attached { display: grid; gap: 12px; margin-top: 18px; }
@@ -477,7 +478,7 @@ li { padding: 8px 0; border-bottom: 1px solid var(--line); color: var(--muted); 
     padding: 0;
     background: rgba(16, 18, 22, 0.45);
   }
-  #clips-toggle, .clips-close { display: inline-flex; min-height: 44px; }
+  #clips-toggle, .clips-head .clips-close { display: inline-flex; min-height: 44px; }
   .clip-attach { min-height: 44px; }
   header { order: 0; display: grid; gap: 10px; }
   #cards { order: 1; margin-top: 4px; }
