@@ -26,7 +26,7 @@ h1 { font-size: 28px; margin: 0; }
 h2 { font-size: 16px; margin: 0 0 12px; }
 p { color: #b7c0ad; }
 header, .split { display: flex; justify-content: space-between; gap: 24px; }
-.split > div, #cards article, #breakdowns article {
+.split > div, #cards article, #breakdowns article, #organizations article {
   flex: 1;
   border: 1px solid #2c3428;
   border-radius: 12px;
@@ -34,6 +34,13 @@ header, .split { display: flex; justify-content: space-between; gap: 24px; }
   background: #161b14;
 }
 #cards, #breakdowns { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 18px 0; }
+#organizations { display: grid; gap: 12px; margin: 18px 0; }
+#organizations h3 { margin: 18px 0 8px; font-size: 14px; }
+table { width: 100%; border-collapse: collapse; }
+th, td { text-align: left; padding: 6px 8px; border-bottom: 1px solid #2c3428; font-size: 13px; color: #b7c0ad; }
+th { color: #e7ecdf; font-weight: 600; }
+td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+#organizations td:first-child, #organizations th:first-child { text-align: left; color: #f3f6ee; }
 article strong { display: block; font-size: 28px; color: #f3f6ee; }
 article span, li, .bar span { color: #b7c0ad; font-size: 13px; }
 .quiet strong { color: #e2b15a; }
@@ -43,5 +50,5 @@ article span, li, .bar span { color: #b7c0ad; font-size: 13px; }
 ol { list-style: none; margin: 0; padding: 0; max-height: 420px; overflow: auto; }
 li { padding: 8px 0; border-bottom: 1px solid #2c3428; }
 @media (max-width: 800px) {
-  header, .split, #cards, #breakdowns { display: grid; grid-template-columns: 1fr; }
+  header, .split, #cards, #breakdowns, #organizations { display: grid; grid-template-columns: 1fr; }
 }

@@ -26,7 +26,14 @@ function renderFeed(events) {
     return
   }
   for (const event of events) {
-    const bits = [labels[event.source] || event.source, event.kind, event.status, event.outcome, event.country]
+    const bits = [
+      labels[event.source] || event.source,
+      event.organization,
+      event.kind,
+      event.status,
+      event.outcome,
+      event.country,
+    ]
       .filter(Boolean)
       .join(' · ')
     const line = el('li', `${bits} · ${when(event.happened_at || event.happenedAt)}`)
@@ -89,7 +96,56 @@ function render(summary) {
     card.append(box)
     breakdowns.append(card)
   }
+  renderOrganizations(summary.sources)
   renderFeed(rec.recent)
+}
+
+function orgTable(rows, status) {
+  const table = document.createElement('table')
+  const head = document.createElement('tr')
+  const labelsForHead = status
+    ? ['Organization', 'Status', 'Campaigns', 'Leads', 'Calls', 'Sales']
+    : ['Seller', 'Campaigns', 'Leads', 'Calls', 'Sales']
+  labelsForHead.forEach((label, index) => {
+    const cell = el('th', label)
+    if (index >= labelsForHead.length - 4) cell.className = 'num'
+    head.append(cell)
+  })
+  table.append(head)
+  for (const row of rows) {
+    const line = document.createElement('tr')
+    const name = row.verified === false ? `${row.name} (unverified)` : row.name
+    line.append(el('td', name))
+    if (status) line.append(el('td', row.status || ''))
+    for (const key of ['campaigns', 'leads', 'calls', 'sales']) {
+      const cell = el('td', Number(row[key] || 0).toLocaleString())
+      cell.className = 'num'
+      line.append(cell)
+    }
+    table.append(line)
+  }
+  return table
+}
+
+function renderOrganizations(sources) {
+  const root = document.querySelector('#organizations')
+  root.replaceChildren()
+  for (const [key, source] of Object.entries(sources)) {
+    if (!source.ok) continue
+    const card = el('article')
+    card.append(el('h2', `${labels[key] || key} sellers`))
+    if (!source.sellers?.length) card.append(el('p', 'No seller organizations.'))
+    else card.append(orgTable(source.sellers, false))
+    if (source.callCentres?.length) {
+      card.append(el('h3', 'Call centres'))
+      card.append(orgTable(source.callCentres, true))
+    }
+    if (source.operatorOrgs?.length) {
+      card.append(el('h3', 'Operator organizations'))
+      card.append(orgTable(source.operatorOrgs, true))
+    }
+    root.append(card)
+  }
 }
 
 let started = false

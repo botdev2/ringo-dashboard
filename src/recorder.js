@@ -19,6 +19,7 @@ function openSqlite() {
       outcome TEXT,
       country TEXT,
       duration_sec INTEGER,
+      organization TEXT,
       UNIQUE(source, kind, external_id)
     );
     CREATE TABLE IF NOT EXISTS cursors (
@@ -38,6 +39,8 @@ function openSqlite() {
       latest_call TEXT
     );
   `)
+  const eventCols = db.prepare('PRAGMA table_info(events)').all().map((col) => col.name)
+  if (!eventCols.includes('organization')) db.exec('ALTER TABLE events ADD COLUMN organization TEXT')
   return db
 }
 
@@ -69,16 +72,21 @@ async function pullKind(pool, source, kind, db) {
   else select.push('NULL AS outcome')
   if (cols.has('duration')) select.push('t.duration AS duration_sec')
   else select.push('NULL AS duration_sec')
-  const join = kind === 'call' && cols.has('campaign_id')
-    ? 'LEFT JOIN campaigns camp ON camp.id = t.campaign_id'
+  const campaignCols = cols.has('campaign_id') ? await columns(pool, 'campaigns') : new Set()
+  const join = cols.has('campaign_id') ? 'LEFT JOIN campaigns camp ON camp.id = t.campaign_id' : ''
+  const country = join && campaignCols.has('country') ? 'camp.country AS country' : 'NULL AS country'
+  const advertiserCols = campaignCols.has('advertiser_id') ? await columns(pool, 'advertiser_profiles') : new Set()
+  const joinOrg = advertiserCols.has('company_name')
+    ? 'LEFT JOIN advertiser_profiles org ON org.id = camp.advertiser_id'
     : ''
-  const country = join && (await columns(pool, 'campaigns')).has('country')
-    ? 'camp.country AS country'
-    : 'NULL AS country'
+  const organization = joinOrg
+    ? `coalesce(nullif(org.company_name, ''), '(unnamed)') AS organization`
+    : 'NULL AS organization'
   const result = await pool.query(
-    `SELECT ${select.join(', ')}, ${country}
+    `SELECT ${select.join(', ')}, ${country}, ${organization}
      FROM ${table} t
      ${join}
+     ${joinOrg}
      WHERE (t.${timeCol}, t.id) > ($1::timestamptz, $2::uuid)
      ORDER BY t.${timeCol}, t.id
      LIMIT 200`,
@@ -87,8 +95,8 @@ async function pullKind(pool, source, kind, db) {
   if (result.rows.length === 0) return []
   const insert = db.prepare(
     `INSERT OR IGNORE INTO events
-      (source, kind, external_id, happened_at, recorded_at, status, outcome, country, duration_sec)
-     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      (source, kind, external_id, happened_at, recorded_at, status, outcome, country, duration_sec, organization)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
   )
   const recordedAt = new Date().toISOString()
   const saved = []
@@ -105,6 +113,7 @@ async function pullKind(pool, source, kind, db) {
         row.outcome,
         row.country,
         row.duration_sec,
+        row.organization,
       )
       if (info.changes > 0) {
         saved.push({
@@ -113,6 +122,7 @@ async function pullKind(pool, source, kind, db) {
           status: row.status,
           outcome: row.outcome,
           country: row.country,
+          organization: row.organization,
           durationSec: row.duration_sec,
           happenedAt: new Date(row.happened_at).toISOString(),
         })
@@ -198,7 +208,7 @@ export function startRecorder(pools, emit) {
     state,
     recent(limit = 40) {
       return db.prepare(
-        `SELECT source, kind, happened_at, recorded_at, status, outcome, country, duration_sec
+        `SELECT source, kind, happened_at, recorded_at, status, outcome, country, organization, duration_sec
          FROM events ORDER BY id DESC LIMIT ?`,
       ).all(limit)
     },

@@ -4,7 +4,7 @@ Live view of the three Ringo Postgres backends: RIngomarket, soittamo, and Teleg
 
 Charts are queried from those databases. New calls, leads, and sales are recorded locally as they appear and pushed to the browser over server-sent events.
 
-Phone numbers, names, emails, addresses, notes, and transcripts are not stored or shown.
+Phone numbers, personal names, emails, addresses, notes, and transcripts are not stored or shown. Seller organizations are listed by company name with their campaign, lead, call, and sale counts. Call centres and operator organizations are listed when a database has them.
 
 ## Run
 
