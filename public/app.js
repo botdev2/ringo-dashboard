@@ -80,13 +80,21 @@ const copy = {
     emptyRule: 'No calls in this database.',
     frontendRole: 'App',
     frontendTitle: 'Ringo Market',
-    frontendBody: 'The app people open. Calls, campaigns, and sellers start here.',
+    frontendBody: 'Where callers and sellers work.',
     middleRole: 'Middleman',
     middleTitle: 'Backend',
-    middleBody: 'The service between the app and the databases. It will sit in the middle once the connection is added.',
+    middleBody: 'Paces the lines between the app and the three books.',
     clusterRole: 'Data',
     clusterTitle: 'Database clusters',
-    clusterBody: 'The three Neon Postgres books this dashboard reads.',
+    clusterBody: 'RIngomarket stores each pacing run. soittamo stores the older per-caller session. Staging matches RIngomarket and has no calls yet.',
+    flowToApp: 'To the backend',
+    flowFromApp: 'Back to the app',
+    flowToData: 'Written',
+    flowFromData: 'Read back',
+    appOut: 'Agent free, call outcome, sale',
+    appIn: 'Next lead, agent joined, one-line state',
+    dbOut: 'Calls, dial legs, abandons, sales',
+    dbIn: 'Leads left, line cap, 3% target or the dial window',
     later: 'Connection comes later',
     chart: 'RIngomarket calls, last 14 days',
     feed: 'New activity',
@@ -154,13 +162,21 @@ const copy = {
     emptyRule: 'Tässä tietokannassa ei ole puheluita.',
     frontendRole: 'Sovellus',
     frontendTitle: 'Ringo Market',
-    frontendBody: 'Sovellus, jonka ihmiset avaavat. Puhelut, kampanjat ja myyjät alkavat täältä.',
+    frontendBody: 'Täällä soittajat ja myyjät työskentelevät.',
     middleRole: 'Välikerros',
     middleTitle: 'Taustapalvelu',
-    middleBody: 'Palvelu sovelluksen ja tietokantojen välissä. Se asettuu keskelle, kun yhteys lisätään.',
+    middleBody: 'Tahdistaa linjat sovelluksen ja kolmen kirjan välissä.',
     clusterRole: 'Data',
     clusterTitle: 'Tietokantaklusterit',
-    clusterBody: 'Kolme Neon Postgres -kirjaa, joita tämä kojelauta lukee.',
+    clusterBody: 'RIngomarket tallentaa tahdistusjakson. soittamo tallentaa vanhemman soittajakohtaisen istunnon. Staging on saman muotoinen kuin RIngomarket, eikä siinä ole vielä puheluita.',
+    flowToApp: 'Taustapalveluun',
+    flowFromApp: 'Takaisin sovellukseen',
+    flowToData: 'Kirjoitetaan',
+    flowFromData: 'Luetaan takaisin',
+    appOut: 'Vapaa soittaja, puhelun tulos, kauppa',
+    appIn: 'Seuraava liidi, kytketty soittaja, yhden linjan tila',
+    dbOut: 'Puhelut, soittoyritykset, hylkäykset, kaupat',
+    dbIn: 'Vapaat liidit, linjakatto, 3 % tavoite tai soittoikkuna',
     later: 'Yhteys lisätään myöhemmin',
     chart: 'RIngomarketin puhelut, 14 päivää',
     feed: 'Uusi toiminta',
@@ -296,6 +312,7 @@ const marks = {
   later: '<svg viewBox="0 0 16 16"><circle cx="8" cy="8" r="6.2" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M5.5 8h5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>',
   due: '<svg viewBox="0 0 16 16"><rect x="2.2" y="3.2" width="11.6" height="10.6" rx="1.6" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M2.2 6.4h11.6M5.2 2.2v2.2M10.8 2.2v2.2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>',
   track: '<svg viewBox="0 0 16 16"><circle cx="3.2" cy="8" r="1.5" fill="currentColor"/><path d="M6.2 8h7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>',
+  arrow: '<svg viewBox="0 0 16 16"><path d="M2 8h11M9.2 4.6 13 8 9.2 11.4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>',
 }
 
 function svgEl(name) {
@@ -632,9 +649,7 @@ function renderStack(sources) {
   root.replaceChildren()
   root.className = 'window'
   const bar = el('div', null, 'window-bar')
-  const dots = el('span', null, 'dots')
-  dots.append(document.createElement('i'), document.createElement('i'), document.createElement('i'))
-  bar.append(dots, el('strong', t('stack')))
+  bar.append(el('strong', t('stack')))
   const grid = el('div', null, 'stack')
 
   const front = el('article', null, 'node frontend')
@@ -662,8 +677,27 @@ function renderStack(sources) {
     list.append(item)
   }
   clusters.append(list)
-  grid.append(front, el('div', null, 'link'), mid, el('div', null, 'link'), clusters)
+  grid.append(
+    front,
+    flow(t('flowToApp'), t('appOut'), t('flowFromApp'), t('appIn')),
+    mid,
+    flow(t('flowToData'), t('dbOut'), t('flowFromData'), t('dbIn')),
+    clusters,
+  )
   root.append(bar, grid)
+}
+
+function lane(kind, dir, cargo) {
+  const row = el('p', null, `lane ${kind}`)
+  const mark = svgEl('arrow')
+  row.append(mark, el('span', dir, 'dir'), el('span', cargo, 'cargo'))
+  return row
+}
+
+function flow(outDir, outCargo, backDir, backCargo) {
+  const box = el('div', null, 'flow')
+  box.append(lane('to', outDir, outCargo), lane('back', backDir, backCargo))
+  return box
 }
 
 function renderFeed(events) {

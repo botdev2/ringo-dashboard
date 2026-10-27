@@ -161,8 +161,8 @@ form button[type="submit"] {
 
 .stack {
   display: grid;
-  grid-template-columns: 1fr 42px 1fr 42px 1.25fr;
-  gap: 8px;
+  grid-template-columns: minmax(0, 1fr) minmax(150px, 0.78fr) minmax(0, 1fr) minmax(150px, 0.86fr) minmax(0, 1.15fr);
+  gap: 12px;
   align-items: stretch;
   padding: 16px;
 }
@@ -173,23 +173,17 @@ form button[type="submit"] {
   border: 1px solid var(--line);
 }
 .node.middle, .node.clusters { background: transparent; }
-.node .role { margin: 0 0 4px; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--faint); }
+.node .role { margin: 0 0 4px; font-size: 12px; font-weight: 650; color: var(--faint); }
 .node .status { margin-top: 8px; }
-.link {
-  align-self: center;
-  height: 1px;
-  background: var(--line);
-  position: relative;
-}
-.link::after {
-  content: "";
-  position: absolute;
-  right: -1px;
-  top: -4px;
-  border-left: 8px solid var(--soittamo);
-  border-top: 5px solid transparent;
-  border-bottom: 5px solid transparent;
-}
+.flow { display: flex; flex-direction: column; justify-content: center; gap: 16px; min-width: 0; }
+.lane { display: grid; grid-template-columns: 16px minmax(0, 1fr); column-gap: 8px; row-gap: 1px; margin: 0; align-items: center; }
+.lane .logo { grid-row: 1 / span 2; }
+.lane .logo svg { width: 16px; height: 16px; }
+.lane .dir { font-size: 12px; font-weight: 650; color: var(--text); line-height: 1.2; }
+.lane .cargo { font-size: 12px; line-height: 1.35; color: var(--muted); }
+.lane.to { color: var(--teal); }
+.lane.back { color: var(--market); }
+.lane.back .logo svg { transform: scaleX(-1); }
 .cluster-list { list-style: none; margin: 10px 0 0; padding: 0; display: grid; gap: 8px; }
 .cluster-list li {
   display: flex;
@@ -365,8 +359,9 @@ li { padding: 8px 0; border-bottom: 1px solid var(--line); color: var(--muted); 
   #cards, #breakdowns, .split, .stack, .plan-split, .formulas, .legend-row { display: grid; grid-template-columns: 1fr; }
   .window, .panel, #cards article, #breakdowns article, #organizations article { border-radius: 10px; }
   .stack, .plan-body { padding: 12px; }
-  .link { width: 1px; height: 22px; justify-self: center; background: var(--line); }
-  .link::after { right: auto; left: -4px; top: auto; bottom: -1px; border-left: 5px solid transparent; border-right: 5px solid transparent; border-top: 7px solid var(--soittamo); border-bottom: 0; }
+  .flow { gap: 12px; padding: 2px 2px 2px 8px; }
+  .lane.to .logo svg { transform: rotate(90deg); }
+  .lane.back .logo svg { transform: rotate(-90deg); }
   .bar, .bar:has(.term) {
     grid-template-columns: minmax(0, 1fr) auto;
     align-items: end;
