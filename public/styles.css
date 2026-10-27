@@ -231,6 +231,7 @@ header {
 .workspace-hint { margin: 0 0 14px; font-size: 14px; color: var(--faint); }
 .header-side { display: grid; justify-items: end; gap: 14px; }
 #recorder { margin: 0; text-align: right; }
+#intro { margin: 4px 0 6px; max-width: 62ch; font-size: 15px; line-height: 1.4; }
 .due-line { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 10px; margin: 4px 0 8px; }
 .due-clock {
   color: var(--text);
