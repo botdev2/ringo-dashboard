@@ -582,7 +582,36 @@ li { padding: 8px 0; border-bottom: 1px solid var(--line); color: var(--muted); 
   }
   #clips-toggle, .clips-head .clips-close, .plan-tabs button, .workspace-tabs button { display: inline-flex; min-height: 44px; align-items: center; }
   .clip-attach { min-height: 44px; }
-  header { order: 0; display: grid; gap: 10px; }
+  header {
+    order: 0;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: start;
+    gap: 8px 10px;
+  }
+  .header-side { display: contents; }
+  .brand { grid-column: 1; grid-row: 1; min-width: 0; }
+  .tools {
+    grid-column: 2;
+    grid-row: 1;
+    width: auto;
+    flex-wrap: nowrap;
+    justify-content: flex-end;
+    align-self: start;
+  }
+  .people { grid-column: 1 / -1; grid-row: 2; justify-items: start; }
+  #recorder { display: none; }
+  #updated, #due-left, #workspace-hint, .people-label, .member-name,
+  .theme-toggle span, #clips-toggle span { display: none; }
+  .theme-toggle, #clips-toggle {
+    width: 44px;
+    min-width: 44px;
+    height: 44px;
+    padding: 0;
+    justify-content: center;
+  }
+  .theme-toggle .logo svg, #clips-toggle .logo svg { width: 18px; height: 18px; }
+  .lang button { min-width: 44px; padding: 0 8px; }
   #cards { order: 1; margin-top: 4px; }
   #stack { order: 2; margin-top: 8px; }
   #attached { order: 3; }
@@ -592,12 +621,10 @@ li { padding: 8px 0; border-bottom: 1px solid var(--line); color: var(--muted); 
   #organizations { order: 7; }
   #plan { order: 8; }
   #intro, #privacy { display: none; }
-  .header-side, #recorder, .people { justify-items: start; text-align: left; max-width: none; }
-  #recorder { font-size: 12px; }
-  .brand { align-items: flex-start; }
+  .people { text-align: left; }
+  .brand { align-items: center; }
   .due-clock { font-size: 20px; }
   .logo svg { width: 32px; height: 32px; }
-  .tools { width: 100%; }
   .lang button, .theme-toggle, form button[type="submit"] { min-height: 44px; }
   input { font-size: 16px; }
   h1 { font-size: 22px; }

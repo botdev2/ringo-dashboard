@@ -417,6 +417,7 @@ function themeSwitch(parent) {
   const button = el('button')
   button.type = 'button'
   button.className = 'theme-toggle'
+  button.setAttribute('aria-label', t(next))
   button.append(svgEl(next === 'light' ? 'sun' : 'moon'), el('span', t(next)))
   button.addEventListener('click', () => setTheme(next))
   parent.append(button)
@@ -816,6 +817,7 @@ function renderClips() {
   const mark = svgEl('clip')
   mark.classList.add('tiny')
   toggle.replaceChildren(mark, el('span', t('clips')))
+  toggle.setAttribute('aria-label', t('clips'))
   toggle.setAttribute('aria-expanded', shell.classList.contains('clips-open') ? 'true' : 'false')
 }
 
@@ -902,7 +904,8 @@ function renderMembers() {
   list.setAttribute('aria-label', t('participants'))
   members.forEach((person, index) => {
     const item = el('li')
-    item.append(el('span', person.mark, `avatar tone-${index}`), el('span', person.name))
+    item.setAttribute('aria-label', person.name)
+    item.append(el('span', person.mark, `avatar tone-${index}`), el('span', person.name, 'member-name'))
     list.append(item)
   })
 }
