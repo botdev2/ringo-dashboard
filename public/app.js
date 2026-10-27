@@ -77,6 +77,7 @@ const copy = {
     kicker: 'Three databases, one picture',
     help: 'Enter the access code.',
     open: 'Open',
+    logout: 'Log out',
     badToken: 'That code was not accepted.',
     waiting: 'Waiting for the databases.',
     updated: 'Updated {when}',
@@ -191,6 +192,7 @@ const copy = {
     kicker: 'Kolme tietokantaa, yksi näkymä',
     help: 'Anna kojelaudan tunnus.',
     open: 'Avaa',
+    logout: 'Kirjaudu ulos',
     badToken: 'Tunnusta ei hyväksytty.',
     waiting: 'Odotetaan tietokantoja.',
     updated: 'Päivitetty {when}',
@@ -305,6 +307,8 @@ const copy = {
 let lang = localStorage.getItem('ringo_lang') === 'fi' ? 'fi' : 'en'
 let lastSummary = null
 let started = false
+let stream = null
+let refreshTimer = 0
 
 function t(key, vars) {
   const text = key.split('.').reduce((node, part) => (node ? node[part] : undefined), copy[lang]) || key
@@ -992,6 +996,7 @@ function applyStatic() {
   wordmark('#login-title')
   fill('#login-help', t('help'))
   fill('#login-submit', t('open'))
+  fill('#logout', t('logout'))
   wordmark('#title')
   fill('#due-label', t('dueLabel'))
   fill('#budget-label', t('budget'))
@@ -1330,11 +1335,30 @@ function render(summary) {
   renderFeed(rec.recent)
 }
 
+function showLogin() {
+  login.hidden = false
+  shell.hidden = true
+  closeClips()
+}
+
+async function logout() {
+  await fetch('/api/logout', { method: 'POST' })
+  if (stream) {
+    stream.close()
+    stream = null
+  }
+  if (refreshTimer) {
+    clearInterval(refreshTimer)
+    refreshTimer = 0
+  }
+  started = false
+  showLogin()
+}
+
 async function refresh() {
   const response = await fetch('/api/summary')
   if (response.status === 401) {
-    login.hidden = false
-    shell.hidden = true
+    showLogin()
     return
   }
   login.hidden = true
@@ -1342,12 +1366,12 @@ async function refresh() {
   render(await response.json())
   if (started) return
   started = true
-  const stream = new EventSource('/api/stream')
+  stream = new EventSource('/api/stream')
   stream.onmessage = (message) => {
     const payload = JSON.parse(message.data)
     if (payload.type === 'events') refresh()
   }
-  setInterval(refresh, 30000)
+  refreshTimer = setInterval(refresh, 30000)
 }
 
 login.addEventListener('submit', async (event) => {
@@ -1364,6 +1388,8 @@ login.addEventListener('submit', async (event) => {
   }
   refresh()
 })
+
+document.querySelector('#logout').addEventListener('click', logout)
 
 document.querySelector('#clips-toggle').addEventListener('click', () => {
   shell.classList.toggle('clips-open')

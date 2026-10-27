@@ -58,6 +58,14 @@ app.post('/api/login', (req, res) => {
   res.json({ ok: true })
 })
 
+app.post('/api/logout', (req, res) => {
+  res.setHeader(
+    'Set-Cookie',
+    `ringo_session=; HttpOnly; SameSite=Lax; Path=/; Max-Age=0${req.secure ? '; Secure' : ''}`,
+  )
+  res.json({ ok: true })
+})
+
 app.use('/api', (req, res, next) => {
   if (!authorized(req)) {
     res.status(401).json({ error: 'unauthorized' })
