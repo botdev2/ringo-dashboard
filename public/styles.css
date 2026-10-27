@@ -407,6 +407,15 @@ form button[type="submit"] {
 .node.middle, .node.clusters { background: transparent; }
 .node .role { margin: 0 0 4px; font-size: 12px; font-weight: 650; color: var(--faint); }
 .node .status { margin-top: 8px; }
+a.ext {
+  display: inline-block;
+  margin-top: 8px;
+  color: var(--text);
+  font-size: 14px;
+  font-weight: 600;
+  text-underline-offset: 3px;
+  overflow-wrap: anywhere;
+}
 .flow { display: flex; flex-direction: column; justify-content: center; gap: 16px; min-width: 0; }
 .lane { display: grid; grid-template-columns: 16px minmax(0, 1fr); column-gap: 8px; row-gap: 1px; margin: 0; align-items: center; }
 .lane .logo { grid-row: 1 / span 2; }

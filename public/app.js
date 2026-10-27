@@ -414,6 +414,18 @@ function svgEl(name) {
   return span
 }
 
+const frontendUrl = 'https://app.ringomarket.com/'
+
+function externalLink(href) {
+  const link = document.createElement('a')
+  link.className = 'ext'
+  link.href = href
+  link.target = '_blank'
+  link.rel = 'noopener noreferrer'
+  link.textContent = href
+  return link
+}
+
 function statusMark(kind, label) {
   const node = el('span', null, `status ${kind}`)
   const mark = svgEl(kind)
@@ -1192,7 +1204,7 @@ function renderStack(sources) {
   const grid = el('div', null, 'stack')
 
   const front = el('article', null, 'node frontend')
-  front.append(el('p', t('frontendRole'), 'role'), nodeHeading('frontend', t('frontendKind'), t('frontendTitle'), [{ icon: 'typescript', name: 'TypeScript' }, { icon: 'react', name: 'React' }]), el('p', t('frontendBody')), statusMark('later', t('later')))
+  front.append(el('p', t('frontendRole'), 'role'), nodeHeading('frontend', t('frontendKind'), t('frontendTitle'), [{ icon: 'typescript', name: 'TypeScript' }, { icon: 'react', name: 'React' }]), el('p', t('frontendBody')), externalLink(frontendUrl))
   const mid = el('article', null, 'node middle')
   mid.append(el('p', t('middleRole'), 'role'), nodeHeading('backend', t('middleKind'), t('middleTitle'), [{ icon: 'node', name: 'Node.js' }]), el('p', t('middleBody')), statusMark('later', t('later')))
   const clusters = el('article', null, 'node clusters')
@@ -1240,11 +1252,12 @@ function nodeHeading(icon, kind, desc, tech) {
   return title
 }
 
-function archBox(title, lines, tech) {
+function archBox(title, lines, tech, href) {
   const box = el('div', null, 'arch-box')
   box.append(el('strong', title))
   if (tech) box.append(techRow(tech))
   for (const line of lines) box.append(el('p', line))
+  if (href) box.append(externalLink(href))
   return box
 }
 
@@ -1268,7 +1281,7 @@ function architecture(sources) {
   row.append(
     archBox(t('archPeople'), [t('archPeopleBody')]),
     archLink(),
-    archBox('Frontend', [t('frontendTitle')], [{ icon: 'typescript', name: 'TypeScript' }, { icon: 'react', name: 'React' }]),
+    archBox('Frontend', [t('frontendTitle')], [{ icon: 'typescript', name: 'TypeScript' }, { icon: 'react', name: 'React' }], frontendUrl),
     archLink(),
     archBox(t('middleTitle'), [], [{ icon: 'node', name: 'Node.js' }]),
     archLink(),
