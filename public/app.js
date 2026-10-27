@@ -985,7 +985,6 @@ function applyStatic() {
   themeSwitch(document.querySelector('#login-theme'))
   themeSwitch(document.querySelector('#theme'))
   document.querySelector('#login-logo').replaceChildren(svgEl('ringo'))
-  document.querySelector('#logo').replaceChildren(svgEl('ringo'))
   renderPlan()
   renderWorkspace()
   renderClips()

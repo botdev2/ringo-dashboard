@@ -615,7 +615,7 @@ li { padding: 8px 0; border-bottom: 1px solid var(--line); color: var(--muted); 
   .people { grid-column: 1 / -1; grid-row: 2; justify-items: start; }
   #recorder { display: none; }
   #updated, #due-left, #workspace-hint, .people-label, .member-name,
-  .theme-toggle span, #clips-toggle span { display: none; }
+  .theme-toggle > span:not(.logo), #clips-toggle > span:not(.logo) { display: none; }
   .theme-toggle, #clips-toggle {
     width: 44px;
     min-width: 44px;
