@@ -100,6 +100,7 @@ const copy = {
     leads: 'Leads',
     calls: 'Calls',
     sales: 'Sales',
+    perSale: 'Calls per sale',
     unverified: '{name} (unverified)',
     latest: 'Latest call',
     none: 'none',
@@ -115,6 +116,8 @@ const copy = {
     noCallsYet: 'No calls yet',
     callUnit: 'calls',
     detail: '{leads} leads · {sales} sales',
+    saleRatio: '1 sale per {per} calls · {pct}%',
+    zeroSales: '0 sales in {calls} calls',
     postgres: 'Postgres {version}',
     active: 'active',
     suspended: 'suspended',
@@ -164,6 +167,7 @@ const copy = {
     leads: 'Liidit',
     calls: 'Puhelut',
     sales: 'Kaupat',
+    perSale: 'Puhelua / kauppa',
     unverified: '{name} (vahvistamaton)',
     latest: 'Viimeisin puhelu',
     none: 'ei yhtään',
@@ -179,6 +183,8 @@ const copy = {
     noCallsYet: 'Ei vielä puheluita',
     callUnit: 'puhelua',
     detail: '{leads} liidiä · {sales} kauppaa',
+    saleRatio: '1 kauppa / {per} puhelua · {pct} %',
+    zeroSales: '0 kauppaa / {calls} puhelua',
     postgres: 'Postgres {version}',
     active: 'aktiivinen',
     suspended: 'keskeytetty',
@@ -449,6 +455,23 @@ function bars(parent, rows, showField) {
   }
 }
 
+function callsPerSale(calls, sales) {
+  const dials = Number(calls) || 0
+  const deals = Number(sales) || 0
+  if (!dials || !deals) return null
+  return Math.round(dials / deals)
+}
+
+function saleRatioText(calls, sales) {
+  const dials = Number(calls) || 0
+  const deals = Number(sales) || 0
+  if (!dials) return ''
+  if (!deals) return t('zeroSales', { calls: dials.toLocaleString(locale()) })
+  const pct = (deals / dials) * 100
+  const shown = pct >= 1 ? pct.toFixed(1) : pct.toFixed(3)
+  return t('saleRatio', { per: callsPerSale(dials, deals).toLocaleString(locale()), pct: shown })
+}
+
 function statusWord(value) {
   if (value === 'active' || value === 'suspended') return t(value)
   return value || ''
@@ -458,11 +481,11 @@ function orgTable(rows, withStatus) {
   const table = document.createElement('table')
   const head = document.createElement('tr')
   const headings = withStatus
-    ? [t('organization'), t('status'), t('campaigns'), t('leads'), t('calls'), t('sales')]
-    : [t('seller'), t('campaigns'), t('leads'), t('calls'), t('sales')]
+    ? [t('organization'), t('status'), t('campaigns'), t('leads'), t('calls'), t('sales'), t('perSale')]
+    : [t('seller'), t('campaigns'), t('leads'), t('calls'), t('sales'), t('perSale')]
   headings.forEach((label, index) => {
     const cell = el('th', label)
-    if (index >= headings.length - 4) cell.className = 'num'
+    if (index >= headings.length - 5) cell.className = 'num'
     head.append(cell)
   })
   table.append(head)
@@ -474,6 +497,8 @@ function orgTable(rows, withStatus) {
     for (const key of ['campaigns', 'leads', 'calls', 'sales']) {
       line.append(el('td', Number(row[key] || 0).toLocaleString(locale()), 'num'))
     }
+    const per = callsPerSale(row.calls, row.sales)
+    line.append(el('td', per ? per.toLocaleString(locale()) : '—', 'num'))
     table.append(line)
   }
   return table
@@ -560,6 +585,8 @@ function render(summary) {
         leads: Number(source.leads).toLocaleString(locale()),
         sales: Number(source.sales).toLocaleString(locale()),
       })))
+      const ratio = saleRatioText(source.calls, source.sales)
+      if (ratio) card.append(el('p', ratio, 'ratio'))
       if (source.liveCampaigns != null) {
         card.append(el('p', Number(source.liveCampaigns) === 1 ? t('oneCampaign') : t('liveCampaigns', { n: source.liveCampaigns })))
       }

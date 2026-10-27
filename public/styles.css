@@ -201,6 +201,7 @@ article strong + span { display: block; margin-top: -2px; letter-spacing: 0.08em
 .quiet strong { color: #f0c27a; }
 .empty strong { color: #d5dec8; }
 .about { min-height: 4.2em; }
+.ratio { color: #e7ff8a; font-variant-numeric: tabular-nums; }
 .latest { margin-top: 10px; padding-top: 10px; border-top: 1px solid rgba(255, 255, 255, 0.06); }
 .latest b { color: #f4f7ee; font-weight: 650; }
 
