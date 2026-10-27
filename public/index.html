@@ -8,28 +8,38 @@
   </head>
   <body>
     <form id="login" hidden>
-      <h1>Ringo Dashboard</h1>
-      <p>Enter the dashboard token.</p>
+      <div class="lang" id="login-lang"></div>
+      <p class="eyebrow" id="login-kicker"></p>
+      <h1 id="login-title"></h1>
+      <p id="login-help"></p>
       <input name="token" type="password" autocomplete="current-password" required />
-      <button type="submit">Open</button>
+      <button type="submit" id="login-submit"></button>
       <p id="login-error"></p>
     </form>
     <main id="app" hidden>
       <header>
         <div>
-          <h1>Ringo Dashboard</h1>
-          <p id="updated">Waiting for the backends.</p>
+          <p class="eyebrow">Ringo</p>
+          <h1 id="title"></h1>
+          <p id="intro"></p>
+          <p id="privacy"></p>
+          <p id="updated"></p>
         </div>
-        <p id="recorder"></p>
+        <div class="header-side">
+          <div class="lang" id="lang"></div>
+          <p id="recorder"></p>
+        </div>
       </header>
+      <section id="stack"></section>
       <section id="cards"></section>
       <section class="split">
-        <div>
-          <h2>Calls, last 14 days</h2>
+        <div class="panel">
+          <h2 id="chart-title"></h2>
           <div id="chart"></div>
         </div>
-        <div>
-          <h2>Recorded since this process started</h2>
+        <div class="panel">
+          <h2 id="feed-title"></h2>
+          <p id="feed-help"></p>
           <ol id="feed"></ol>
         </div>
       </section>

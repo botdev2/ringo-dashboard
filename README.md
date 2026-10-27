@@ -6,6 +6,8 @@ Charts are queried from those databases. New calls, leads, and sales are recorde
 
 Phone numbers, personal names, emails, addresses, notes, and transcripts are not stored or shown. Seller organizations are listed by company name with their campaign, lead, call, and sale counts. Call centres and operator organizations are listed when a database has them.
 
+The page is in English or Finnish. The stack shows the Ringo frontend, the backend middleman, and the three database clusters. The frontend and backend links are placeholders until those connections are added.
+
 ## Run
 
 Set `RINGOMARKET_DATABASE_URL`, `SOITTAMO_DATABASE_URL`, and `STAGING_DATABASE_URL`. Optional `DASHBOARD_TOKEN` requires a login cookie. `POLL_MS` defaults to 10000. `DATA_DIR` is the SQLite directory.
