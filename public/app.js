@@ -84,7 +84,7 @@ const copy = {
     updated: 'Updated {when}',
     recording: 'Recording since {when}. {n} new items saved. Last check {poll}.',
     recorderError: 'Could not record: {error}',
-    stack: 'How the pieces fit',
+    stack: 'Technical Stack',
     participants: 'Participants',
     readyOn: 'Ready 31.10.2026',
     left: 'left',
@@ -123,7 +123,7 @@ const copy = {
     tabActivity: 'Activity',
     tabResults: 'Results',
     tabPeople: 'People',
-    tabPieces: 'Pieces',
+    tabPieces: 'Technical Stack',
     tabGoals: 'Goals',
     tabBooksHint: 'The three databases, and what the marks mean.',
     tabActivityHint: 'Calls over the last 14 days, and what arrived after this page was opened.',
@@ -189,7 +189,7 @@ const copy = {
     updated: 'Päivitetty {when}',
     recording: 'Tallennus alkoi {when}. {n} uutta merkintää. Viimeisin tarkistus {poll}.',
     recorderError: 'Tallennin: {error}',
-    stack: 'Miten osat liittyvät',
+    stack: 'Tekninen toteutus',
     participants: 'Osallistujat',
     readyOn: 'Valmis 31.10.2026',
     left: 'jäljellä',
@@ -228,7 +228,7 @@ const copy = {
     tabActivity: 'Toiminta',
     tabResults: 'Tulokset',
     tabPeople: 'Ihmiset',
-    tabPieces: 'Osat',
+    tabPieces: 'Tekninen toteutus',
     tabGoals: 'Tavoitteet',
     tabBooksHint: 'Kolme tietokantaa ja se, mitä merkit tarkoittavat.',
     tabActivityHint: 'Puhelut viimeiseltä 14 päivältä, ja se mikä on tullut tämän sivun avaamisen jälkeen.',
@@ -910,12 +910,12 @@ function renderMembers() {
 }
 
 const workspaceViews = [
-  { id: 'books', nodes: ['#cards', '#legend'] },
+  { id: 'pieces', nodes: ['#stack'] },
   { id: 'activity', nodes: ['.split'] },
   { id: 'results', nodes: ['#breakdowns'] },
   { id: 'people', nodes: ['#organizations'] },
-  { id: 'pieces', nodes: ['#stack'] },
   { id: 'goals', nodes: ['#plan'] },
+  { id: 'books', nodes: ['#cards', '#legend'] },
 ]
 
 let workspaceId = localStorage.getItem('ringo_workspace') || 'books'
