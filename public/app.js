@@ -593,7 +593,9 @@ function orgTable(rows, withStatus) {
     line.append(el('td', per ? per.toLocaleString(locale()) : '—', 'num'))
     table.append(line)
   }
-  return table
+  const wrap = el('div', null, 'table-scroll')
+  wrap.append(table)
+  return wrap
 }
 
 function renderStack(sources) {
