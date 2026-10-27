@@ -585,6 +585,57 @@ td:first-child { color: var(--text); }
 }
 .plan-lines .logo { color: var(--faint); flex: none; }
 .plan-lines .logo svg { width: 14px; height: 14px; margin-top: 3px; }
+.pacing { display: grid; gap: 14px; margin-top: 8px; }
+.pacing h3 { margin: 0; font-size: 16px; }
+.pacing .caption { margin: 4px 0 0; color: var(--faint); font-size: 14px; }
+.math-sheet, .def {
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 14px 16px;
+}
+.math-line {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 8px;
+  margin: 6px 0;
+  color: var(--text);
+  font-size: 32px;
+  line-height: 1.15;
+  font-variant-numeric: lining-nums;
+}
+.math-line .sym { font-style: italic; }
+.math-line .op, .math-line .fn, .math-line .when { font-style: normal; }
+.math-line .fn { font-size: 0.72em; }
+.math-line sub, .math-line sup { font-style: normal; font-size: 0.45em; }
+.math-line .when {
+  margin-left: auto;
+  color: var(--muted);
+  font-size: 15px;
+}
+.frac {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0 2px;
+  line-height: 1.05;
+  font-style: italic;
+}
+.frac .num { border-bottom: 1.5px solid currentColor; padding: 0 8px 3px; }
+.frac .den { padding: 3px 8px 0; }
+.pacing > .plain { margin: 0; color: var(--muted); }
+.defs { display: grid; gap: 10px; }
+.def h3 {
+  margin: 0 0 4px;
+  color: var(--faint);
+  font-size: 12px;
+  font-weight: 650;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.def .math-line { font-size: 24px; }
+.def p { margin: 8px 0 0; color: var(--muted); }
+.pacing .legend { margin: 0; color: var(--faint); font-size: 13px; line-height: 1.5; }
 .formulas { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 8px; }
 .formula {
   border-radius: 10px;
@@ -729,6 +780,9 @@ li { padding: 8px 0; border-bottom: 1px solid var(--line); color: var(--muted); 
   .bar > :nth-child(2) { grid-column: 1 / -1; grid-row: 2; margin-top: 4px; }
   .bar > :nth-child(3) { grid-column: 2; grid-row: 1; }
   .formula code { white-space: normal; overflow-wrap: anywhere; }
+  .math-line { font-size: 24px; }
+  .math-line .when { flex-basis: 100%; margin-left: 0; }
+  .def .math-line { font-size: 20px; }
   .table-scroll { overflow: visible; }
   .table-scroll th:first-child,
   .table-scroll td:first-child { position: static; background: transparent; }

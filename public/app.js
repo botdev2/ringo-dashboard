@@ -490,6 +490,18 @@ const plan = {
     ],
     lead: 'Predictive calling rings more lines than there are free callers. Most lines are not answered by a person. The extra lines are there so that, when a person does answer, a caller is already free. If the person answers and no caller is free, that call is left waiting. We call that an abandoned call.',
     where: 'Ringo Market DB keeps each round of calling: how many lines were tried, how many reached a person, how many were left with nobody free, how many extra lines were open, and the running share of abandoned answers against a limit. If that share gets too high, calling drops to one line per free caller until it cools. soittamo kept an older count: calls made, answers, people, machines, abandoned calls, and a short recent stretch of the same.',
+    pacingTitle: 'The pacing formula',
+    pacingCaption: 'How Ringo Market DB chooses the lines.',
+    pacingPlain: 'Lines to ring are the free callers times the extra lines, while the share of answered calls left waiting stays at or under the saved limit. Extra lines are one divided by how often a person answers, held between the lowest and the highest this round allows. How often a person answers is the calls joined to a caller plus the calls left waiting, divided by the lines tried. A machine, or a line nobody answered, stays in the lines tried and is not counted as a person. The share left waiting is the calls left waiting divided by every person who answered. Above the saved limit, ring one line per free caller.',
+    whenUnder: 'when S ≤ S*',
+    whenOver: 'when S > S*',
+    defAnswer: 'How often someone answers',
+    defAnswerPlain: 'Calls joined to a caller, plus calls left waiting, divided by lines tried.',
+    defExtra: 'Extra lines',
+    defExtraPlain: 'One divided by how often someone answers, kept between the lowest and the highest allowed for this round.',
+    defShare: 'Share left waiting',
+    defSharePlain: 'Calls left waiting, divided by every person who answered. The saved limit on a Ringo Market DB round is often 3%.',
+    legend: 'L lines to ring · N free callers · R extra lines · A how often someone answers · T lines tried · C calls joined to a caller · B calls left waiting · r min lowest allowed · r max highest allowed · S share left waiting · S* saved limit',
     formulas: [
       ['How often someone answers', '(people reached + calls left waiting) ÷ lines tried', 'The share of tries that reached a person. Lines nobody answered, and answering machines, stay in the count of tries. This is the share the Calling Facilitator uses.'],
       ['Extra lines', 'keep it between the lowest and highest allowed, around 1 ÷ how often someone answers', 'Lines to ring = free callers × extra lines. If one try in five reaches a person, about five lines are rung. The Calling Facilitator will not go under its lowest setting or over its highest.'],
@@ -530,6 +542,18 @@ const plan = {
     ],
     lead: 'Ennakoiva soitto soittaa useampia linjoja kuin vapaita soittajia on. Suurin osa linjoista ei päädy ihmiselle. Ylimääräiset linjat ovat sitä varten, että ihmisen vastatessa soittaja on jo vapaa. Jos ihminen vastaa eikä soittajaa ole vapaana, puhelu jää odottamaan. Sitä kutsutaan hylätyksi puheluksi.',
     where: 'Ringo Market DB pitää kirjaa jokaisesta soittojaksosta: montako linjaa yritettiin, montako tavoitti ihmisen, montako jäi ilman vapaata soittajaa, montako ylimääräistä linjaa oli auki, ja miten hylättyjen vastausten osuus liikkuu rajaa vasten. Jos osuus nousee liian korkeaksi, soitto pudotetaan yhteen linjaan vapaata soittajaa kohden, kunnes osuus jäähtyy. soittamo piti vanhempaa lukua: soitetut, vastaukset, ihmiset, koneet, hylätyt puhelut ja lyhyt tuore jakso samoista.',
+    pacingTitle: 'Tahdistuksen kaava',
+    pacingCaption: 'Näin Ringo Market DB valitsee linjat.',
+    pacingPlain: 'Soitettavat linjat ovat vapaat soittajat kerrottuna ylimääräisillä linjoilla, niin kauan kuin odottamaan jääneiden osuus vastanneista pysyy tallennetussa rajassa tai sen alla. Ylimääräiset linjat ovat yksi jaettuna sillä, kuinka usein ihminen vastaa, ja ne pysyvät tämän soittojakson alimman ja ylimmän sallitun välissä. Kuinka usein ihminen vastaa saadaan, kun soittajalle kytketyt ja odottamaan jääneet lasketaan yhteen ja jaetaan yritetyillä linjoilla. Kone tai linja, johon kukaan ei vastannut, jää yritettyjen joukkoon eikä sitä lasketa ihmiseksi. Odottamaan jääneiden osuus on odottamaan jääneet jaettuna kaikilla vastanneilla. Kun osuus nousee yli tallennetun rajan, soi vain yksi linja vapaata soittajaa kohden.',
+    whenUnder: 'kun S ≤ S*',
+    whenOver: 'kun S > S*',
+    defAnswer: 'Kuinka usein joku vastaa',
+    defAnswerPlain: 'Soittajalle kytketyt plus odottamaan jääneet, jaettuna yritetyillä linjoilla.',
+    defExtra: 'Ylimääräiset linjat',
+    defExtraPlain: 'Yksi jaettuna sillä, kuinka usein joku vastaa, tämän jakson alimman ja ylimmän sallitun välissä.',
+    defShare: 'Odottamaan jääneiden osuus',
+    defSharePlain: 'Odottamaan jääneet jaettuna kaikilla vastanneilla. Ringo Market DB:n tallennettu raja on usein 3 %.',
+    legend: 'L soitetavat linjat · N vapaat soittajat · R ylimääräiset linjat · A kuinka usein joku vastaa · T yritetyt linjat · C soittajalle kytketyt · B odottamaan jääneet · r min alin sallittu · r max ylin sallittu · S odottamaan jääneiden osuus · S* tallennettu raja',
     formulas: [
       ['Kuinka usein joku vastaa', '(tavoitetut ihmiset + odottamaan jääneet) ÷ yritetyt linjat', 'Osuus yrityksistä, jotka tavoittivat ihmisen. Linjat, joihin kukaan ei vastannut, ja puhelinvastaajat jäävät yritysten joukkoon. Tätä osuutta soitonvälittäjä käyttää.'],
       ['Ylimääräiset linjat', 'pysy alimman ja ylimmän sallitun välissä, noin 1 ÷ kuinka usein joku vastaa', 'Soitot = vapaat soittajat × ylimääräiset linjat. Jos joka viides yritys tavoittaa ihmisen, linjoja soitetaan noin viisi. Soitonvälittäjä ei laske alle alimman eikä nouse yli ylimmän asetuksen.'],
@@ -561,13 +585,81 @@ let planFreezeAt = 0
 let planPausedFor = 0
 const planMs = 120000
 
+function frac(top, bottom) {
+  const node = el('span', null, 'frac')
+  node.append(el('span', top, 'num'), el('span', bottom, 'den'))
+  return node
+}
+
+function variable(name, subLabel, star) {
+  const node = el('span', null, 'sym')
+  node.append(document.createTextNode(name))
+  if (subLabel) {
+    const sub = document.createElement('sub')
+    sub.textContent = subLabel
+    node.append(sub)
+  }
+  if (star) {
+    const sup = document.createElement('sup')
+    sup.textContent = '*'
+    node.append(sup)
+  }
+  return node
+}
+
+function mathLine(parts, condition) {
+  const line = el('div', null, 'math-line')
+  for (const part of parts) line.append(part instanceof Node ? part : el('span', part, 'op'))
+  if (condition) line.append(el('span', condition, 'when'))
+  return line
+}
+
+function clampOfAnswer() {
+  const node = el('span', null, 'clamp')
+  node.append(
+    el('span', 'clamp', 'fn'),
+    el('span', '(', 'op'),
+    frac('1', 'A'),
+    el('span', ', ', 'op'),
+    variable('r', 'min'),
+    el('span', ', ', 'op'),
+    variable('r', 'max'),
+    el('span', ')', 'op'),
+  )
+  return node
+}
+
+function renderPacing(parent, text) {
+  const box = el('section', null, 'pacing')
+  box.append(el('h3', text.pacingTitle), el('p', text.pacingCaption, 'caption'))
+  const sheet = el('div', null, 'math-sheet')
+  sheet.append(
+    mathLine([variable('L'), ' = ', variable('N'), ' × ', variable('R')], text.whenUnder),
+    mathLine([variable('L'), ' = ', variable('N')], text.whenOver),
+  )
+  box.append(sheet, el('p', text.pacingPlain, 'plain'))
+  const defs = el('div', null, 'defs')
+  const parts = [
+    [text.defAnswer, () => mathLine([variable('A'), ' = ', frac('C + B', 'T')]), text.defAnswerPlain],
+    [text.defExtra, () => mathLine([variable('R'), ' = ', clampOfAnswer()]), text.defExtraPlain],
+    [text.defShare, () => mathLine([variable('S'), ' = ', frac('B', 'B + C')]), text.defSharePlain],
+  ]
+  for (const [title, line, plain] of parts) {
+    const card = el('article', null, 'def')
+    card.append(el('h3', title), line(), el('p', plain))
+    defs.append(card)
+  }
+  box.append(defs, el('p', text.legend, 'legend'))
+  parent.append(box)
+}
+
 function planGoals(text) {
   return [
     {
       state: 'due',
       name: text.predictive,
-      paragraphs: [text.lead, text.where],
-      formulas: text.formulas,
+      paragraphs: [text.lead],
+      pacing: true,
     },
   ]
 }
@@ -665,18 +757,7 @@ function renderPlan() {
     head.append(el('h2', goal.name), statusMark(goal.state, text.states[goal.state]))
     panel.append(head)
     for (const paragraph of goal.paragraphs || []) panel.append(el('p', paragraph))
-    if (goal.formulas) {
-      const formulas = el('div', null, 'formulas')
-      for (const [name, formula, note] of goal.formulas) {
-        const card = el('article', null, 'formula')
-        card.append(el('h3', name))
-        const code = document.createElement('code')
-        code.textContent = formula
-        card.append(code, el('p', note))
-        formulas.append(card)
-      }
-      panel.append(formulas)
-    }
+    if (goal.pacing) renderPacing(panel, text)
     if (goal.lines) {
       const list = el('ul', null, 'plan-lines')
       for (const line of goal.lines) {
