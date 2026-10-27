@@ -78,6 +78,7 @@ const copy = {
     liveRule: 'A call in the last 6 hours.',
     quietRule: 'Calls exist, and the latest is more than 6 hours old.',
     emptyRule: 'No calls in this database.',
+    retiredRule: 'No longer dialed. The rows stay here to read.',
     frontendRole: 'App',
     frontendTitle: 'Ringo Market',
     frontendBody: 'Where callers and sellers work.',
@@ -86,7 +87,7 @@ const copy = {
     middleBody: 'Paces the lines between the app and the three books.',
     clusterRole: 'Data',
     clusterTitle: 'Database clusters',
-    clusterBody: 'RIngomarket stores each pacing run. soittamo stores the older per-caller session. Staging matches RIngomarket and has no calls yet.',
+    clusterBody: 'RIngomarket stores each pacing run. soittamo is retired and keeps the older per-caller session. Staging matches RIngomarket and has no calls yet.',
     flowToApp: 'To the backend',
     flowFromApp: 'Back to the app',
     flowToData: 'Written',
@@ -124,6 +125,7 @@ const copy = {
     live: 'Live',
     quiet: 'Quiet',
     empty: 'Empty',
+    retired: 'Retired',
     liveCampaigns: '{n} campaigns live now',
     oneCampaign: '1 campaign live now',
     noCallsYet: 'No calls yet',
@@ -138,7 +140,7 @@ const copy = {
     suspended: 'suspended',
     about: {
       ringomarket: 'Production book. This is the one being written now: campaigns, leads, calls, and sales across the live markets.',
-      soittamo: 'Earlier Finnish dialer. Calls stopped on 24 Aug 2026. Leads, sales, and sellers are still stored here.',
+      soittamo: 'Retired database. Calls stopped on 24 Aug 2026. Leads, sales, and sellers are still stored here.',
       staging: 'Telegram Ops staging. Same shape as RIngomarket, with almost no business data of its own.',
     },
   },
@@ -160,6 +162,7 @@ const copy = {
     liveRule: 'Puhelu viimeisen 6 tunnin aikana.',
     quietRule: 'Puheluita on, ja viimeisin on yli 6 tuntia vanha.',
     emptyRule: 'Tässä tietokannassa ei ole puheluita.',
+    retiredRule: 'Soitot on lopetettu. Rivit ovat yhä luettavissa.',
     frontendRole: 'Sovellus',
     frontendTitle: 'Ringo Market',
     frontendBody: 'Täällä soittajat ja myyjät työskentelevät.',
@@ -168,7 +171,7 @@ const copy = {
     middleBody: 'Tahdistaa linjat sovelluksen ja kolmen kirjan välissä.',
     clusterRole: 'Data',
     clusterTitle: 'Tietokantaklusterit',
-    clusterBody: 'RIngomarket tallentaa tahdistusjakson. soittamo tallentaa vanhemman soittajakohtaisen istunnon. Staging on saman muotoinen kuin RIngomarket, eikä siinä ole vielä puheluita.',
+    clusterBody: 'RIngomarket tallentaa tahdistusjakson. soittamo on poistettu käytöstä ja säilyttää vanhemman soittajakohtaisen istunnon. Staging on saman muotoinen kuin RIngomarket, eikä siinä ole vielä puheluita.',
     flowToApp: 'Taustapalveluun',
     flowFromApp: 'Takaisin sovellukseen',
     flowToData: 'Kirjoitetaan',
@@ -206,6 +209,7 @@ const copy = {
     live: 'Käynnissä',
     quiet: 'Hiljainen',
     empty: 'Tyhjä',
+    retired: 'Poistettu käytöstä',
     liveCampaigns: '{n} kampanjaa käynnissä',
     oneCampaign: '1 kampanja käynnissä',
     noCallsYet: 'Ei vielä puheluita',
@@ -220,7 +224,7 @@ const copy = {
     suspended: 'keskeytetty',
     about: {
       ringomarket: 'Tuotantokanta. Tätä kirjoitetaan nyt: kampanjat, liidit, puhelut ja kaupat elävillä markkinoilla.',
-      soittamo: 'Aiempi suomalainen soitin. Puhelut päättyivät 24.8.2026. Liidit, kaupat ja myyjät ovat yhä tallessa.',
+      soittamo: 'Poistettu käytöstä. Puhelut päättyivät 24.8.2026. Liidit, kaupat ja myyjät ovat yhä tallessa.',
       staging: 'Telegram-opsin staging. Sama rakenne kuin RIngomarketilla, lähes ilman omaa liiketoimintadataa.',
     },
   },
@@ -268,6 +272,11 @@ function tone(source) {
   return 'live'
 }
 
+function sourceTone(key, source) {
+  if (key === 'soittamo') return 'retired'
+  return source.ok ? tone(source) : 'empty'
+}
+
 function wordmark(id) {
   const node = document.querySelector(id)
   node.classList.add('wordmark')
@@ -280,7 +289,7 @@ function renderLegend() {
   root.replaceChildren()
   root.append(el('h2', t('statusLegend')))
   const row = el('div', null, 'legend-row')
-  for (const key of ['live', 'quiet', 'empty']) {
+  for (const key of ['live', 'quiet', 'empty', 'retired']) {
     const item = el('p', null, 'legend-item')
     item.append(statusMark(key, t(key)), el('span', t(`${key}Rule`)))
     row.append(item)
@@ -310,6 +319,7 @@ const marks = {
   next: '<svg viewBox="0 0 16 16"><circle cx="8" cy="8" r="6.2" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M5.4 8h5M8.4 5.7 10.7 8 8.4 10.3" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>',
   wait: '<svg viewBox="0 0 16 16"><circle cx="8" cy="8" r="6.2" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M8 4.7V8l2.1 1.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>',
   later: '<svg viewBox="0 0 16 16"><circle cx="8" cy="8" r="6.2" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M5.5 8h5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>',
+  retired: '<svg viewBox="0 0 16 16"><rect x="2.4" y="3" width="11.2" height="2.6" rx="0.6" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M3.6 5.6v6.2h8.8V5.6M6.5 8.2h3" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>',
   due: '<svg viewBox="0 0 16 16"><rect x="2.2" y="3.2" width="11.6" height="10.6" rx="1.6" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M2.2 6.4h11.6M5.2 2.2v2.2M10.8 2.2v2.2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>',
   track: '<svg viewBox="0 0 16 16"><circle cx="3.2" cy="8" r="1.5" fill="currentColor"/><path d="M6.2 8h7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>',
   arrow: '<svg viewBox="0 0 16 16"><path d="M2 8h11M9.2 4.6 13 8 9.2 11.4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>',
@@ -671,7 +681,7 @@ function renderStack(sources) {
     const mark = svgEl(key)
     mark.classList.add('tiny')
     name.append(mark, el('span', labels[key] || key))
-    const toneKey = source.ok ? tone(source) : 'empty'
+    const toneKey = sourceTone(key, source)
     const state = statusMark(toneKey, t(toneKey))
     item.append(name, state)
     list.append(item)
@@ -736,7 +746,7 @@ function render(summary) {
   const cards = document.querySelector('#cards')
   cards.replaceChildren()
   for (const [key, source] of Object.entries(summary.sources)) {
-    const state = source.ok ? tone(source) : 'empty'
+    const state = sourceTone(key, source)
     const card = el('article', null, `${state} source-${key}`)
     const meta = el('div', null, 'meta')
     meta.append(statusMark(state, t(state)))

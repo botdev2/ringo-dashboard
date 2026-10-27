@@ -185,7 +185,7 @@ form button[type="submit"] {
 
 #legend { margin: 22px 0 0; }
 #legend h2 { margin-bottom: 8px; }
-.legend-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.legend-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
 .legend-item { display: flex; gap: 8px; align-items: baseline; margin: 0; }
 .legend-item span:last-child { color: var(--muted); font-size: 13px; }
 #cards, #breakdowns { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 18px 0; }
@@ -215,7 +215,7 @@ form button[type="submit"] {
 .status .logo svg { width: 16px; height: 16px; }
 .status.live, .status.done { color: var(--ok); }
 .status.quiet, .status.next, .status.wait { color: var(--amber-text); }
-.status.empty, .status.later { color: var(--faint); }
+.status.empty, .status.later, .status.retired { color: var(--faint); }
 .status.due { color: var(--text); }
 .due-line { margin: -2px 0 10px; font-size: 14px; }
 
