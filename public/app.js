@@ -2,6 +2,13 @@ const login = document.querySelector('#login')
 const shell = document.querySelector('#shell')
 
 // Drop each mp4 in public/clips and add it here. id stays stable so an attachment survives a reload.
+const members = [
+  { name: 'Aleksi', mark: 'AL' },
+  { name: 'Aaron', mark: 'AA' },
+  { name: 'Wahid', mark: 'WA' },
+]
+const dueAt = new Date('2026-10-31T23:59:59+02:00').getTime()
+
 const clips = [
   // { id: 'welcome', title: 'Welcome', file: 'welcome.mp4' },
 ]
@@ -78,7 +85,10 @@ const copy = {
     recording: 'Recording since {when}. {n} new items saved. Last check {poll}.',
     recorderError: 'Could not record: {error}',
     stack: 'How the pieces fit',
-    creator: 'Created by Sauli',
+    participants: 'Participants',
+    readyOn: 'Ready 31.10.2026',
+    left: 'left',
+    dueNow: 'deadline passed',
     statusLegend: 'What the marks mean',
     liveRule: 'A call in the last 6 hours.',
     quietRule: 'Calls exist, and the latest is more than 6 hours old.',
@@ -167,7 +177,10 @@ const copy = {
     recording: 'Tallennus alkoi {when}. {n} uutta merkintää. Viimeisin tarkistus {poll}.',
     recorderError: 'Tallennin: {error}',
     stack: 'Miten osat liittyvät',
-    creator: 'Kojelaudan luonut Sauli',
+    participants: 'Osallistujat',
+    readyOn: 'Valmis 31.10.2026',
+    left: 'jäljellä',
+    dueNow: 'määräaika mennyt',
     statusLegend: 'Merkkien kriteerit',
     liveRule: 'Puhelu viimeisen 6 tunnin aikana.',
     quietRule: 'Puheluita on, ja viimeisin on yli 6 tuntia vanha.',
@@ -610,6 +623,7 @@ function renderClips() {
   const aside = document.querySelector('#clips')
   aside.replaceChildren()
   aside.setAttribute('aria-label', t('clips'))
+  aside.append(el('p', 'Ringo Market', 'workspace'))
   const head = el('div', null, 'clips-head')
   head.append(el('h2', t('clips')))
   const close = el('button', null, 'ghost clips-close')
@@ -695,6 +709,47 @@ function attachmentCard(clip) {
   return card
 }
 
+function pad(n) {
+  return String(n).padStart(2, '0')
+}
+
+function paintDue() {
+  const clock = document.querySelector('#due-clock')
+  const left = document.querySelector('#due-left')
+  const when = document.querySelector('#due-when')
+  if (!clock || !left || !when) return
+  when.textContent = t('readyOn')
+  const ms = dueAt - Date.now()
+  if (ms <= 0) {
+    clock.textContent = lang === 'fi' ? '00 pv 00:00:00' : '00d 00:00:00'
+    left.textContent = t('dueNow')
+    return
+  }
+  const total = Math.floor(ms / 1000)
+  const days = Math.floor(total / 86400)
+  const hours = Math.floor(total / 3600) % 24
+  const minutes = Math.floor(total / 60) % 60
+  const seconds = total % 60
+  clock.textContent = lang === 'fi'
+    ? `${pad(days)} pv ${pad(hours)}:${pad(minutes)}:${pad(seconds)}`
+    : `${pad(days)}d ${pad(hours)}:${pad(minutes)}:${pad(seconds)}`
+  left.textContent = t('left')
+}
+
+function renderMembers() {
+  const list = document.querySelector('#members')
+  const label = document.querySelector('#people-label')
+  if (!list || !label) return
+  label.textContent = t('participants')
+  list.replaceChildren()
+  list.setAttribute('aria-label', t('participants'))
+  members.forEach((person, index) => {
+    const item = el('li')
+    item.append(el('span', person.mark, `avatar tone-${index}`), el('span', person.name))
+    list.append(item)
+  })
+}
+
 function applyStatic() {
   document.documentElement.lang = lang === 'fi' ? 'fi' : 'en'
   document.title = 'Ringo Market'
@@ -703,7 +758,8 @@ function applyStatic() {
   fill('#login-help', t('help'))
   fill('#login-submit', t('open'))
   wordmark('#title')
-  fill('#creator', t('creator'))
+  paintDue()
+  renderMembers()
   renderLegend()
   fill('#intro', t('intro'))
   fill('#privacy', t('privacy'))
@@ -1026,4 +1082,5 @@ document.addEventListener('keydown', (event) => {
 })
 
 applyStatic()
+setInterval(paintDue, 1000)
 refresh()
