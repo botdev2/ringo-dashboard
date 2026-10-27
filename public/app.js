@@ -89,11 +89,9 @@ const copy = {
     readyOn: 'Ready 31.10.2026',
     left: 'left',
     dueNow: 'deadline passed',
-    statusLegend: 'What the marks mean',
     liveRule: 'A call in the last 6 hours.',
     quietRule: 'Calls exist, and the latest is more than 6 hours old.',
     emptyRule: 'No calls in this book.',
-    retiredRule: 'Calling has stopped. The old calls, leads, and sales stay here to read.',
     frontendRole: 'What people open',
     frontendTitle: 'Ringo Market',
     frontendBody: 'Where callers and sellers work.',
@@ -193,11 +191,9 @@ const copy = {
     readyOn: 'Valmis 31.10.2026',
     left: 'jäljellä',
     dueNow: 'määräaika mennyt',
-    statusLegend: 'Merkkien kriteerit',
     liveRule: 'Puhelu viimeisen 6 tunnin aikana.',
     quietRule: 'Puheluita on, ja viimeisin on yli 6 tuntia vanha.',
     emptyRule: 'Tässä kirjassa ei ole puheluita.',
-    retiredRule: 'Soitot on lopetettu. Vanhat puhelut, liidit ja kaupat ovat yhä luettavissa.',
     frontendRole: 'Mitä ihmiset avaavat',
     frontendTitle: 'Ringo Market',
     frontendBody: 'Täällä soittajat ja myyjät työskentelevät.',
@@ -339,11 +335,10 @@ function renderLegend() {
   const root = document.querySelector('#legend')
   if (!root) return
   root.replaceChildren()
-  root.append(el('h2', t('statusLegend')))
   const row = el('div', null, 'legend-row')
-  for (const key of ['live', 'quiet', 'empty', 'retired']) {
-    const item = el('p', null, 'legend-item')
-    item.append(statusMark(key, t(key)), el('span', t(`${key}Rule`)))
+  for (const key of ['live', 'quiet', 'empty']) {
+    const item = el('div', null, 'legend-item')
+    item.append(statusMark(key, t(key)), el('p', t(`${key}Rule`), 'legend-rule'))
     row.append(item)
   }
   root.append(row)
