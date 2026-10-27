@@ -1103,9 +1103,7 @@ function renderStack(sources) {
   for (const [key, source] of Object.entries(sources)) {
     const item = document.createElement('li')
     const name = el('span', null, 'named')
-    const mark = svgEl(key)
-    mark.classList.add('tiny')
-    name.append(mark, el('span', labels[key] || key))
+    name.append(el('span', labels[key] || key))
     const toneKey = sourceTone(key, source)
     const state = statusMark(toneKey, t(toneKey))
     item.append(name, state)
@@ -1184,7 +1182,7 @@ function render(summary) {
     const meta = el('div', null, 'meta')
     meta.append(statusMark(state, t(state)))
     const heading = el('div', null, 'named')
-    heading.append(svgEl(key), el('h2', labels[key] || key))
+    heading.append(el('h2', labels[key] || key))
     card.append(meta, heading)
     if (!source.ok) {
       card.append(el('p', source.error || t('waiting')))
