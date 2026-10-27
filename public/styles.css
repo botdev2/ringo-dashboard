@@ -94,7 +94,17 @@ body::before {
   background: var(--card);
 }
 #clips-backdrop { display: none; }
-#clips-toggle { display: none; }
+#clips-toggle {
+  display: none;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  border-radius: 0;
+  padding: 8px;
+  color: var(--text);
+  line-height: 0;
+}
+#clips-toggle .logo svg { width: 22px; height: 22px; }
 .clips-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 12px; }
 .clips-head h2 { margin: 0; font-size: 16px; }
 .clips-close { display: none; }
@@ -730,14 +740,28 @@ li { padding: 8px 0; border-bottom: 1px solid var(--line); color: var(--muted); 
   #recorder { display: none; }
   #updated, #workspace-hint, .people-label, .member-name,
   .theme-toggle > span:not(.logo), #clips-toggle > span:not(.logo) { display: none; }
-  .theme-toggle, #clips-toggle {
+  .theme-toggle {
     width: 44px;
     min-width: 44px;
     height: 44px;
     padding: 0;
     justify-content: center;
   }
-  .theme-toggle .logo svg, #clips-toggle .logo svg { width: 18px; height: 18px; }
+  #clips-toggle {
+    display: inline-flex;
+    width: auto;
+    min-width: 0;
+    height: auto;
+    min-height: 0;
+    padding: 8px;
+    border: 0;
+    background: transparent;
+    border-radius: 0;
+    align-items: center;
+    justify-content: center;
+  }
+  .theme-toggle .logo svg { width: 18px; height: 18px; }
+  #clips-toggle .logo svg { width: 22px; height: 22px; }
   .lang button { min-width: 44px; padding: 0 8px; }
   #logout { min-height: 44px; padding: 0 12px; white-space: nowrap; }
   #cards { order: 1; margin-top: 4px; }

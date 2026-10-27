@@ -402,7 +402,7 @@ const marks = {
   due: '<svg viewBox="0 0 16 16"><rect x="2.2" y="3.2" width="11.6" height="10.6" rx="1.6" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M2.2 6.4h11.6M5.2 2.2v2.2M10.8 2.2v2.2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>',
   track: '<svg viewBox="0 0 16 16"><circle cx="3.2" cy="8" r="1.5" fill="currentColor"/><path d="M6.2 8h7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>',
   arrow: '<svg viewBox="0 0 16 16"><path d="M2 8h11M9.2 4.6 13 8 9.2 11.4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>',
-  clip: '<svg viewBox="0 0 16 16"><rect x="2" y="3.2" width="12" height="9.6" rx="1.6" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M6.8 6.1v3.8L10.6 8z" fill="currentColor"/></svg>',
+  clip: '<svg viewBox="0 0 16 16"><path d="M5.5 3.4v9.2L13 8z" fill="currentColor"/></svg>',
   attach: '<svg viewBox="0 0 16 16"><path d="M6.4 8.7 10.2 4.9a2 2 0 0 1 2.8 2.8L7.8 12.9a3.1 3.1 0 0 1-4.4-4.4l4.9-4.9" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>',
   close: '<svg viewBox="0 0 16 16"><path d="M4.6 4.6 11.4 11.4M11.4 4.6 4.6 11.4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>',
 }
