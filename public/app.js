@@ -85,8 +85,15 @@ const copy = {
     stack: 'Technical Stack',
     participants: 'Participants',
     readyOn: 'Ready 31.10.2026',
+    dueLabel: 'Time to completion',
     left: 'left',
     dueNow: 'deadline passed',
+    budget: 'Budget',
+    budgetAmount: 'Unknown',
+    budgetUsed: 'Share used',
+    budgetUsedValue: 'Unknown',
+    budgetSpan: 'Duration',
+    budgetSpanValue: 'Unknown',
     liveRule: 'A call in the last 6 hours.',
     quietRule: 'Calls exist, and the latest is more than 6 hours old.',
     emptyRule: 'No calls in this database.',
@@ -192,8 +199,15 @@ const copy = {
     stack: 'Tekninen toteutus',
     participants: 'Osallistujat',
     readyOn: 'Valmis 31.10.2026',
+    dueLabel: 'Aika valmistumiseen',
     left: 'jäljellä',
     dueNow: 'määräaika mennyt',
+    budget: 'Budjetti',
+    budgetAmount: 'Ei tiedossa',
+    budgetUsed: 'Käytetty osuus',
+    budgetUsedValue: 'Ei tiedossa',
+    budgetSpan: 'Kesto',
+    budgetSpanValue: 'Ei tiedossa',
     liveRule: 'Puhelu viimeisen 6 tunnin aikana.',
     quietRule: 'Puheluita on, ja viimeisin on yli 6 tuntia vanha.',
     emptyRule: 'Tässä tietokannassa ei ole puheluita.',
@@ -979,6 +993,13 @@ function applyStatic() {
   fill('#login-help', t('help'))
   fill('#login-submit', t('open'))
   wordmark('#title')
+  fill('#due-label', t('dueLabel'))
+  fill('#budget-label', t('budget'))
+  fill('#budget-amount', t('budgetAmount'))
+  fill('#budget-used-label', t('budgetUsed'))
+  fill('#budget-used', t('budgetUsedValue'))
+  fill('#budget-span-label', t('budgetSpan'))
+  fill('#budget-span', t('budgetSpanValue'))
   paintDue()
   renderMembers()
   renderLegend()
