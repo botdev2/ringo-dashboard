@@ -73,6 +73,11 @@ const copy = {
     recording: 'Recording since {when}. {n} new rows saved. Last poll {poll}.',
     recorderError: 'Recorder: {error}',
     stack: 'Stack',
+    creator: 'Created by Sauli',
+    statusLegend: 'What the marks mean',
+    liveRule: 'A call in the last 6 hours.',
+    quietRule: 'Calls exist, and the latest is more than 6 hours old.',
+    emptyRule: 'No calls in this database.',
     frontendRole: 'App',
     frontendTitle: 'Ringo Market',
     frontendBody: 'The app people open. Calls, campaigns, and sellers start here.',
@@ -141,7 +146,12 @@ const copy = {
     updated: 'Päivitetty {when}',
     recording: 'Tallennus alkoi {when}. {n} uutta riviä. Viimeisin tarkistus {poll}.',
     recorderError: 'Tallennin: {error}',
-    stack: 'Pino',
+    stack: 'Stack',
+    creator: 'Kojelaudan luonut Sauli',
+    statusLegend: 'Merkkien kriteerit',
+    liveRule: 'Puhelu viimeisen 6 tunnin aikana.',
+    quietRule: 'Puheluita on, ja viimeisin on yli 6 tuntia vanha.',
+    emptyRule: 'Tässä tietokannassa ei ole puheluita.',
     frontendRole: 'Sovellus',
     frontendTitle: 'Ringo Market',
     frontendBody: 'Sovellus, jonka ihmiset avaavat. Puhelut, kampanjat ja myyjät alkavat täältä.',
@@ -246,6 +256,20 @@ function wordmark(id) {
   const node = document.querySelector(id)
   node.classList.add('wordmark')
   node.replaceChildren(document.createTextNode('Ringo '), el('span', 'Market'))
+}
+
+function renderLegend() {
+  const root = document.querySelector('#legend')
+  if (!root) return
+  root.replaceChildren()
+  root.append(el('h2', t('statusLegend')))
+  const row = el('div', null, 'legend-row')
+  for (const key of ['live', 'quiet', 'empty']) {
+    const item = el('p', null, 'legend-item')
+    item.append(el('span', t(key), `pill ${key}`), el('span', t(`${key}Rule`)))
+    row.append(item)
+  }
+  root.append(row)
 }
 
 function fill(id, text) {
@@ -366,12 +390,12 @@ const plan = {
       ['done', 'Näytä RIngomarket, soittamo ja Staging yhdessä, ja jokaisen viimeisin puhelu.'],
       ['done', 'Nimeä myyjä, puhelukeskus ja operaattori puheluiden, liidien ja kauppojen takana.'],
       ['done', 'Tallenna uudet rivit sitä mukaa kun ne syntyvät, ilman puhelinnumeroita ja henkilötietoja.'],
-      ['wait', 'Yhdistä Ringo Market ja taustapalvelu. Pino on piirretty. Linkit tulevat, kun osoitteet annetaan.'],
+      ['wait', 'Yhdistä Ringo Market ja taustapalvelu. Stack on piirretty. Linkit tulevat, kun osoitteet annetaan.'],
       ['next', 'Näytä ennakoiva soitto: ylisoitto, hylkäysaste tavoitteeseen nähden ja yhden linjan katkaisija.'],
     ],
     steps: [
       ['done', 'Kuva', 'Kolme kirjaa, myyjät, 14 päivän tulokset ja live-syöte.'],
-      ['next', 'Pinon yhteydet', 'Ringo Market vasemmalle, taustapalvelu keskelle ja tietokantaklusterit oikealle.'],
+      ['next', 'Stack', 'Ringo Market vasemmalle, taustapalvelu keskelle ja tietokantaklusterit oikealle.'],
       ['next', 'Ennakoiva soitto', 'Luetaan RIngomarketin dialer-istunnot ja soittamon vanhemmat predictive-istunnot.'],
       ['later', 'Seuranta', 'Vastausaste, koneet, kytkennän odotus, myyjän konversio ja soittajan joutenolo.'],
     ],
@@ -467,6 +491,8 @@ function applyStatic() {
   fill('#login-help', t('help'))
   fill('#login-submit', t('open'))
   wordmark('#title')
+  fill('#creator', t('creator'))
+  renderLegend()
   fill('#intro', t('intro'))
   fill('#privacy', t('privacy'))
   fill('#chart-title', t('chart'))
