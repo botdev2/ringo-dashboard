@@ -581,16 +581,21 @@ function orgTable(rows, withStatus) {
     head.append(cell)
   })
   table.append(head)
+  const labels = headings.slice(1)
   for (const row of rows) {
     const line = document.createElement('tr')
     const name = row.verified === false ? t('unverified', { name: row.name }) : row.name
-    line.append(el('td', name))
-    if (withStatus) line.append(el('td', statusWord(row.status)))
-    for (const key of ['campaigns', 'leads', 'calls', 'sales']) {
-      line.append(el('td', Number(row[key] || 0).toLocaleString(locale()), 'num'))
-    }
+    const values = []
+    if (withStatus) values.push(statusWord(row.status))
+    for (const key of ['campaigns', 'leads', 'calls', 'sales']) values.push(Number(row[key] || 0).toLocaleString(locale()))
     const per = callsPerSale(row.calls, row.sales)
-    line.append(el('td', per ? per.toLocaleString(locale()) : '—', 'num'))
+    values.push(per ? per.toLocaleString(locale()) : '—')
+    line.append(el('td', name))
+    values.forEach((value, index) => {
+      const cell = el('td', value, index === 0 && withStatus ? '' : 'num')
+      cell.dataset.label = labels[index]
+      line.append(cell)
+    })
     table.append(line)
   }
   const wrap = el('div', null, 'table-scroll')
