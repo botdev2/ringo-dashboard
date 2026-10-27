@@ -294,6 +294,7 @@ const marks = {
   next: '<svg viewBox="0 0 16 16"><circle cx="8" cy="8" r="6.2" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M5.4 8h5M8.4 5.7 10.7 8 8.4 10.3" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>',
   wait: '<svg viewBox="0 0 16 16"><circle cx="8" cy="8" r="6.2" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M8 4.7V8l2.1 1.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>',
   later: '<svg viewBox="0 0 16 16"><circle cx="8" cy="8" r="6.2" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M5.5 8h5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>',
+  due: '<svg viewBox="0 0 16 16"><rect x="2.2" y="3.2" width="11.6" height="10.6" rx="1.6" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M2.2 6.4h11.6M5.2 2.2v2.2M10.8 2.2v2.2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>',
   track: '<svg viewBox="0 0 16 16"><circle cx="3.2" cy="8" r="1.5" fill="currentColor"/><path d="M6.2 8h7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>',
 }
 
@@ -361,20 +362,21 @@ const plan = {
     now: 'Current objectives',
     road: 'Roadmap',
     predictive: 'Predictive calling',
-    tracking: 'Tracking to add',
-    states: { done: 'In place', next: 'Next', wait: 'Waiting', later: 'Later' },
+    tracking: 'Tracking, ready 31.10.2026',
+    due: 'Everything still open is ready on 31.10.2026.',
+    states: { done: 'In place', next: 'Next', wait: 'Waiting', later: 'Later', due: '31.10.2026' },
     objectives: [
       ['done', 'Show RIngomarket, soittamo, and Staging together, with the latest call on each.'],
       ['done', 'Name the seller, call centre, and operator behind the calls, leads, and sales.'],
       ['done', 'Record new rows as they arrive, and keep phone numbers and personal details off this page.'],
-      ['wait', 'Connect Ringo Market and the backend. The stack is drawn. The links come when those URLs are set.'],
-      ['next', 'Show predictive calling: overdial, abandon rate against its target, and the single-line breaker.'],
+      ['due', 'Connect Ringo Market and the backend. The stack is drawn. The links come when those URLs are set.'],
+      ['due', 'Show predictive calling: overdial, abandon rate against its target, and the single-line breaker.'],
     ],
     steps: [
       ['done', 'Picture', 'The three books, sellers, 14-day outcomes, and the live feed.'],
-      ['next', 'Stack connections', 'Ringo Market on the left, the backend in the middle, and the database clusters on the right.'],
-      ['next', 'Predictive calling', 'Read dialer sessions on RIngomarket, and the older predictive sessions on soittamo.'],
-      ['later', 'Tracking', 'Answer rate, machines, connect wait, seller conversion, and agent idle time.'],
+      ['due', 'Stack', 'Ringo Market on the left, the backend in the middle, and the database clusters on the right.'],
+      ['due', 'Predictive calling', 'Read dialer sessions on RIngomarket, and the older predictive sessions on soittamo.'],
+      ['due', 'Tracking', 'Answer rate, machines, connect wait, seller conversion, and agent idle time.'],
     ],
     lead: 'Predictive calling dials more lines than there are free agents. Most lines are not answered by a person. The extra lines are there so that, when a person does answer, an agent is already free. If the person answers and no agent is free, the call is an abandon.',
     where: 'RIngomarket stores each pacing run on dialer_sessions: legs dialed, connects, abandons, the overdial ratio, and a rolling abandon rate against a target. If that rate rises too far, the governor and the rate breaker force one line per agent until single_line_until. soittamo kept the older predictive_dial_sessions: dials, answers, humans, machines, abandons, and a sliding window.',
@@ -400,20 +402,21 @@ const plan = {
     now: 'Nykyiset tavoitteet',
     road: 'Tiekartta',
     predictive: 'Ennakoiva soitto',
-    tracking: 'Seuranta, joka lisätään',
-    states: { done: 'Käytössä', next: 'Seuraavaksi', wait: 'Odottaa', later: 'Myöhemmin' },
+    tracking: 'Seuranta, valmis 31.10.2026',
+    due: 'Kaikki kesken oleva on valmis 31.10.2026.',
+    states: { done: 'Käytössä', next: 'Seuraavaksi', wait: 'Odottaa', later: 'Myöhemmin', due: '31.10.2026' },
     objectives: [
       ['done', 'Näytä RIngomarket, soittamo ja Staging yhdessä, ja jokaisen viimeisin puhelu.'],
       ['done', 'Nimeä myyjä, puhelukeskus ja operaattori puheluiden, liidien ja kauppojen takana.'],
       ['done', 'Tallenna uudet rivit sitä mukaa kun ne syntyvät, ilman puhelinnumeroita ja henkilötietoja.'],
-      ['wait', 'Yhdistä Ringo Market ja taustapalvelu. Stack on piirretty. Linkit tulevat, kun osoitteet annetaan.'],
-      ['next', 'Näytä ennakoiva soitto: ylisoitto, hylkäysaste tavoitteeseen nähden ja yhden linjan katkaisija.'],
+      ['due', 'Yhdistä Ringo Market ja taustapalvelu. Stack on piirretty. Linkit tulevat, kun osoitteet annetaan.'],
+      ['due', 'Näytä ennakoiva soitto: ylisoitto, hylkäysaste tavoitteeseen nähden ja yhden linjan katkaisija.'],
     ],
     steps: [
       ['done', 'Kuva', 'Kolme kirjaa, myyjät, 14 päivän tulokset ja live-syöte.'],
-      ['next', 'Stack', 'Ringo Market vasemmalle, taustapalvelu keskelle ja tietokantaklusterit oikealle.'],
-      ['next', 'Ennakoiva soitto', 'Luetaan RIngomarketin dialer-istunnot ja soittamon vanhemmat predictive-istunnot.'],
-      ['later', 'Seuranta', 'Vastausaste, koneet, kytkennän odotus, myyjän konversio ja soittajan joutenolo.'],
+      ['due', 'Stack', 'Ringo Market vasemmalle, taustapalvelu keskelle ja tietokantaklusterit oikealle.'],
+      ['due', 'Ennakoiva soitto', 'Luetaan RIngomarketin dialer-istunnot ja soittamon vanhemmat predictive-istunnot.'],
+      ['due', 'Seuranta', 'Vastausaste, koneet, kytkennän odotus, myyjän konversio ja soittajan joutenolo.'],
     ],
     lead: 'Ennakoiva soitto soittaa useampia linjoja kuin vapaita soittajia on. Suurin osa linjoista ei päädy ihmiselle. Ylimääräiset linjat ovat sitä varten, että ihmisen vastatessa soittaja on jo vapaa. Jos ihminen vastaa eikä soittajaa ole vapaana, puhelu on hylkäys.',
     where: 'RIngomarket tallentaa jokaisen tahdistusjakson tauluun dialer_sessions: soittoyritykset, kytkennät, hylkäykset, ylisoittosuhteen ja liukuvan hylkäysasteen suhteessa tavoitteeseen. Jos aste nousee liian korkeaksi, rajoitin ja nopeuskatkaisija pakottavat yhden linjan soittajaa kohden hetkeen single_line_until asti. soittamo käytti vanhempaa taulua predictive_dial_sessions: soitot, vastaukset, ihmiset, koneet, hylkäykset ja liukuvan ikkunan.',
@@ -459,7 +462,7 @@ function renderPlan() {
   now.append(objectives)
 
   const road = el('div')
-  road.append(el('h2', text.road))
+  road.append(el('h2', text.road), el('p', text.due, 'due-line'))
   const steps = el('ol', null, 'steps')
   text.steps.forEach((step, index) => {
     const [state, name, detail] = step

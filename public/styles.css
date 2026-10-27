@@ -233,6 +233,8 @@ form button[type="submit"] {
 .status.live, .status.done { color: var(--lime); }
 .status.quiet, .status.next, .status.wait { color: var(--amber-text); }
 .status.empty, .status.later { color: var(--faint); }
+.status.due { color: var(--text); }
+.due-line { margin: -2px 0 10px; font-size: 14px; }
 
 .meta { display: flex; justify-content: space-between; gap: 8px; align-items: center; margin-bottom: 8px; }
 .version { font-size: 12px; color: var(--faint); }
