@@ -1002,11 +1002,11 @@ function renderMembers() {
 
 const workspaceViews = [
   { id: 'pieces', nodes: ['#stack'] },
-  { id: 'activity', nodes: ['.split'] },
+  { id: 'books', nodes: ['#cards', '#legend'] },
   { id: 'goals', nodes: ['#plan'] },
+  { id: 'activity', nodes: ['.split'] },
   { id: 'results', nodes: ['#breakdowns'] },
   { id: 'people', nodes: ['#organizations'] },
-  { id: 'books', nodes: ['#cards', '#legend'] },
 ]
 
 let workspaceId = localStorage.getItem('ringo_workspace') || 'books'
