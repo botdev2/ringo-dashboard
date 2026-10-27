@@ -266,7 +266,7 @@ function renderLegend() {
   const row = el('div', null, 'legend-row')
   for (const key of ['live', 'quiet', 'empty']) {
     const item = el('p', null, 'legend-item')
-    item.append(el('span', t(key), `pill ${key}`), el('span', t(`${key}Rule`)))
+    item.append(statusMark(key, t(key)), el('span', t(`${key}Rule`)))
     row.append(item)
   }
   root.append(row)
@@ -287,6 +287,14 @@ const marks = {
   database: '<svg viewBox="0 0 32 32"><ellipse cx="16" cy="8" rx="8" ry="3.2" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M8 8v16c0 1.8 3.6 3.2 8 3.2s8-1.4 8-3.2V8" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M8 16c0 1.8 3.6 3.2 8 3.2s8-1.4 8-3.2" fill="none" stroke="currentColor" stroke-width="2.2"/></svg>',
   sun: '<svg viewBox="0 0 32 32"><circle cx="16" cy="16" r="5" fill="currentColor"/><path d="M16 4v4M16 24v4M4 16h4M24 16h4M7.5 7.5l2.8 2.8M21.7 21.7l2.8 2.8M24.5 7.5l-2.8 2.8M10.3 21.7l-2.8 2.8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>',
   moon: '<svg viewBox="0 0 32 32"><path d="M20 5a10 10 0 1 0 7 17A8 8 0 0 1 20 5z" fill="currentColor"/></svg>',
+  live: '<svg viewBox="0 0 16 16"><circle cx="8" cy="8" r="6.2" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="8" cy="8" r="2.4" fill="currentColor"/></svg>',
+  quiet: '<svg viewBox="0 0 16 16"><circle cx="8" cy="8" r="6.2" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M6.2 5.6v4.8M9.8 5.6v4.8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>',
+  empty: '<svg viewBox="0 0 16 16"><circle cx="8" cy="8" r="6.2" fill="none" stroke="currentColor" stroke-width="1.5" stroke-dasharray="2.4 2.1"/></svg>',
+  done: '<svg viewBox="0 0 16 16"><circle cx="8" cy="8" r="6.2" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M5 8.2 7.1 10.3 11.2 5.8" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+  next: '<svg viewBox="0 0 16 16"><circle cx="8" cy="8" r="6.2" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M5.4 8h5M8.4 5.7 10.7 8 8.4 10.3" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+  wait: '<svg viewBox="0 0 16 16"><circle cx="8" cy="8" r="6.2" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M8 4.7V8l2.1 1.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+  later: '<svg viewBox="0 0 16 16"><circle cx="8" cy="8" r="6.2" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M5.5 8h5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>',
+  track: '<svg viewBox="0 0 16 16"><circle cx="3.2" cy="8" r="1.5" fill="currentColor"/><path d="M6.2 8h7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>',
 }
 
 function svgEl(name) {
@@ -294,6 +302,14 @@ function svgEl(name) {
   span.className = `logo ${name}`
   span.innerHTML = marks[name]
   return span
+}
+
+function statusMark(kind, label) {
+  const node = el('span', null, `status ${kind}`)
+  const mark = svgEl(kind)
+  mark.classList.add('tiny')
+  node.append(mark, el('span', label))
+  return node
 }
 
 function chosenTheme() {
@@ -437,8 +453,7 @@ function renderPlan() {
   const objectives = el('ul', null, 'plan-list')
   for (const [state, line] of text.objectives) {
     const item = document.createElement('li')
-    const pillClass = state === 'done' ? 'live' : state === 'next' ? 'quiet' : 'empty'
-    item.append(el('span', text.states[state], `pill ${pillClass}`), el('p', line))
+    item.append(statusMark(state, text.states[state]), el('p', line))
     objectives.append(item)
   }
   now.append(objectives)
@@ -452,7 +467,7 @@ function renderPlan() {
     item.append(el('span', String(index + 1), 'step-no'))
     const block = el('div')
     const head = el('div', null, 'meta')
-    head.append(el('b', name), el('span', text.states[state], `pill ${state === 'done' ? 'live' : state === 'later' ? 'empty' : 'quiet'}`))
+    head.append(el('b', name), statusMark(state, text.states[state]))
     block.append(head, el('p', detail))
     item.append(block)
     steps.append(item)
@@ -475,8 +490,14 @@ function renderPlan() {
 
   const tracking = el('div')
   tracking.append(el('h2', text.tracking))
-  const chips = el('div', null, 'chips')
-  for (const line of text.tracks) chips.append(el('span', line))
+  const chips = el('ul', null, 'chips')
+  for (const line of text.tracks) {
+    const item = document.createElement('li')
+    const mark = svgEl('track')
+    mark.classList.add('tiny')
+    item.append(mark, el('span', line))
+    chips.append(item)
+  }
   tracking.append(chips)
 
   body.append(split, predict, tracking)
@@ -632,7 +653,8 @@ function renderStack(sources) {
     const mark = svgEl(key)
     mark.classList.add('tiny')
     name.append(mark, el('span', labels[key] || key))
-    const state = el('span', source.ok ? t(tone(source)) : t('empty'), `pill ${source.ok ? tone(source) : 'empty'}`)
+    const toneKey = source.ok ? tone(source) : 'empty'
+    const state = statusMark(toneKey, t(toneKey))
     item.append(name, state)
     list.append(item)
   }
@@ -680,7 +702,7 @@ function render(summary) {
     const state = source.ok ? tone(source) : 'empty'
     const card = el('article', null, `${state} source-${key}`)
     const meta = el('div', null, 'meta')
-    meta.append(el('span', source.ok ? t(state) : t('empty'), `pill ${state}`))
+    meta.append(statusMark(state, t(state)))
     if (source.version) meta.append(el('span', t('postgres', { version: String(source.version).split(' ')[0] }), 'version'))
     const heading = el('div', null, 'named')
     heading.append(svgEl(key), el('h2', labels[key] || key))
