@@ -73,7 +73,7 @@ const fieldTerms = {
 
 const copy = {
   en: {
-    title: 'Ringo Market',
+    title: 'Project: Ringo Market',
     kicker: 'Three call books, one picture',
     help: 'Enter the access code.',
     open: 'Open',
@@ -175,7 +175,7 @@ const copy = {
     },
   },
   fi: {
-    title: 'Ringo Market',
+    title: 'Project: Ringo Market',
     kicker: 'Kolme puhelukirjaa, yksi näkymä',
     help: 'Anna kojelaudan tunnus.',
     open: 'Avaa',
@@ -328,7 +328,7 @@ function sourceTone(key, source) {
 function wordmark(id) {
   const node = document.querySelector(id)
   node.classList.add('wordmark')
-  node.replaceChildren(document.createTextNode('Ringo '), el('span', 'Market'))
+  node.textContent = t('title')
 }
 
 function renderLegend() {
@@ -966,7 +966,7 @@ function renderWorkspace() {
 
 function applyStatic() {
   document.documentElement.lang = lang === 'fi' ? 'fi' : 'en'
-  document.title = 'Ringo Market'
+  document.title = t('title')
   fill('#login-kicker', t('kicker'))
   wordmark('#login-title')
   fill('#login-help', t('help'))
