@@ -564,27 +564,10 @@ const planMs = 120000
 function planGoals(text) {
   return [
     {
-      state: 'done',
-      name: text.steps[0][1],
-      paragraphs: [text.steps[0][2]],
-      lines: text.objectives.slice(0, 3).map((row) => row[1]),
-    },
-    {
-      state: 'due',
-      name: text.connect,
-      paragraphs: [text.objectives[3][1]],
-    },
-    {
       state: 'due',
       name: text.predictive,
       paragraphs: [text.lead, text.where],
       formulas: text.formulas,
-    },
-    {
-      state: 'due',
-      name: text.steps[2][1],
-      paragraphs: [text.steps[2][2]],
-      lines: text.tracks,
     },
   ]
 }
@@ -719,7 +702,8 @@ function renderPlan() {
   meter.setAttribute('aria-hidden', 'true')
 
   const due = el('p', text.due, 'plan-due')
-  root.append(bar, due, tabs, meter, panels)
+  if (goals.length > 1) root.append(bar, due, tabs, meter, panels)
+  else root.append(bar, due, panels)
 
   planShow = (index) => {
     buttons.forEach((button, i) => button.setAttribute('aria-selected', i === index ? 'true' : 'false'))
@@ -745,7 +729,7 @@ function renderPlan() {
     syncPlanFreeze()
   }
 
-  armPlanClock()
+  if (goals.length > 1) armPlanClock()
 }
 
 function attachedIds() {
@@ -938,9 +922,9 @@ function renderMembers() {
 const workspaceViews = [
   { id: 'pieces', nodes: ['#stack'] },
   { id: 'activity', nodes: ['.split'] },
+  { id: 'goals', nodes: ['#plan'] },
   { id: 'results', nodes: ['#breakdowns'] },
   { id: 'people', nodes: ['#organizations'] },
-  { id: 'goals', nodes: ['#plan'] },
   { id: 'books', nodes: ['#cards', '#legend'] },
 ]
 
