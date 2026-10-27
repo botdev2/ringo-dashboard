@@ -393,7 +393,7 @@ const plan = {
     objectives: [
       ['done', 'Show RIngomarket, soittamo, and Staging together, with the latest call on each.'],
       ['done', 'Name the seller, call centre, and operator behind the calls, leads, and sales.'],
-      ['done', 'Record new rows as they arrive, and keep phone numbers and personal details off this page.'],
+      ['done', 'Record new calls, leads, and sales as they arrive, and keep phone numbers and personal details off this page.'],
       ['due', 'Connect the Ringo Market page to the calling desk. The picture is already drawn. The addresses come when they are ready.'],
       ['due', 'Show predictive calling in plain numbers: how many extra lines are open, how often a person answers with nobody free, and when calling drops to one line.'],
     ],
@@ -433,7 +433,7 @@ const plan = {
     objectives: [
       ['done', 'Näytä RIngomarket, soittamo ja Staging yhdessä, ja jokaisen viimeisin puhelu.'],
       ['done', 'Nimeä myyjä, puhelukeskus ja operaattori puheluiden, liidien ja kauppojen takana.'],
-      ['done', 'Tallenna uudet rivit sitä mukaa kun ne syntyvät, ilman puhelinnumeroita ja henkilötietoja.'],
+      ['done', 'Tallenna uudet puhelut, liidit ja kaupat sitä mukaa kun ne syntyvät, ilman puhelinnumeroita ja henkilötietoja.'],
       ['due', 'Yhdistä Ringo Marketin sivu soitontyöhön. Kuva on jo valmis. Osoitteet tulevat, kun ne annetaan.'],
       ['due', 'Näytä ennakoiva soitto selvin luvuin: montako ylimääräistä linjaa on auki, kuinka usein ihminen vastaa eikä soittajaa ole vapaana, ja milloin soitto pudotetaan yhteen linjaan.'],
     ],
