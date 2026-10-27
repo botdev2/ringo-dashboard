@@ -232,13 +232,55 @@ td:first-child { color: #f4f7ee; }
   border-radius: 99px;
   background: linear-gradient(90deg, #8fb82a, #e7ff8a);
 }
+#plan { margin-top: 18px; }
+.plan-body { padding: 16px; display: grid; gap: 18px; }
+.plan-split, .formulas { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.plan-list, .steps { list-style: none; margin: 0; padding: 0; max-height: none; }
+.plan-list li, .steps li { display: grid; gap: 4px; padding: 10px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.06); }
+.steps { counter-reset: step; max-height: none; overflow: visible; }
+.steps li { grid-template-columns: 28px 1fr; align-items: start; }
+.steps b { display: block; color: #f4f7ee; }
+.step-no {
+  width: 22px;
+  height: 22px;
+  border-radius: 99px;
+  display: grid;
+  place-items: center;
+  font-size: 12px;
+  color: #172000;
+  background: linear-gradient(180deg, #e7ff8a, #b6db3d);
+}
+.formula {
+  border-radius: 14px;
+  padding: 12px;
+  background: rgba(0, 0, 0, 0.22);
+  box-shadow: inset 0 0 0 1px rgba(214, 242, 92, 0.12);
+}
+.formula code {
+  display: block;
+  margin: 8px 0;
+  padding: 8px 10px;
+  border-radius: 8px;
+  background: rgba(214, 242, 92, 0.08);
+  color: #e7ff8a;
+  font-family: Consolas, "Cascadia Mono", monospace;
+  font-size: 13px;
+}
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chips span {
+  padding: 6px 10px;
+  border-radius: 99px;
+  background: rgba(255, 255, 255, 0.05);
+  box-shadow: inset 0 0 0 1px rgba(64, 214, 196, 0.25);
+  font-size: 13px;
+}
 ol { list-style: none; margin: 0; padding: 0; max-height: 420px; overflow: auto; }
 li { padding: 8px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.06); color: #c5d0ba; font-size: 13px; }
 
 @media (max-width: 900px) {
   header, .split, #cards, #breakdowns { display: grid; grid-template-columns: 1fr; }
   .header-side, #recorder { justify-items: start; text-align: left; }
-  .stack { grid-template-columns: 1fr; }
+  .stack, .plan-split, .formulas { grid-template-columns: 1fr; }
   .link { width: 3px; height: 28px; justify-self: center; background: linear-gradient(#d6f25c, #40d6c4); animation: none; }
   .link::after { right: auto; left: -4px; top: auto; bottom: -2px; border-left: 5px solid transparent; border-right: 5px solid transparent; border-top: 8px solid #40d6c4; border-bottom: 0; }
   h1 { font-size: 28px; }

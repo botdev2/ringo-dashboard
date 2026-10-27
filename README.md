@@ -8,6 +8,8 @@ Phone numbers, personal names, emails, addresses, notes, and transcripts are not
 
 The page is in English or Finnish. The stack shows the Ringo frontend, the backend middleman, and the three database clusters. The frontend and backend links are placeholders until those connections are added.
 
+The plan section lists current objectives, the roadmap, and how predictive calling is paced: answer rate, overdial ratio, abandon rate, the soittamo window, the single-line breaker, and human versus machine detection.
+
 ## Run
 
 Set `RINGOMARKET_DATABASE_URL`, `SOITTAMO_DATABASE_URL`, and `STAGING_DATABASE_URL`. Optional `DASHBOARD_TOKEN` requires a login cookie. `POLL_MS` defaults to 10000. `DATA_DIR` is the SQLite directory.

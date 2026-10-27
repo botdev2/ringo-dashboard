@@ -248,6 +248,150 @@ function langSwitch(parent) {
   }
 }
 
+const plan = {
+  en: {
+    title: 'Objectives and roadmap',
+    now: 'Current objectives',
+    road: 'Roadmap',
+    predictive: 'Predictive calling',
+    tracking: 'Tracking to add',
+    states: { done: 'In place', next: 'Next', wait: 'Waiting', later: 'Later' },
+    objectives: [
+      ['done', 'Show RIngomarket, soittamo, and Staging together, with the latest call on each.'],
+      ['done', 'Name the seller, call centre, and operator behind the calls, leads, and sales.'],
+      ['done', 'Record new rows as they arrive, and keep phone numbers and personal details off this page.'],
+      ['wait', 'Connect the Ringo frontend and the backend middleman. The stack is drawn. The links come when those URLs are set.'],
+      ['next', 'Show predictive calling: overdial, abandon rate against its target, and the single-line breaker.'],
+    ],
+    steps: [
+      ['done', 'Picture', 'The three books, sellers, 14-day outcomes, and the live feed.'],
+      ['next', 'Stack connections', 'The real frontend on the left, the backend in the middle, and the database clusters on the right.'],
+      ['next', 'Predictive calling', 'Read dialer sessions on RIngomarket, and the older predictive sessions on soittamo.'],
+      ['later', 'Tracking', 'Answer rate, machines, connect wait, seller conversion, and agent idle time.'],
+    ],
+    lead: 'Predictive calling dials more lines than there are free agents. Most lines are not answered by a person. The extra lines are there so that, when a person does answer, an agent is already free. If the person answers and no agent is free, the call is an abandon.',
+    where: 'RIngomarket stores each pacing run on dialer_sessions: legs dialed, connects, abandons, the overdial ratio, and a rolling abandon rate against a target. If that rate rises too far, the governor and the rate breaker force one line per agent until single_line_until. soittamo kept the older predictive_dial_sessions: dials, answers, humans, machines, abandons, and a sliding window.',
+    formulas: [
+      ['Answer rate', '(connects + abandons) ÷ legs', 'Share of attempts that reached a person. Unanswered lines and machines stay in the denominator, so this rate is what the pacing uses.'],
+      ['Overdial ratio', 'min(maximum, max(minimum, 1 ÷ answer rate))', 'Lines to dial = idle agents × overdial ratio. If one attempt in five reaches a person, the ratio is about 5. The session will not go under its minimum or over its maximum.'],
+      ['Abandon rate', 'abandons ÷ (abandons + connects)', 'People who answered and were not joined to an agent, divided by every person who answered. This is the rolling abandon rate. It is compared with the target stored on the same session. Many markets keep this near 3% of answered calls. The session target is the limit this dialer uses.'],
+      ['soittamo window', 'abandons in the window ÷ dials in the window', 'abandon_count_window ÷ dial_count_window. This counts abandons per dial, so it reads lower than the answer-based rate. The answer-based rate is the one that should trip the breaker.'],
+      ['Single-line breaker', 'if abandon rate > target, overdial ratio = 1', 'One line per idle agent, until single_line_until. No extra calls until the rate cools or someone re-arms the governor.'],
+      ['Human share', 'humans ÷ (humans + machines)', 'Answering-machine detection on the leg. A machine should not take an agent. soittamo stored both totals. RIngomarket stores the detection result on each dialer leg.'],
+    ],
+    tracks: [
+      'Connect wait, from connect latency and the info-message delay on an abandon',
+      'Abandon log by campaign and country, and whether the info message played',
+      'Breaker trips, the reason, and the time left on a single line',
+      'Seller conversion: sales ÷ calls',
+      'Agent idle time while waiting for a person',
+      'Occupancy: talk time ÷ (talk time + idle time)',
+    ],
+  },
+  fi: {
+    title: 'Tavoitteet ja tiekartta',
+    now: 'Nykyiset tavoitteet',
+    road: 'Tiekartta',
+    predictive: 'Ennakoiva soitto',
+    tracking: 'Seuranta, joka lisätään',
+    states: { done: 'Käytössä', next: 'Seuraavaksi', wait: 'Odottaa', later: 'Myöhemmin' },
+    objectives: [
+      ['done', 'Näytä RIngomarket, soittamo ja Staging yhdessä, ja jokaisen viimeisin puhelu.'],
+      ['done', 'Nimeä myyjä, puhelukeskus ja operaattori puheluiden, liidien ja kauppojen takana.'],
+      ['done', 'Tallenna uudet rivit sitä mukaa kun ne syntyvät, ilman puhelinnumeroita ja henkilötietoja.'],
+      ['wait', 'Yhdistä Ringon käyttöliittymä ja taustapalvelu. Pino on piirretty. Linkit tulevat, kun osoitteet annetaan.'],
+      ['next', 'Näytä ennakoiva soitto: ylisoitto, hylkäysaste tavoitteeseen nähden ja yhden linjan katkaisija.'],
+    ],
+    steps: [
+      ['done', 'Kuva', 'Kolme kirjaa, myyjät, 14 päivän tulokset ja live-syöte.'],
+      ['next', 'Pinon yhteydet', 'Oikea käyttöliittymä vasemmalle, taustapalvelu keskelle ja tietokantaklusterit oikealle.'],
+      ['next', 'Ennakoiva soitto', 'Luetaan RIngomarketin dialer-istunnot ja soittamon vanhemmat predictive-istunnot.'],
+      ['later', 'Seuranta', 'Vastausaste, koneet, kytkennän odotus, myyjän konversio ja soittajan joutenolo.'],
+    ],
+    lead: 'Ennakoiva soitto soittaa useampia linjoja kuin vapaita soittajia on. Suurin osa linjoista ei päädy ihmiselle. Ylimääräiset linjat ovat sitä varten, että ihmisen vastatessa soittaja on jo vapaa. Jos ihminen vastaa eikä soittajaa ole vapaana, puhelu on hylkäys.',
+    where: 'RIngomarket tallentaa jokaisen tahdistusjakson tauluun dialer_sessions: soittoyritykset, kytkennät, hylkäykset, ylisoittosuhteen ja liukuvan hylkäysasteen suhteessa tavoitteeseen. Jos aste nousee liian korkeaksi, rajoitin ja nopeuskatkaisija pakottavat yhden linjan soittajaa kohden hetkeen single_line_until asti. soittamo käytti vanhempaa taulua predictive_dial_sessions: soitot, vastaukset, ihmiset, koneet, hylkäykset ja liukuvan ikkunan.',
+    formulas: [
+      ['Vastausaste', '(kytkennät + hylkäykset) ÷ yritykset', 'Osuus yrityksistä, jotka tavoittivat ihmisen. Vastaamattomat linjat ja koneet jäävät jakajaan. Tätä astetta tahdistus käyttää.'],
+      ['Ylisoittosuhde', 'min(maksimi, max(minimi, 1 ÷ vastausaste))', 'Soitot = vapaat soittajat × ylisoittosuhde. Jos joka viides yritys tavoittaa ihmisen, suhde on noin 5. Istunto ei laske alle miniminsä eikä nouse yli maksiminsa.'],
+      ['Hylkäysaste', 'hylkäykset ÷ (hylkäykset + kytkennät)', 'Ihmiset, jotka vastasivat eikä heitä kytketty soittajalle, jaettuna kaikilla vastanneilla. Tämä on liukuva hylkäysaste. Sitä verrataan samalle istunnolle tallennettuun tavoitteeseen. Monilla markkinoilla katto on noin 3 % vastanneista. Istunnon tavoite on tämän soittimen raja.'],
+      ['soittamon ikkuna', 'ikkunan hylkäykset ÷ ikkunan soitot', 'abandon_count_window ÷ dial_count_window. Tämä on hylkäyksiä per soitto, joten luku on pienempi kuin vastauksiin perustuva aste. Katkaisijan pitäisi käyttää vastauksiin perustuvaa astetta.'],
+      ['Yhden linjan katkaisija', 'jos hylkäysaste > tavoite, ylisoittosuhde = 1', 'Yksi linja vapaata soittajaa kohden, kunnes single_line_until. Ei ylimääräisiä soittoja, ennen kuin aste jäähtyy tai rajoitin viritetään uudelleen.'],
+      ['Ihmisten osuus', 'ihmiset ÷ (ihmiset + koneet)', 'Linjan puhelinvastaajatunnistus. Koneen ei pidä viedä soittajaa. soittamo tallensi molemmat summat. RIngomarket tallentaa tunnistuksen tuloksen jokaiseen yritykseen.'],
+    ],
+    tracks: [
+      'Kytkennän odotus: connect latency ja hylkäyksen infoviestin viive',
+      'Hylkäysloki kampanjoittain ja maittain, ja soitettiinko infoviesti',
+      'Katkaisijan laukeamiset, syy ja jäljellä oleva yhden linjan aika',
+      'Myyjän konversio: kaupat ÷ puhelut',
+      'Soittajan joutenolo ihmistä odottaessa',
+      'Kuormitus: puheaika ÷ (puheaika + joutenolo)',
+    ],
+  },
+}
+
+function renderPlan() {
+  const text = plan[lang]
+  const root = document.querySelector('#plan')
+  root.className = 'window'
+  root.replaceChildren()
+  const bar = el('div', null, 'window-bar')
+  const dots = el('span', null, 'dots')
+  dots.append(document.createElement('i'), document.createElement('i'), document.createElement('i'))
+  bar.append(dots, el('strong', text.title))
+  const body = el('div', null, 'plan-body')
+
+  const split = el('div', null, 'plan-split')
+  const now = el('div')
+  now.append(el('h2', text.now))
+  const objectives = el('ul', null, 'plan-list')
+  for (const [state, line] of text.objectives) {
+    const item = document.createElement('li')
+    const pillClass = state === 'done' ? 'live' : state === 'next' ? 'quiet' : 'empty'
+    item.append(el('span', text.states[state], `pill ${pillClass}`), el('p', line))
+    objectives.append(item)
+  }
+  now.append(objectives)
+
+  const road = el('div')
+  road.append(el('h2', text.road))
+  const steps = el('ol', null, 'steps')
+  text.steps.forEach((step, index) => {
+    const [state, name, detail] = step
+    const item = document.createElement('li')
+    item.append(el('span', String(index + 1), 'step-no'))
+    const block = el('div')
+    const head = el('div', null, 'meta')
+    head.append(el('b', name), el('span', text.states[state], `pill ${state === 'done' ? 'live' : state === 'later' ? 'empty' : 'quiet'}`))
+    block.append(head, el('p', detail))
+    item.append(block)
+    steps.append(item)
+  })
+  road.append(steps)
+  split.append(now, road)
+
+  const predict = el('div')
+  predict.append(el('h2', text.predictive), el('p', text.lead), el('p', text.where))
+  const formulas = el('div', null, 'formulas')
+  for (const [name, formula, note] of text.formulas) {
+    const card = el('article', null, 'formula')
+    card.append(el('h3', name))
+    const code = document.createElement('code')
+    code.textContent = formula
+    card.append(code, el('p', note))
+    formulas.append(card)
+  }
+  predict.append(formulas)
+
+  const tracking = el('div')
+  tracking.append(el('h2', text.tracking))
+  const chips = el('div', null, 'chips')
+  for (const line of text.tracks) chips.append(el('span', line))
+  tracking.append(chips)
+
+  body.append(split, predict, tracking)
+  root.append(bar, body)
+}
+
 function applyStatic() {
   document.documentElement.lang = lang === 'fi' ? 'fi' : 'en'
   document.title = t('title')
@@ -263,6 +407,7 @@ function applyStatic() {
   fill('#feed-help', t('feedHelp'))
   langSwitch(document.querySelector('#login-lang'))
   langSwitch(document.querySelector('#lang'))
+  renderPlan()
 }
 
 function setLang(next) {
