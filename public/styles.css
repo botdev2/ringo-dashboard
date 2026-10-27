@@ -189,8 +189,36 @@ header {
   gap: 24px;
   align-items: flex-start;
   padding-bottom: 16px;
+}
+.workspace-tabs {
+  position: sticky;
+  top: 0;
+  z-index: 4;
+  display: flex;
+  gap: 2px;
+  overflow-x: auto;
+  margin: 0 0 8px;
+  padding: 0;
+  background: var(--bg);
   border-bottom: 1px solid var(--line);
 }
+.workspace-tabs button {
+  flex: none;
+  margin: 0;
+  padding: 12px 14px 10px;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  border-radius: 0;
+  background: transparent;
+  color: var(--muted);
+  font-size: 15px;
+  font-weight: 650;
+}
+.workspace-tabs button[aria-selected="true"] {
+  color: var(--text);
+  border-bottom-color: var(--text);
+}
+.workspace-hint { margin: 0 0 14px; font-size: 14px; color: var(--faint); }
 .header-side { display: grid; justify-items: end; gap: 14px; }
 #recorder { margin: 0; text-align: right; }
 .due-line { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 10px; margin: 4px 0 8px; }
@@ -543,7 +571,7 @@ li { padding: 8px 0; border-bottom: 1px solid var(--line); color: var(--muted); 
     padding: 0;
     background: rgba(16, 18, 22, 0.45);
   }
-  #clips-toggle, .clips-head .clips-close, .plan-tabs button { display: inline-flex; min-height: 44px; }
+  #clips-toggle, .clips-head .clips-close, .plan-tabs button, .workspace-tabs button { display: inline-flex; min-height: 44px; align-items: center; }
   .clip-attach { min-height: 44px; }
   header { order: 0; display: grid; gap: 10px; }
   #cards { order: 1; margin-top: 4px; }

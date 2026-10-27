@@ -118,6 +118,18 @@ const copy = {
     attached: 'Attached',
     removeClip: 'Remove',
     clipsClose: 'Close',
+    tabBooks: 'Books',
+    tabActivity: 'Activity',
+    tabResults: 'Results',
+    tabPeople: 'People',
+    tabPieces: 'Pieces',
+    tabGoals: 'Goals',
+    tabBooksHint: 'The three call books, and what the marks mean.',
+    tabActivityHint: 'Calls over the last 14 days, and what arrived after this page was opened.',
+    tabResultsHint: 'How the calls turned out over the last 14 days.',
+    tabPeopleHint: 'Sellers, call centres, and operators.',
+    tabPiecesHint: 'How Ringo Market, the calling desk, and the books pass the work.',
+    tabGoalsHint: 'What is already in place, and what is still open until 31.10.2026.',
     chart: 'RIngomarket calls, last 14 days',
     feed: 'New activity',
     feedHelp: 'Only calls, leads, and sales that arrived after this page was opened.',
@@ -210,6 +222,18 @@ const copy = {
     attached: 'Liitetty',
     removeClip: 'Poista',
     clipsClose: 'Sulje',
+    tabBooks: 'Kirjat',
+    tabActivity: 'Toiminta',
+    tabResults: 'Tulokset',
+    tabPeople: 'Ihmiset',
+    tabPieces: 'Osat',
+    tabGoals: 'Tavoitteet',
+    tabBooksHint: 'Kolme puhelukirjaa ja se, mitä merkit tarkoittavat.',
+    tabActivityHint: 'Puhelut viimeiseltä 14 päivältä, ja se mikä on tullut tämän sivun avaamisen jälkeen.',
+    tabResultsHint: 'Miten puhelut päättyivät viimeisen 14 päivän aikana.',
+    tabPeopleHint: 'Myyjät, puhelukeskukset ja operaattorit.',
+    tabPiecesHint: 'Miten Ringo Market, soitontyö ja kirjat välittävät työn.',
+    tabGoalsHint: 'Mikä on jo käytössä, ja mikä on kesken 31.10.2026 asti.',
     chart: 'RIngomarketin puhelut, 14 päivää',
     feed: 'Uusi toiminta',
     feedHelp: 'Vain puhelut, liidit ja kaupat, jotka ovat tulleet tämän sivun avaamisen jälkeen.',
@@ -505,7 +529,9 @@ let planShow = () => {}
 let planGen = 0
 let planOrigin = 0
 let planPaused = false
-let planPauseAt = 0
+let planHeld = false
+let planFrozen = false
+let planFreezeAt = 0
 let planPausedFor = 0
 const planMs = 30000
 
@@ -550,10 +576,21 @@ function paintPlanMeter(ratio) {
   if (count) count.textContent = `${Math.ceil((1 - clamped) * (planMs / 1000))}s`
 }
 
+function syncPlanFreeze() {
+  const should = planPaused || planHeld
+  if (should && !planFrozen) {
+    planFrozen = true
+    planFreezeAt = performance.now()
+  } else if (!should && planFrozen) {
+    planPausedFor += performance.now() - planFreezeAt
+    planFrozen = false
+  }
+}
+
 function resetPlanClock() {
   planOrigin = performance.now()
   planPausedFor = 0
-  if (planPaused) planPauseAt = planOrigin
+  if (planFrozen) planFreezeAt = planOrigin
   paintPlanMeter(0)
 }
 
@@ -567,9 +604,9 @@ function armPlanClock() {
   const loop = (now) => {
     if (gen !== planGen) return
     if (!planOrigin) planOrigin = now
-    const frozen = planPaused ? planPauseAt : now
+    const frozen = planFrozen ? planFreezeAt : now
     const elapsed = Math.max(0, frozen - planOrigin - planPausedFor)
-    if (!planPaused && elapsed >= planMs) {
+    if (!planFrozen && elapsed >= planMs) {
       planIndex = (planIndex + 1) % planCount
       planShow(planIndex)
       planOrigin = now
@@ -679,14 +716,12 @@ function renderPlan() {
   }
 
   root.onpointerenter = () => {
-    if (planPaused) return
     planPaused = true
-    planPauseAt = performance.now()
+    syncPlanFreeze()
   }
   root.onpointerleave = () => {
-    if (!planPaused) return
-    planPausedFor += performance.now() - planPauseAt
     planPaused = false
+    syncPlanFreeze()
   }
 
   armPlanClock()
@@ -877,6 +912,60 @@ function renderMembers() {
   })
 }
 
+const workspaceViews = [
+  { id: 'books', nodes: ['#cards', '#legend'] },
+  { id: 'activity', nodes: ['.split'] },
+  { id: 'results', nodes: ['#breakdowns'] },
+  { id: 'people', nodes: ['#organizations'] },
+  { id: 'pieces', nodes: ['#stack'] },
+  { id: 'goals', nodes: ['#plan'] },
+]
+
+let workspaceId = localStorage.getItem('ringo_workspace') || 'books'
+
+function selectWorkspace(id) {
+  if (!workspaceViews.some((view) => view.id === id)) id = 'books'
+  workspaceId = id
+  localStorage.setItem('ringo_workspace', id)
+  document.querySelectorAll('#workspace button').forEach((button) => {
+    button.setAttribute('aria-selected', button.dataset.view === id ? 'true' : 'false')
+  })
+  for (const view of workspaceViews) {
+    const on = view.id === id
+    for (const selector of view.nodes) {
+      const node = document.querySelector(selector)
+      if (node) node.hidden = !on
+    }
+  }
+  fill('#workspace-hint', t(`tab${id.charAt(0).toUpperCase()}${id.slice(1)}Hint`))
+  const selected = document.querySelector(`#workspace button[data-view="${id}"]`)
+  if (selected) {
+    const strip = selected.parentElement
+    const start = selected.offsetLeft
+    const end = start + selected.offsetWidth
+    if (start < strip.scrollLeft || end > strip.scrollLeft + strip.clientWidth) {
+      strip.scrollTo({ left: Math.max(0, start - 12), behavior: 'smooth' })
+    }
+  }
+  planHeld = id !== 'goals'
+  syncPlanFreeze()
+}
+
+function renderWorkspace() {
+  const nav = document.querySelector('#workspace')
+  nav.replaceChildren()
+  for (const view of workspaceViews) {
+    const button = document.createElement('button')
+    button.type = 'button'
+    button.dataset.view = view.id
+    button.setAttribute('role', 'tab')
+    button.textContent = t(`tab${view.id.charAt(0).toUpperCase()}${view.id.slice(1)}`)
+    button.addEventListener('click', () => selectWorkspace(view.id))
+    nav.append(button)
+  }
+  selectWorkspace(workspaceId)
+}
+
 function applyStatic() {
   document.documentElement.lang = lang === 'fi' ? 'fi' : 'en'
   document.title = 'Ringo Market'
@@ -901,6 +990,7 @@ function applyStatic() {
   document.querySelector('#login-logo').replaceChildren(svgEl('ringo'))
   document.querySelector('#logo').replaceChildren(svgEl('ringo'))
   renderPlan()
+  renderWorkspace()
   renderClips()
 }
 
