@@ -83,7 +83,7 @@ body::after {
   z-index: -1;
   pointer-events: none;
   background: url("/backdrop.png") center / cover no-repeat;
-  opacity: 0.2;
+  opacity: 0.04;
 }
 
 #shell {
