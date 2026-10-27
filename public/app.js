@@ -61,7 +61,7 @@ const fieldTerms = {
 
 const copy = {
   en: {
-    title: 'Ringo Dashboard',
+    title: 'Ringo Market',
     kicker: 'Three databases, one picture',
     help: 'Enter the dashboard token.',
     open: 'Open',
@@ -74,7 +74,7 @@ const copy = {
     recorderError: 'Recorder: {error}',
     stack: 'Stack',
     frontendRole: 'App',
-    frontendTitle: 'Ringo frontend',
+    frontendTitle: 'Ringo Market',
     frontendBody: 'The app people open. Calls, campaigns, and sellers start here.',
     middleRole: 'Middleman',
     middleTitle: 'Backend',
@@ -130,7 +130,7 @@ const copy = {
     },
   },
   fi: {
-    title: 'Ringo-kojelauta',
+    title: 'Ringo Market',
     kicker: 'Kolme tietokantaa, yksi näkymä',
     help: 'Anna kojelaudan tunnus.',
     open: 'Avaa',
@@ -143,7 +143,7 @@ const copy = {
     recorderError: 'Tallennin: {error}',
     stack: 'Pino',
     frontendRole: 'Sovellus',
-    frontendTitle: 'Ringon käyttöliittymä',
+    frontendTitle: 'Ringo Market',
     frontendBody: 'Sovellus, jonka ihmiset avaavat. Puhelut, kampanjat ja myyjät alkavat täältä.',
     middleRole: 'Välikerros',
     middleTitle: 'Taustapalvelu',
@@ -240,6 +240,12 @@ function tone(source) {
   if (!source.latestCall) return 'empty'
   if (Date.now() - new Date(source.latestCall).getTime() > 6 * 60 * 60 * 1000) return 'quiet'
   return 'live'
+}
+
+function wordmark(id) {
+  const node = document.querySelector(id)
+  node.classList.add('wordmark')
+  node.replaceChildren(document.createTextNode('Ringo '), el('span', 'Market'))
 }
 
 function fill(id, text) {
@@ -455,12 +461,12 @@ function renderPlan() {
 
 function applyStatic() {
   document.documentElement.lang = lang === 'fi' ? 'fi' : 'en'
-  document.title = t('title')
+  document.title = 'Ringo Market'
   fill('#login-kicker', t('kicker'))
-  fill('#login-title', t('title'))
+  wordmark('#login-title')
   fill('#login-help', t('help'))
   fill('#login-submit', t('open'))
-  fill('#title', t('title'))
+  wordmark('#title')
   fill('#intro', t('intro'))
   fill('#privacy', t('privacy'))
   fill('#chart-title', t('chart'))
