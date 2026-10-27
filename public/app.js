@@ -533,7 +533,7 @@ let planHeld = false
 let planFrozen = false
 let planFreezeAt = 0
 let planPausedFor = 0
-const planMs = 30000
+const planMs = 120000
 
 function planGoals(text) {
   return [
@@ -687,7 +687,7 @@ function renderPlan() {
   const fill = document.createElement('i')
   fill.id = 'plan-fill'
   timer.append(fill)
-  const count = el('span', '30s', 'plan-count')
+  const count = el('span', `${planMs / 1000}s`, 'plan-count')
   count.id = 'plan-count'
   meter.append(timer, count)
   meter.setAttribute('aria-hidden', 'true')

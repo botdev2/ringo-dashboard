@@ -468,20 +468,20 @@ td:first-child { color: var(--text); }
 }
 .plan-tabs .logo { color: currentColor; }
 .plan-tabs .logo svg { width: 14px; height: 14px; }
-.plan-meter { display: flex; align-items: center; gap: 10px; padding: 10px 16px 0; }
+.plan-meter { display: flex; align-items: center; gap: 14px; padding: 14px 16px 4px; }
 .plan-timer {
   position: relative;
   flex: 1;
-  height: 4px;
-  margin: 0 6px;
-  border-radius: 2px;
+  height: 8px;
+  margin: 0 12px;
+  border-radius: 4px;
   background: var(--line);
 }
 .plan-timer i {
   display: block;
   height: 100%;
   width: 0;
-  border-radius: 2px;
+  border-radius: 4px;
   background: var(--text);
   position: relative;
 }
@@ -490,19 +490,21 @@ td:first-child { color: var(--text); }
   position: absolute;
   right: 0;
   top: 50%;
-  width: 10px;
-  height: 10px;
+  width: 18px;
+  height: 18px;
   border-radius: 50%;
   background: var(--text);
   transform: translate(50%, -50%);
 }
 .plan-count {
   flex: none;
-  min-width: 28px;
-  color: var(--faint);
-  font-size: 12px;
+  min-width: 52px;
+  color: var(--text);
+  font-size: 22px;
+  font-weight: 600;
   font-variant-numeric: tabular-nums;
   text-align: right;
+  letter-spacing: -0.02em;
 }
 .plan-panel { padding: 12px 16px 16px; }
 .plan-panel .meta { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
