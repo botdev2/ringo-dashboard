@@ -547,12 +547,12 @@ li { padding: 8px 0; border-bottom: 1px solid var(--line); color: var(--muted); 
   .clip-attach { min-height: 44px; }
   header { order: 0; display: grid; gap: 10px; }
   #cards { order: 1; margin-top: 4px; }
-  #attached { order: 2; }
-  #legend { order: 3; margin-top: 8px; }
-  .split { order: 4; }
-  #breakdowns { order: 5; }
-  #organizations { order: 6; }
-  #stack { order: 7; }
+  #stack { order: 2; margin-top: 8px; }
+  #attached { order: 3; }
+  #legend { order: 4; margin-top: 8px; }
+  .split { order: 5; }
+  #breakdowns { order: 6; }
+  #organizations { order: 7; }
   #plan { order: 8; }
   #intro, #privacy { display: none; }
   .header-side, #recorder, .people { justify-items: start; text-align: left; max-width: none; }
