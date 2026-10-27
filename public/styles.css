@@ -341,7 +341,7 @@ header {
 .workspace { margin: 0 0 16px; color: var(--text); font-size: 15px; font-weight: 700; letter-spacing: -0.02em; }
 
 .lang, #theme, #login-theme { display: flex; gap: 6px; }
-.lang button, .theme-toggle, button.ghost, #logout {
+.lang button, .theme-toggle, button.ghost, #logout, #share {
   background: transparent;
   color: var(--muted);
   border: 1px solid var(--line);
@@ -781,7 +781,7 @@ li { padding: 8px 0; border-bottom: 1px solid var(--line); color: var(--muted); 
   .theme-toggle .logo svg { width: 18px; height: 18px; }
   #clips-toggle .logo svg { width: 22px; height: 22px; }
   .lang button { min-width: 44px; padding: 0 8px; }
-  #logout { min-height: 44px; padding: 0 12px; white-space: nowrap; }
+  #logout, #share { min-height: 44px; padding: 0 12px; white-space: nowrap; }
   #cards { order: 1; margin-top: 4px; }
   #stack { order: 2; margin-top: 8px; }
   #attached { order: 3; }
@@ -798,7 +798,7 @@ li { padding: 8px 0; border-bottom: 1px solid var(--line); color: var(--muted); 
   .budget { grid-template-columns: 1fr; gap: 10px; }
   .budget dd { font-size: 18px; }
   .logo svg { width: 32px; height: 32px; }
-  .lang button, .theme-toggle, #logout, form button[type="submit"] { min-height: 44px; }
+  .lang button, .theme-toggle, #logout, #share, form button[type="submit"] { min-height: 44px; }
   input { font-size: 16px; }
   h1 { font-size: 22px; white-space: nowrap; }
   .about { min-height: 0; }

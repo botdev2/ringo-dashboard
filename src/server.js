@@ -78,6 +78,13 @@ app.get('/api/summary', async (_req, res) => {
   res.json(await loadAnalytics(pools, recorder))
 })
 
+app.get('/api/share', (req, res) => {
+  res.json({
+    link: `${req.protocol}://${req.get('host')}/`,
+    token,
+  })
+})
+
 app.get('/api/stream', (req, res) => {
   res.setHeader('Content-Type', 'text/event-stream')
   res.setHeader('Cache-Control', 'no-cache')

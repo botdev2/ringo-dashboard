@@ -77,6 +77,8 @@ const copy = {
     kicker: 'Three databases, one picture',
     help: 'Enter the access code.',
     open: 'Open',
+    share: 'Share access',
+    shareDone: 'Copied',
     logout: 'Log out',
     badToken: 'That code was not accepted.',
     waiting: 'Waiting for the databases.',
@@ -192,6 +194,8 @@ const copy = {
     kicker: 'Kolme tietokantaa, yksi näkymä',
     help: 'Anna kojelaudan tunnus.',
     open: 'Avaa',
+    share: 'Jaa pääsy',
+    shareDone: 'Kopioitu',
     logout: 'Kirjaudu ulos',
     badToken: 'Tunnusta ei hyväksytty.',
     waiting: 'Odotetaan tietokantoja.',
@@ -1073,6 +1077,7 @@ function applyStatic() {
   wordmark('#login-title')
   fill('#login-help', t('help'))
   fill('#login-submit', t('open'))
+  fill('#share', t('share'))
   fill('#logout', t('logout'))
   wordmark('#title')
   fill('#due-label', t('dueLabel'))
@@ -1467,6 +1472,27 @@ login.addEventListener('submit', async (event) => {
   refresh()
 })
 
+let shareTimer = 0
+
+async function shareAccess() {
+  const button = document.querySelector('#share')
+  const response = await fetch('/api/share')
+  if (!response.ok) return
+  const payload = await response.json()
+  const code = lang === 'fi' ? 'Tunnus' : 'Access code'
+  try {
+    await navigator.clipboard.writeText(`${payload.link}\n${code}: ${payload.token}`)
+  } catch {
+    return
+  }
+  button.textContent = t('shareDone')
+  clearTimeout(shareTimer)
+  shareTimer = setTimeout(() => {
+    button.textContent = t('share')
+  }, 1600)
+}
+
+document.querySelector('#share').addEventListener('click', shareAccess)
 document.querySelector('#logout').addEventListener('click', logout)
 
 document.querySelector('#clips-toggle').addEventListener('click', () => {
