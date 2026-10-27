@@ -12,7 +12,7 @@ const dueAt = new Date('2026-10-31T23:59:59+02:00').getTime()
 const clips = [
   // { id: 'welcome', title: 'Welcome', file: 'welcome.mp4' },
 ]
-const labels = { ringomarket: 'RIngomarket', soittamo: 'soittamo', staging: 'Staging' }
+const labels = { ringomarket: 'Ringo Market DB', soittamo: 'soittamo', staging: 'Staging' }
 
 const fieldTerms = {
   en: {
@@ -100,7 +100,7 @@ const copy = {
     middleBody: 'Decides how many lines to open, and passes each call between the people and the books.',
     clusterRole: 'The books',
     clusterTitle: 'Three call books',
-    clusterBody: 'RIngomarket is the one being written now. soittamo is retired. Staging is a practice copy and has no calls yet.',
+    clusterBody: 'Ringo Market DB is the one being written now. soittamo is retired. Staging is a practice copy and has no calls yet.',
     flowToApp: 'From the people',
     flowFromApp: 'Back to the people',
     flowToData: 'Saved in the books',
@@ -128,7 +128,7 @@ const copy = {
     tabPeopleHint: 'Sellers, call centres, and operators.',
     tabPiecesHint: 'How Ringo Market, the calling desk, and the books pass the work.',
     tabGoalsHint: 'What is already in place, and what is still open until 31.10.2026.',
-    chart: 'RIngomarket calls, last 14 days',
+    chart: 'Ringo Market DB calls, last 14 days',
     feed: 'New activity',
     feedHelp: 'Only calls, leads, and sales that arrived after this page was opened.',
     feedEmpty: 'No new calls, leads, or sales since recording started.',
@@ -171,7 +171,7 @@ const copy = {
     about: {
       ringomarket: 'The book in use now. Campaigns, leads, calls, and sales on the live markets are written here.',
       soittamo: 'Retired. Calls stopped on 24 Aug 2026. Leads, sales, and sellers are still kept here.',
-      staging: 'A practice copy of RIngomarket. Almost no real calls, leads, or sales yet.',
+      staging: 'A practice copy of Ringo Market DB. Almost no real calls, leads, or sales yet.',
     },
   },
   fi: {
@@ -202,7 +202,7 @@ const copy = {
     middleBody: 'Päättää, montako linjaa avataan, ja välittää puhelut ihmisten ja kirjojen välillä.',
     clusterRole: 'Kirjat',
     clusterTitle: 'Kolme puhelukirjaa',
-    clusterBody: 'RIngomarket on se, jota kirjoitetaan nyt. soittamo on poistettu käytöstä. Staging on harjoituskopio, eikä siinä ole vielä puheluita.',
+    clusterBody: 'Ringo Market DB on se, jota kirjoitetaan nyt. soittamo on poistettu käytöstä. Staging on harjoituskopio, eikä siinä ole vielä puheluita.',
     flowToApp: 'Ihmisiltä',
     flowFromApp: 'Ihmisille',
     flowToData: 'Tallennetaan kirjoihin',
@@ -230,7 +230,7 @@ const copy = {
     tabPeopleHint: 'Myyjät, puhelukeskukset ja operaattorit.',
     tabPiecesHint: 'Miten Ringo Market, soitontyö ja kirjat välittävät työn.',
     tabGoalsHint: 'Mikä on jo käytössä, ja mikä on kesken 31.10.2026 asti.',
-    chart: 'RIngomarketin puhelut, 14 päivää',
+    chart: 'Ringo Market DB, puhelut 14 päivää',
     feed: 'Uusi toiminta',
     feedHelp: 'Vain puhelut, liidit ja kaupat, jotka ovat tulleet tämän sivun avaamisen jälkeen.',
     feedEmpty: 'Ei uusia puheluita, liidejä tai kauppoja tallennuksen alettua.',
@@ -273,7 +273,7 @@ const copy = {
     about: {
       ringomarket: 'Kirja, jota kirjoitetaan nyt. Kampanjat, liidit, puhelut ja kaupat elävillä markkinoilla.',
       soittamo: 'Poistettu käytöstä. Puhelut päättyivät 24.8.2026. Liidit, kaupat ja myyjät ovat yhä tallessa.',
-      staging: 'Harjoituskopio RIngomarketista. Oikeita puheluita, liidejä ja kauppoja ei juuri ole.',
+      staging: 'Harjoituskopio Ringo Market DB -kirjasta. Oikeita puheluita, liidejä ja kauppoja ei juuri ole.',
     },
   },
 }
@@ -444,7 +444,7 @@ const plan = {
     connect: 'Connection',
     states: { done: 'In place', next: 'Next', wait: 'Waiting', later: 'Later', due: '31.10.2026' },
     objectives: [
-      ['done', 'Show RIngomarket, soittamo, and Staging together, with the latest call on each.'],
+      ['done', 'Show Ringo Market DB, soittamo, and Staging together, with the latest call on each.'],
       ['done', 'Name the seller, call centre, and operator behind the calls, leads, and sales.'],
       ['done', 'Record new calls, leads, and sales as they arrive, and keep phone numbers and personal details off this page.'],
       ['due', 'Connect the Ringo Market page to the calling desk. The picture is already drawn. The addresses come when they are ready.'],
@@ -453,18 +453,18 @@ const plan = {
     steps: [
       ['done', 'Picture', 'The three books, the sellers, the last 14 days, and new calls as they arrive.'],
       ['done', 'How the pieces fit', 'Ringo Market on the left, the calling desk in the middle, and the three books on the right.'],
-      ['due', 'Predictive calling', 'Show how RIngomarket paces calls now, and how soittamo used to.'],
+      ['due', 'Predictive calling', 'Show how Ringo Market DB paces calls now, and how soittamo used to.'],
       ['due', 'Tracking', 'How often people answer, how many answers are machines, how long a connection waits, how sellers turn calls into sales, and how long callers sit waiting.'],
     ],
     lead: 'Predictive calling rings more lines than there are free callers. Most lines are not answered by a person. The extra lines are there so that, when a person does answer, a caller is already free. If the person answers and no caller is free, that call is left waiting. We call that an abandoned call.',
-    where: 'RIngomarket keeps each round of calling: how many lines were tried, how many reached a person, how many were left with nobody free, how many extra lines were open, and the running share of abandoned answers against a limit. If that share gets too high, calling drops to one line per free caller until it cools. soittamo kept an older count: calls made, answers, people, machines, abandoned calls, and a short recent stretch of the same.',
+    where: 'Ringo Market DB keeps each round of calling: how many lines were tried, how many reached a person, how many were left with nobody free, how many extra lines were open, and the running share of abandoned answers against a limit. If that share gets too high, calling drops to one line per free caller until it cools. soittamo kept an older count: calls made, answers, people, machines, abandoned calls, and a short recent stretch of the same.',
     formulas: [
       ['How often someone answers', '(people reached + calls left waiting) ÷ lines tried', 'The share of tries that reached a person. Lines nobody answered, and answering machines, stay in the count of tries. This is the share the calling desk uses.'],
       ['Extra lines', 'keep it between the lowest and highest allowed, around 1 ÷ how often someone answers', 'Lines to ring = free callers × extra lines. If one try in five reaches a person, about five lines are rung. The desk will not go under its lowest setting or over its highest.'],
       ['Calls left waiting', 'calls left waiting ÷ (calls left waiting + calls joined to a caller)', 'People who answered and were not joined to a caller, divided by every person who answered. This running share is compared with the limit saved for that round of calling. Many markets keep it near 3% of answered calls. The saved limit is the one this desk uses.'],
       ['soittamo’s recent stretch', 'abandoned calls in the stretch ÷ calls made in the stretch', 'This counts abandoned calls per call made, so the number looks smaller than the share of people who answered and were left waiting. The limit should use that answer-based share.'],
       ['Back to one line', 'if too many answered calls are left waiting, ring only one line per free caller', 'No extra lines until the share cools, or someone turns the extra lines back on.'],
-      ['People, not machines', 'people ÷ (people + machines)', 'Was the answer a person or a machine. A machine should not take a caller. soittamo counted both. RIngomarket notes the result on each try.'],
+      ['People, not machines', 'people ÷ (people + machines)', 'Was the answer a person or a machine. A machine should not take a caller. soittamo counted both. Ringo Market DB notes the result on each try.'],
     ],
     tracks: [
       'How long a person waits after answering, including the short message played when nobody is free',
@@ -485,7 +485,7 @@ const plan = {
     connect: 'Yhteys',
     states: { done: 'Käytössä', next: 'Seuraavaksi', wait: 'Odottaa', later: 'Myöhemmin', due: '31.10.2026' },
     objectives: [
-      ['done', 'Näytä RIngomarket, soittamo ja Staging yhdessä, ja jokaisen viimeisin puhelu.'],
+      ['done', 'Näytä Ringo Market DB, soittamo ja Staging yhdessä, ja jokaisen viimeisin puhelu.'],
       ['done', 'Nimeä myyjä, puhelukeskus ja operaattori puheluiden, liidien ja kauppojen takana.'],
       ['done', 'Tallenna uudet puhelut, liidit ja kaupat sitä mukaa kun ne syntyvät, ilman puhelinnumeroita ja henkilötietoja.'],
       ['due', 'Yhdistä Ringo Marketin sivu soitontyöhön. Kuva on jo valmis. Osoitteet tulevat, kun ne annetaan.'],
@@ -494,18 +494,18 @@ const plan = {
     steps: [
       ['done', 'Kuva', 'Kolme kirjaa, myyjät, viimeiset 14 päivää ja uudet puhelut sitä mukaa kun ne tulevat.'],
       ['done', 'Miten osat liittyvät', 'Ringo Market vasemmalla, soitontyö keskellä ja kolme kirjaa oikealla.'],
-      ['due', 'Ennakoiva soitto', 'Näytetään, miten RIngomarket tahdistaa soitot nyt, ja miten soittamo teki sen aiemmin.'],
+      ['due', 'Ennakoiva soitto', 'Näytetään, miten Ringo Market DB tahdistaa soitot nyt, ja miten soittamo teki sen aiemmin.'],
       ['due', 'Seuranta', 'Kuinka usein vastataan, montako vastausta on koneita, kauanko kytkentää odotetaan, miten myyjät päätyvät kauppaan, ja kauanko soittaja istuu vapaana.'],
     ],
     lead: 'Ennakoiva soitto soittaa useampia linjoja kuin vapaita soittajia on. Suurin osa linjoista ei päädy ihmiselle. Ylimääräiset linjat ovat sitä varten, että ihmisen vastatessa soittaja on jo vapaa. Jos ihminen vastaa eikä soittajaa ole vapaana, puhelu jää odottamaan. Sitä kutsutaan hylätyksi puheluksi.',
-    where: 'RIngomarket pitää kirjaa jokaisesta soittojaksosta: montako linjaa yritettiin, montako tavoitti ihmisen, montako jäi ilman vapaata soittajaa, montako ylimääräistä linjaa oli auki, ja miten hylättyjen vastausten osuus liikkuu rajaa vasten. Jos osuus nousee liian korkeaksi, soitto pudotetaan yhteen linjaan vapaata soittajaa kohden, kunnes osuus jäähtyy. soittamo piti vanhempaa lukua: soitetut, vastaukset, ihmiset, koneet, hylätyt puhelut ja lyhyt tuore jakso samoista.',
+    where: 'Ringo Market DB pitää kirjaa jokaisesta soittojaksosta: montako linjaa yritettiin, montako tavoitti ihmisen, montako jäi ilman vapaata soittajaa, montako ylimääräistä linjaa oli auki, ja miten hylättyjen vastausten osuus liikkuu rajaa vasten. Jos osuus nousee liian korkeaksi, soitto pudotetaan yhteen linjaan vapaata soittajaa kohden, kunnes osuus jäähtyy. soittamo piti vanhempaa lukua: soitetut, vastaukset, ihmiset, koneet, hylätyt puhelut ja lyhyt tuore jakso samoista.',
     formulas: [
       ['Kuinka usein joku vastaa', '(tavoitetut ihmiset + odottamaan jääneet) ÷ yritetyt linjat', 'Osuus yrityksistä, jotka tavoittivat ihmisen. Linjat, joihin kukaan ei vastannut, ja puhelinvastaajat jäävät yritysten joukkoon. Tätä osuutta soitontyö käyttää.'],
       ['Ylimääräiset linjat', 'pysy alimman ja ylimmän sallitun välissä, noin 1 ÷ kuinka usein joku vastaa', 'Soitot = vapaat soittajat × ylimääräiset linjat. Jos joka viides yritys tavoittaa ihmisen, linjoja soitetaan noin viisi. Soitontyö ei laske alle alimman eikä nouse yli ylimmän asetuksen.'],
       ['Odottamaan jääneet', 'odottamaan jääneet ÷ (odottamaan jääneet + soittajalle kytketyt)', 'Ihmiset, jotka vastasivat eikä heitä kytketty soittajalle, jaettuna kaikilla vastanneilla. Tätä liikkuvaa osuutta verrataan sille soittojaksolle tallennettuun rajaan. Monilla markkinoilla katto on noin 3 % vastanneista. Tallennettu raja on se, jota tämä soitontyö käyttää.'],
       ['soittamon tuore jakso', 'jakson hylätyt puhelut ÷ jakson soitot', 'Tämä laskee hylätyt puhelut per soitto, joten luku näyttää pienemmältä kuin niiden osuus, jotka vastasivat ja jäivät odottamaan. Rajan pitäisi käyttää tuota vastauksiin perustuvaa osuutta.'],
       ['Takaisin yhteen linjaan', 'jos liian moni vastannut jää odottamaan, soi vain yksi linja vapaata soittajaa kohden', 'Ei ylimääräisiä linjoja, ennen kuin osuus jäähtyy tai joku kytkee ylimääräiset linjat takaisin.'],
-      ['Ihmiset, eivät koneet', 'ihmiset ÷ (ihmiset + koneet)', 'Oliko vastaus ihminen vai kone. Koneen ei pidä viedä soittajaa. soittamo laski molemmat. RIngomarket merkitsee tuloksen jokaiseen yritykseen.'],
+      ['Ihmiset, eivät koneet', 'ihmiset ÷ (ihmiset + koneet)', 'Oliko vastaus ihminen vai kone. Koneen ei pidä viedä soittajaa. soittamo laski molemmat. Ringo Market DB merkitsee tuloksen jokaiseen yritykseen.'],
     ],
     tracks: [
       'Kauanko ihminen odottaa vastattuaan, mukaan lukien lyhyt viesti, joka soi kun soittajaa ei ole vapaana',
