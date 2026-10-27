@@ -401,7 +401,7 @@ const plan = {
     ],
     steps: [
       ['done', 'Picture', 'The three books, sellers, 14-day outcomes, and the live feed.'],
-      ['due', 'Stack', 'Ringo Market on the left, the backend in the middle, and the database clusters on the right.'],
+      ['done', 'Stack', 'Ringo Market on the left, the backend in the middle, and the database clusters on the right.'],
       ['due', 'Predictive calling', 'Read dialer sessions on RIngomarket, and the older predictive sessions on soittamo.'],
       ['due', 'Tracking', 'Answer rate, machines, connect wait, seller conversion, and agent idle time.'],
     ],
@@ -441,7 +441,7 @@ const plan = {
     ],
     steps: [
       ['done', 'Kuva', 'Kolme kirjaa, myyjät, 14 päivän tulokset ja live-syöte.'],
-      ['due', 'Stack', 'Ringo Market vasemmalle, taustapalvelu keskelle ja tietokantaklusterit oikealle.'],
+      ['done', 'Stack', 'Ringo Market vasemmalle, taustapalvelu keskelle ja tietokantaklusterit oikealle.'],
       ['due', 'Ennakoiva soitto', 'Luetaan RIngomarketin dialer-istunnot ja soittamon vanhemmat predictive-istunnot.'],
       ['due', 'Seuranta', 'Vastausaste, koneet, kytkennän odotus, myyjän konversio ja soittajan joutenolo.'],
     ],
