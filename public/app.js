@@ -459,7 +459,6 @@ const plan = {
     ],
     steps: [
       ['done', 'Picture', 'The three books, the sellers, the last 14 days, and new calls as they arrive.'],
-      ['done', 'How the pieces fit', 'Ringo Market on the left, the calling desk in the middle, and the three books on the right.'],
       ['due', 'Predictive calling', 'Show how Ringo Market DB paces calls now, and how soittamo used to.'],
       ['due', 'Tracking', 'How often people answer, how many answers are machines, how long a connection waits, how sellers turn calls into sales, and how long callers sit waiting.'],
     ],
@@ -500,7 +499,6 @@ const plan = {
     ],
     steps: [
       ['done', 'Kuva', 'Kolme kirjaa, myyjät, viimeiset 14 päivää ja uudet puhelut sitä mukaa kun ne tulevat.'],
-      ['done', 'Miten osat liittyvät', 'Ringo Market vasemmalla, soitontyö keskellä ja kolme kirjaa oikealla.'],
       ['due', 'Ennakoiva soitto', 'Näytetään, miten Ringo Market DB tahdistaa soitot nyt, ja miten soittamo teki sen aiemmin.'],
       ['due', 'Seuranta', 'Kuinka usein vastataan, montako vastausta on koneita, kauanko kytkentää odotetaan, miten myyjät päätyvät kauppaan, ja kauanko soittaja istuu vapaana.'],
     ],
@@ -546,11 +544,6 @@ function planGoals(text) {
       lines: text.objectives.slice(0, 3).map((row) => row[1]),
     },
     {
-      state: 'done',
-      name: text.steps[1][1],
-      paragraphs: [text.steps[1][2]],
-    },
-    {
       state: 'due',
       name: text.connect,
       paragraphs: [text.objectives[3][1]],
@@ -563,8 +556,8 @@ function planGoals(text) {
     },
     {
       state: 'due',
-      name: text.steps[3][1],
-      paragraphs: [text.steps[3][2]],
+      name: text.steps[2][1],
+      paragraphs: [text.steps[2][2]],
       lines: text.tracks,
     },
   ]
