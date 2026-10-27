@@ -54,6 +54,8 @@ const copy = {
     quiet: 'Quiet',
     empty: 'Empty',
     liveCampaigns: '{n} campaigns live now',
+    oneCampaign: '1 campaign live now',
+    noCallsYet: 'No calls yet',
     callUnit: 'calls',
     detail: '{leads} leads · {sales} sales',
     postgres: 'Postgres {version}',
@@ -116,6 +118,8 @@ const copy = {
     quiet: 'Hiljainen',
     empty: 'Tyhjä',
     liveCampaigns: '{n} kampanjaa käynnissä',
+    oneCampaign: '1 kampanja käynnissä',
+    noCallsYet: 'Ei vielä puheluita',
     callUnit: 'puhelua',
     detail: '{leads} liidiä · {sales} kauppaa',
     postgres: 'Postgres {version}',
@@ -334,11 +338,17 @@ function render(summary) {
         leads: Number(source.leads).toLocaleString(locale()),
         sales: Number(source.sales).toLocaleString(locale()),
       })))
-      if (source.liveCampaigns != null) card.append(el('p', t('liveCampaigns', { n: source.liveCampaigns })))
+      if (source.liveCampaigns != null) {
+        card.append(el('p', Number(source.liveCampaigns) === 1 ? t('oneCampaign') : t('liveCampaigns', { n: source.liveCampaigns })))
+      }
       const latest = el('div', null, 'latest')
-      latest.append(el('span', t('latest')))
-      latest.append(el('b', ` ${ago(source.latestCall)}`))
-      latest.append(el('p', when(source.latestCall)))
+      if (!source.latestCall) {
+        latest.append(el('span', t('latest')), el('p', t('noCallsYet')))
+      } else {
+        latest.append(el('span', t('latest')))
+        latest.append(el('b', ` ${ago(source.latestCall)}`))
+        latest.append(el('p', when(source.latestCall)))
+      }
       card.append(latest)
     }
     cards.append(card)
