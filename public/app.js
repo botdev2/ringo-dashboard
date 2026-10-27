@@ -78,8 +78,6 @@ const copy = {
     help: 'Enter the access code.',
     open: 'Open',
     badToken: 'That code was not accepted.',
-    intro: 'Ringo Market is the project that shows the three databases in one place. Older calls are already here. New calls, leads, and sales appear as they happen.',
-    privacy: 'Phone numbers and personal details are not shown.',
     waiting: 'Waiting for the databases.',
     updated: 'Updated {when}',
     recording: 'Recording since {when}. {n} new items saved. Last check {poll}.',
@@ -184,8 +182,6 @@ const copy = {
     help: 'Anna kojelaudan tunnus.',
     open: 'Avaa',
     badToken: 'Tunnusta ei hyväksytty.',
-    intro: 'Ringo Market on projekti, joka näyttää kolme tietokantaa yhdessä. Vanhat puhelut ovat jo täällä. Uudet puhelut, liidit ja kaupat ilmestyvät sitä mukaa kun ne syntyvät.',
-    privacy: 'Puhelinnumeroita ja henkilötietoja ei näytetä.',
     waiting: 'Odotetaan tietokantoja.',
     updated: 'Päivitetty {when}',
     recording: 'Tallennus alkoi {when}. {n} uutta merkintää. Viimeisin tarkistus {poll}.',
@@ -976,8 +972,6 @@ function applyStatic() {
   paintDue()
   renderMembers()
   renderLegend()
-  fill('#intro', t('intro'))
-  fill('#privacy', t('privacy'))
   fill('#chart-title', t('chart'))
   fill('#feed-title', t('feed'))
   fill('#feed-help', t('feedHelp'))
