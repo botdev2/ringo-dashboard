@@ -115,6 +115,8 @@ const copy = {
     oneCampaign: '1 campaign live now',
     noCallsYet: 'No calls yet',
     callUnit: 'calls',
+    light: 'Light',
+    dark: 'Dark',
     detail: '{leads} leads · {sales} sales',
     saleRatio: '1 sale per {per} calls · {pct}%',
     zeroSales: '0 sales in {calls} calls',
@@ -182,6 +184,8 @@ const copy = {
     oneCampaign: '1 kampanja käynnissä',
     noCallsYet: 'Ei vielä puheluita',
     callUnit: 'puhelua',
+    light: 'Vaalea',
+    dark: 'Tumma',
     detail: '{leads} liidiä · {sales} kauppaa',
     saleRatio: '1 kauppa / {per} puhelua · {pct} %',
     zeroSales: '0 kauppaa / {calls} puhelua',
@@ -241,6 +245,57 @@ function tone(source) {
 function fill(id, text) {
   const node = document.querySelector(id)
   if (node) node.textContent = text
+}
+
+const marks = {
+  ringo: '<svg viewBox="0 0 32 32"><circle cx="16" cy="16" r="11" fill="none" stroke="currentColor" stroke-width="2.6"/><circle cx="16" cy="16" r="3" fill="currentColor"/><path d="M16 5v4.2" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/></svg>',
+  ringomarket: '<svg viewBox="0 0 32 32"><circle cx="12" cy="16" r="7" fill="none" stroke="currentColor" stroke-width="2.4"/><path d="M17 20l6 5" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><path d="M20 8v8M24 6v10M28 11v5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>',
+  soittamo: '<svg viewBox="0 0 32 32"><path d="M7 14c0-5 4-9 9-9s9 4 9 9" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"/><rect x="5" y="14" width="6" height="9" rx="2.2" fill="currentColor"/><rect x="21" y="14" width="6" height="9" rx="2.2" fill="currentColor"/><path d="M11 21h10" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>',
+  staging: '<svg viewBox="0 0 32 32"><rect x="5" y="7" width="16" height="16" rx="2.5" fill="none" stroke="currentColor" stroke-width="2.2"/><rect x="11" y="13" width="16" height="12" rx="2.5" fill="none" stroke="currentColor" stroke-width="2.2"/></svg>',
+  frontend: '<svg viewBox="0 0 32 32"><rect x="4" y="6" width="24" height="20" rx="3" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M4 12h24" stroke="currentColor" stroke-width="2.2"/><circle cx="8" cy="9" r="1" fill="currentColor"/></svg>',
+  backend: '<svg viewBox="0 0 32 32"><circle cx="8" cy="16" r="3" fill="currentColor"/><circle cx="24" cy="8" r="3" fill="currentColor"/><circle cx="24" cy="24" r="3" fill="currentColor"/><path d="M11 15.2 21 9.2M11 16.8 21 22.8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>',
+  database: '<svg viewBox="0 0 32 32"><ellipse cx="16" cy="8" rx="8" ry="3.2" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M8 8v16c0 1.8 3.6 3.2 8 3.2s8-1.4 8-3.2V8" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M8 16c0 1.8 3.6 3.2 8 3.2s8-1.4 8-3.2" fill="none" stroke="currentColor" stroke-width="2.2"/></svg>',
+  sun: '<svg viewBox="0 0 32 32"><circle cx="16" cy="16" r="5" fill="currentColor"/><path d="M16 4v4M16 24v4M4 16h4M24 16h4M7.5 7.5l2.8 2.8M21.7 21.7l2.8 2.8M24.5 7.5l-2.8 2.8M10.3 21.7l-2.8 2.8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>',
+  moon: '<svg viewBox="0 0 32 32"><path d="M20 5a10 10 0 1 0 7 17A8 8 0 0 1 20 5z" fill="currentColor"/></svg>',
+}
+
+function svgEl(name) {
+  const span = document.createElement('span')
+  span.className = `logo ${name}`
+  span.innerHTML = marks[name]
+  return span
+}
+
+function chosenTheme() {
+  const saved = localStorage.getItem('ringo_theme')
+  if (saved === 'light' || saved === 'dark') return saved
+  return window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark'
+}
+
+let theme = chosenTheme()
+
+function applyTheme() {
+  document.documentElement.dataset.theme = theme
+}
+
+function setTheme(next) {
+  theme = next
+  localStorage.setItem('ringo_theme', next)
+  applyTheme()
+  themeSwitch(document.querySelector('#theme'))
+  themeSwitch(document.querySelector('#login-theme'))
+}
+
+function themeSwitch(parent) {
+  if (!parent) return
+  parent.replaceChildren()
+  const next = theme === 'dark' ? 'light' : 'dark'
+  const button = el('button')
+  button.type = 'button'
+  button.className = 'theme-toggle'
+  button.append(svgEl(next === 'light' ? 'sun' : 'moon'), el('span', t(next)))
+  button.addEventListener('click', () => setTheme(next))
+  parent.append(button)
 }
 
 function langSwitch(parent) {
@@ -413,6 +468,11 @@ function applyStatic() {
   fill('#feed-help', t('feedHelp'))
   langSwitch(document.querySelector('#login-lang'))
   langSwitch(document.querySelector('#lang'))
+  applyTheme()
+  themeSwitch(document.querySelector('#login-theme'))
+  themeSwitch(document.querySelector('#theme'))
+  document.querySelector('#login-logo').replaceChildren(svgEl('ringo'))
+  document.querySelector('#logo').replaceChildren(svgEl('ringo'))
   renderPlan()
 }
 
@@ -515,15 +575,24 @@ function renderStack(sources) {
   const grid = el('div', null, 'stack')
 
   const front = el('article', null, 'node frontend')
-  front.append(el('p', t('frontendRole'), 'role'), el('h2', t('frontendTitle')), el('p', t('frontendBody')), el('p', t('later'), 'wait'))
+  const frontTitle = el('div', null, 'named')
+  frontTitle.append(svgEl('frontend'), el('h2', t('frontendTitle')))
+  front.append(el('p', t('frontendRole'), 'role'), frontTitle, el('p', t('frontendBody')), el('p', t('later'), 'wait'))
   const mid = el('article', null, 'node middle')
-  mid.append(el('p', t('middleRole'), 'role'), el('h2', t('middleTitle')), el('p', t('middleBody')), el('p', t('later'), 'wait'))
+  const midTitle = el('div', null, 'named')
+  midTitle.append(svgEl('backend'), el('h2', t('middleTitle')))
+  mid.append(el('p', t('middleRole'), 'role'), midTitle, el('p', t('middleBody')), el('p', t('later'), 'wait'))
   const clusters = el('article', null, 'node clusters')
-  clusters.append(el('p', t('clusterRole'), 'role'), el('h2', t('clusterTitle')), el('p', t('clusterBody')))
+  const clusterTitle = el('div', null, 'named')
+  clusterTitle.append(svgEl('database'), el('h2', t('clusterTitle')))
+  clusters.append(el('p', t('clusterRole'), 'role'), clusterTitle, el('p', t('clusterBody')))
   const list = el('ul', null, 'cluster-list')
   for (const [key, source] of Object.entries(sources)) {
     const item = document.createElement('li')
-    const name = el('span', labels[key] || key)
+    const name = el('span', null, 'named')
+    const mark = svgEl(key)
+    mark.classList.add('tiny')
+    name.append(mark, el('span', labels[key] || key))
     const state = el('span', source.ok ? t(tone(source)) : t('empty'), `pill ${source.ok ? tone(source) : 'empty'}`)
     item.append(name, state)
     list.append(item)
@@ -570,11 +639,13 @@ function render(summary) {
   cards.replaceChildren()
   for (const [key, source] of Object.entries(summary.sources)) {
     const state = source.ok ? tone(source) : 'empty'
-    const card = el('article', null, state)
+    const card = el('article', null, `${state} source-${key}`)
     const meta = el('div', null, 'meta')
     meta.append(el('span', source.ok ? t(state) : t('empty'), `pill ${state}`))
     if (source.version) meta.append(el('span', t('postgres', { version: String(source.version).split(' ')[0] }), 'version'))
-    card.append(meta, el('h2', labels[key] || key))
+    const heading = el('div', null, 'named')
+    heading.append(svgEl(key), el('h2', labels[key] || key))
+    card.append(meta, heading)
     if (!source.ok) {
       card.append(el('p', source.error || t('waiting')))
     } else {

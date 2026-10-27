@@ -4,11 +4,25 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Ringo Dashboard</title>
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="stylesheet" href="/styles.css" />
+    <script>
+      (function () {
+        var saved = localStorage.getItem('ringo_theme')
+        var theme = saved === 'light' || saved === 'dark'
+          ? saved
+          : (matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark')
+        document.documentElement.dataset.theme = theme
+      })()
+    </script>
   </head>
   <body>
     <form id="login" hidden>
-      <div class="lang" id="login-lang"></div>
+      <div class="tools">
+        <div class="lang" id="login-lang"></div>
+        <div id="login-theme"></div>
+      </div>
+      <span id="login-logo"></span>
       <p class="eyebrow" id="login-kicker"></p>
       <h1 id="login-title"></h1>
       <p id="login-help"></p>
@@ -18,15 +32,21 @@
     </form>
     <main id="app" hidden>
       <header>
-        <div>
-          <p class="eyebrow">Ringo</p>
-          <h1 id="title"></h1>
-          <p id="intro"></p>
-          <p id="privacy"></p>
-          <p id="updated"></p>
+        <div class="brand">
+          <span id="logo"></span>
+          <div>
+            <p class="eyebrow">Ringo</p>
+            <h1 id="title"></h1>
+            <p id="intro"></p>
+            <p id="privacy"></p>
+            <p id="updated"></p>
+          </div>
         </div>
         <div class="header-side">
-          <div class="lang" id="lang"></div>
+          <div class="tools">
+            <div class="lang" id="lang"></div>
+            <div id="theme"></div>
+          </div>
           <p id="recorder"></p>
         </div>
       </header>
