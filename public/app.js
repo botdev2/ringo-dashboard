@@ -131,6 +131,7 @@ const copy = {
     tabPeopleHint: 'Sellers, call centres, and operators.',
     tabPiecesHint: 'How Ringo Market, the calling desk, and the databases pass the work.',
     tabGoalsHint: 'What is already in place, and what is still open until 31.10.2026.',
+    footer: 'A project platform by EB Systech for projects.',
     chart: 'Ringo Market DB calls, last 14 days',
     feed: 'New activity',
     feedHelp: 'Only calls, leads, and sales that arrived after this page was opened.',
@@ -236,6 +237,7 @@ const copy = {
     tabPeopleHint: 'Myyjät, puhelukeskukset ja operaattorit.',
     tabPiecesHint: 'Miten Ringo Market, soitontyö ja tietokannat välittävät työn.',
     tabGoalsHint: 'Mikä on jo käytössä, ja mikä on kesken 31.10.2026 asti.',
+    footer: 'EB Systechin projektialusta projekteille.',
     chart: 'Ringo Market DB, puhelut 14 päivää',
     feed: 'Uusi toiminta',
     feedHelp: 'Vain puhelut, liidit ja kaupat, jotka ovat tulleet tämän sivun avaamisen jälkeen.',
@@ -979,6 +981,7 @@ function applyStatic() {
   fill('#chart-title', t('chart'))
   fill('#feed-title', t('feed'))
   fill('#feed-help', t('feedHelp'))
+  fill('#footer', t('footer'))
   langSwitch(document.querySelector('#login-lang'))
   langSwitch(document.querySelector('#lang'))
   applyTheme()

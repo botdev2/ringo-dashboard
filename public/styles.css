@@ -151,6 +151,13 @@ body {
 }
 
 main, form { max-width: 1180px; margin: 0 auto; padding: 28px 20px 64px; }
+#footer {
+  margin-top: 36px;
+  padding-top: 16px;
+  border-top: 1px solid var(--line);
+  color: var(--faint);
+  font-size: 13px;
+}
 form {
   min-height: 100vh;
   display: grid;
@@ -633,6 +640,7 @@ li { padding: 8px 0; border-bottom: 1px solid var(--line); color: var(--muted); 
   #breakdowns { order: 6; }
   #organizations { order: 7; }
   #plan { order: 8; }
+  #footer { order: 9; margin-top: 28px; }
   #intro, #privacy { display: none; }
   .people { text-align: left; }
   .brand { align-items: center; }
