@@ -2,6 +2,63 @@ const login = document.querySelector('#login')
 const app = document.querySelector('#app')
 const labels = { ringomarket: 'RIngomarket', soittamo: 'soittamo', staging: 'Staging' }
 
+const fieldTerms = {
+  en: {
+    '(none)': 'None',
+    no_answer: 'No Answer',
+    not_interested: 'Not Interested',
+    busy: 'Busy',
+    voicemail: 'Voicemail',
+    callback: 'Callback',
+    other: 'Other',
+    completed: 'Completed',
+    canceled: 'Canceled',
+    cancelled: 'Cancelled',
+    failed: 'Failed',
+    sale: 'Sale',
+    no_sale: 'No Sale',
+    wrong_number: 'Wrong Number',
+    booking: 'Booking',
+    available: 'Available',
+    called: 'Called',
+    dead: 'Dead',
+    exhausted: 'Exhausted',
+    confirmed: 'Confirmed',
+    rejected: 'Rejected',
+    expired: 'Expired',
+    pending: 'Pending',
+    pending_send: 'Pending Send',
+    send_failed: 'Send Failed',
+  },
+  fi: {
+    '(none)': 'Ei arvoa',
+    no_answer: 'Ei vastausta',
+    not_interested: 'Ei kiinnostunut',
+    busy: 'Varattu',
+    voicemail: 'Puhelinvastaaja',
+    callback: 'Takaisinsoitto',
+    other: 'Muu',
+    completed: 'Valmis',
+    canceled: 'Peruttu',
+    cancelled: 'Peruttu',
+    failed: 'Epäonnistui',
+    sale: 'Kauppa',
+    no_sale: 'Ei kauppaa',
+    wrong_number: 'Väärä numero',
+    booking: 'Varaus',
+    available: 'Vapaa',
+    called: 'Soitettu',
+    dead: 'Kuollut',
+    exhausted: 'Käytetty loppuun',
+    confirmed: 'Vahvistettu',
+    rejected: 'Hylätty',
+    expired: 'Vanhentunut',
+    pending: 'Odottaa',
+    pending_send: 'Lähetystä odottaa',
+    send_failed: 'Lähetys epäonnistui',
+  },
+}
+
 const copy = {
   en: {
     title: 'Ringo Dashboard',
@@ -215,7 +272,14 @@ function setLang(next) {
   if (lastSummary) render(lastSummary)
 }
 
-function bars(parent, rows) {
+function fieldLabel(raw) {
+  const key = String(raw ?? '')
+  const known = fieldTerms[lang][key]
+  if (known) return known
+  return key.replace(/_/g, ' ').replace(/\b\w/g, (letter) => letter.toUpperCase())
+}
+
+function bars(parent, rows, showField) {
   const max = Math.max(1, ...rows.map((row) => row.n))
   parent.replaceChildren()
   if (!rows.length) {
@@ -224,12 +288,18 @@ function bars(parent, rows) {
   }
   for (const row of rows) {
     const line = el('div', null, 'bar')
-    line.append(el('span', row.label))
+    if (showField) {
+      const term = el('span', null, 'term')
+      term.append(el('small', row.label), el('b', fieldLabel(row.label)))
+      line.append(term)
+    } else {
+      line.append(el('span', row.label))
+    }
     const track = el('span')
     const fillBar = document.createElement('i')
     fillBar.style.width = `${Math.max(2, (row.n / max) * 100)}%`
     track.append(fillBar)
-    line.append(track, el('span', Number(row.n).toLocaleString(locale())))
+    line.append(track, el('span', Number(row.n).toLocaleString(locale()), 'count'))
     parent.append(line)
   }
 }
@@ -301,7 +371,14 @@ function renderFeed(events) {
     return
   }
   for (const event of events) {
-    const bits = [labels[event.source] || event.source, event.organization, event.kind, event.status, event.outcome, event.country]
+    const bits = [
+      labels[event.source] || event.source,
+      event.organization,
+      event.kind,
+      event.status ? fieldLabel(event.status) : '',
+      event.outcome ? fieldLabel(event.outcome) : '',
+      event.country,
+    ]
       .filter(Boolean)
       .join(' · ')
     list.append(el('li', `${bits} · ${when(event.happened_at || event.happenedAt)}`))
@@ -367,7 +444,7 @@ function render(summary) {
     card.append(el('h2', t('outcomes', { name: labels[key] || key })))
     const box = el('div')
     const rows = source.callOutcome.length ? source.callOutcome : source.callStatus
-    bars(box, rows)
+    bars(box, rows, true)
     card.append(box)
     breakdowns.append(card)
   }
