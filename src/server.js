@@ -85,6 +85,52 @@ app.get('/api/share', (req, res) => {
   })
 })
 
+// Variables are stored base64-encoded in VARIABLES_B64 as {"groups":[{"name","items":[{"key","value","scope"}]}]}.
+// They are only served when DASHBOARD_TOKEN is set, so an open dashboard never exposes them.
+function loadVariables() {
+  const raw = process.env.VARIABLES_B64 || ''
+  if (!raw) return { groups: [] }
+  try {
+    const parsed = JSON.parse(Buffer.from(raw, 'base64').toString('utf8'))
+    return { groups: Array.isArray(parsed.groups) ? parsed.groups : [] }
+  } catch {
+    return { groups: [] }
+  }
+}
+
+function variablesText(data) {
+  const lines = []
+  for (const group of data.groups) {
+    lines.push(`# ${group.name}`)
+    if (group.note) lines.push(`# ${group.note}`)
+    for (const item of group.items || []) {
+      const scope = item.scope ? `  # ${item.scope}` : ''
+      lines.push(`${item.key}=${item.value}${scope}`)
+    }
+    lines.push('')
+  }
+  return `${lines.join('\n')}\n`
+}
+
+app.get('/api/variables', (_req, res) => {
+  if (!token) {
+    res.status(403).json({ error: 'set DASHBOARD_TOKEN to view variables' })
+    return
+  }
+  res.setHeader('Cache-Control', 'no-store')
+  res.json(loadVariables())
+})
+
+app.get('/api/variables.txt', (_req, res) => {
+  if (!token) {
+    res.status(403).type('text/plain').send('set DASHBOARD_TOKEN to download variables\n')
+    return
+  }
+  res.setHeader('Cache-Control', 'no-store')
+  res.setHeader('Content-Disposition', 'attachment; filename="ringomarket-salvaged-variables.txt"')
+  res.type('text/plain; charset=utf-8').send(variablesText(loadVariables()))
+})
+
 app.get('/api/stream', (req, res) => {
   res.setHeader('Content-Type', 'text/event-stream')
   res.setHeader('Cache-Control', 'no-cache')

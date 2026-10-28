@@ -142,6 +142,19 @@ const copy = {
     archPeople: 'People',
     archPeopleBody: 'Callers and sellers',
     tabGoalsHint: 'What is already in place, and what is still open until 31.10.2026.',
+    tabVariables: 'Variables',
+    tabVariablesHint: 'Environment variables and secrets of the salvaged Ringo Market app on this server.',
+    varsTitle: 'ringomarket-salvaged',
+    varsEmpty: 'No variables have been added yet.',
+    varsDownload: 'Download .txt',
+    varsReveal: 'Show',
+    varsHide: 'Hide',
+    varsCopy: 'Copy',
+    varsCopied: 'Copied',
+    varsKey: 'Name',
+    varsValue: 'Value',
+    varsScope: 'Used in',
+    varsLocked: 'Variables are only shown when the dashboard has an access code.',
     footer: 'A project platform by EB Systech for projects.',
     chart: 'Ringo Market DB calls, last 14 days',
     feed: 'New activity',
@@ -259,6 +272,19 @@ const copy = {
     archPeople: 'Ihmiset',
     archPeopleBody: 'Soittajat ja myyjät',
     tabGoalsHint: 'Mikä on jo käytössä, ja mikä on kesken 31.10.2026 asti.',
+    tabVariables: 'Muuttujat',
+    tabVariablesHint: 'Tämän palvelimen pelastetun Ringo Market -sovelluksen ympäristömuuttujat ja salaisuudet.',
+    varsTitle: 'ringomarket-salvaged',
+    varsEmpty: 'Muuttujia ei ole vielä lisätty.',
+    varsDownload: 'Lataa .txt',
+    varsReveal: 'Näytä',
+    varsHide: 'Piilota',
+    varsCopy: 'Kopioi',
+    varsCopied: 'Kopioitu',
+    varsKey: 'Nimi',
+    varsValue: 'Arvo',
+    varsScope: 'Käytössä',
+    varsLocked: 'Muuttujat näytetään vain, kun koontinäytöllä on pääsykoodi.',
     footer: 'EB Systechin projektialusta projekteille.',
     chart: 'Ringo Market DB, puhelut 14 päivää',
     feed: 'Uusi toiminta',
@@ -526,6 +552,14 @@ const plan = {
       ['Back to one line', 'if too many answered calls are left waiting, ring only one line per free caller', 'No extra lines until the share cools, or someone turns the extra lines back on.'],
       ['People, not machines', 'people ÷ (people + machines)', 'Was the answer a person or a machine. A machine should not take a caller. soittamo counted both. Ringo Market DB notes the result on each try.'],
     ],
+    updateLog: 'Update Log',
+    updateLead: '28.10.2026. The salvaged Next.js app is live on this server.',
+    updateLines: [
+      'Copied from aaronmkael/ringomarket main, commit fd3d1d11 (22.10.2026), into the private repository botdev2/ringomarket_salvaged as one commit, 86f2f35. The old pull-request history was left behind.',
+      'The first push to GitHub was refused until that login was allowed to write Actions workflow files. After that, main was pushed.',
+      'Coolify on this server built it with Nixpacks from that repository, branch main. The app listens on port 3000.',
+      'The first deploy finished at 20:19 on 27.10.2026. A second deploy of the same commit finished at 01:00 on 28.10.2026. The app is healthy.',
+    ],
     tracks: [
       'How long a person waits after answering, including the short message played when nobody is free',
       'Abandoned calls by campaign and country, and whether that short message was played',
@@ -577,6 +611,14 @@ const plan = {
       ['soittamon tuore jakso', 'jakson hylätyt puhelut ÷ jakson soitot', 'Tämä laskee hylätyt puhelut per soitto, joten luku näyttää pienemmältä kuin niiden osuus, jotka vastasivat ja jäivät odottamaan. Rajan pitäisi käyttää tuota vastauksiin perustuvaa osuutta.'],
       ['Takaisin yhteen linjaan', 'jos liian moni vastannut jää odottamaan, soi vain yksi linja vapaata soittajaa kohden', 'Ei ylimääräisiä linjoja, ennen kuin osuus jäähtyy tai joku kytkee ylimääräiset linjat takaisin.'],
       ['Ihmiset, eivät koneet', 'ihmiset ÷ (ihmiset + koneet)', 'Oliko vastaus ihminen vai kone. Koneen ei pidä viedä soittajaa. soittamo laski molemmat. Ringo Market DB merkitsee tuloksen jokaiseen yritykseen.'],
+    ],
+    updateLog: 'Päivitysloki',
+    updateLead: '28.10.2026. Pelastettu Next.js-sovellus on käynnissä tällä palvelimella.',
+    updateLines: [
+      'Kopioitu aaronmkael/ringomarket-päähaarasta, commit fd3d1d11 (22.10.2026), yksityiseen tietovarastoon botdev2/ringomarket_salvaged yhdeksi commitiksi, 86f2f35. Vanha pull request -historia jätettiin pois.',
+      'Ensimmäinen push GitHubiin hylättiin, kunnes kirjautuminen sai luvan kirjoittaa Actions-työnkulkuja. Sen jälkeen main työnnettiin.',
+      'Tämän palvelimen Coolify rakensi sen Nixpacksilla tuosta tietovarastosta, haarasta main. Sovellus kuuntelee porttia 3000.',
+      'Ensimmäinen käyttöönotto valmistui 27.10.2026 klo 20.19. Sama commit otettiin käyttöön uudelleen, ja se valmistui 28.10.2026 klo 01.00. Sovellus on kunnossa.',
     ],
     tracks: [
       'Kauanko ihminen odottaa vastattuaan, mukaan lukien lyhyt viesti, joka soi kun soittajaa ei ole vapaana',
@@ -671,6 +713,16 @@ function renderPacing(parent, text) {
 
 function planGoals(text) {
   return [
+    {
+      state: 'done',
+      name: text.updateLog,
+      paragraphs: [text.updateLead],
+      lines: text.updateLines,
+      link: {
+        href: 'https://ringomarket-salvaged.62.83.41.82.sslip.io/login',
+        label: 'https://ringomarket-salvaged.62.83.41.82.sslip.io/login',
+      },
+    },
     {
       state: 'due',
       name: text.predictive,
@@ -774,6 +826,14 @@ function renderPlan() {
     panel.append(head)
     for (const paragraph of goal.paragraphs || []) panel.append(el('p', paragraph))
     if (goal.pacing) renderPacing(panel, text)
+    if (goal.link) {
+      const link = document.createElement('a')
+      link.href = goal.link.href
+      link.target = '_blank'
+      link.rel = 'noopener'
+      link.textContent = goal.link.label
+      panel.append(link)
+    }
     if (goal.lines) {
       const list = el('ul', null, 'plan-lines')
       for (const line of goal.lines) {
@@ -1023,7 +1083,76 @@ const workspaceViews = [
   { id: 'activity', nodes: ['.split'] },
   { id: 'results', nodes: ['#breakdowns'] },
   { id: 'people', nodes: ['#organizations'] },
+  { id: 'variables', nodes: ['#variables'] },
 ]
+
+async function renderVariables() {
+  const root = document.querySelector('#variables')
+  root.replaceChildren()
+  root.className = 'window'
+  const bar = el('div', null, 'window-bar')
+  bar.append(el('strong', t('varsTitle')))
+  const download = el('a', t('varsDownload'), 'vars-download')
+  download.href = '/api/variables.txt'
+  download.setAttribute('download', 'ringomarket-salvaged-variables.txt')
+  bar.append(download)
+  const body = el('div', null, 'vars-body')
+  root.append(bar, body)
+  const response = await fetch('/api/variables')
+  if (response.status === 403) {
+    body.append(el('p', t('varsLocked'), 'vars-empty'))
+    return
+  }
+  if (!response.ok) return
+  const data = await response.json()
+  const groups = (data.groups || []).filter((group) => (group.items || []).length)
+  if (!groups.length) {
+    body.append(el('p', t('varsEmpty'), 'vars-empty'))
+    return
+  }
+  for (const group of groups) {
+    if (groups.length > 1) body.append(el('h3', group.name, 'vars-group'))
+    const table = document.createElement('table')
+    const head = document.createElement('tr')
+    for (const label of [t('varsKey'), t('varsValue'), t('varsScope')]) head.append(el('th', label))
+    table.append(head)
+    for (const item of group.items) {
+      const line = document.createElement('tr')
+      const value = el('code', '••••••••', 'vars-value')
+      let shown = false
+      const reveal = el('button', t('varsReveal'), 'ghost vars-btn')
+      reveal.type = 'button'
+      reveal.addEventListener('click', () => {
+        shown = !shown
+        value.textContent = shown ? item.value : '••••••••'
+        value.classList.toggle('shown', shown)
+        reveal.textContent = shown ? t('varsHide') : t('varsReveal')
+      })
+      const copy = el('button', t('varsCopy'), 'ghost vars-btn')
+      copy.type = 'button'
+      copy.addEventListener('click', async () => {
+        try {
+          await navigator.clipboard.writeText(item.value)
+        } catch {
+          return
+        }
+        copy.textContent = t('varsCopied')
+        setTimeout(() => { copy.textContent = t('varsCopy') }, 1200)
+      })
+      const cell = el('td', null, 'vars-cell')
+      cell.dataset.label = t('varsValue')
+      cell.append(value, reveal, copy)
+      const keyCell = el('td', item.key)
+      const scopeCell = el('td', item.scope || '')
+      scopeCell.dataset.label = t('varsScope')
+      line.append(keyCell, cell, scopeCell)
+      table.append(line)
+    }
+    const wrap = el('div', null, 'table-scroll')
+    wrap.append(table)
+    body.append(wrap)
+  }
+}
 
 let workspaceId = localStorage.getItem('ringo_workspace') || 'books'
 
@@ -1051,6 +1180,7 @@ function selectWorkspace(id) {
       strip.scrollTo({ left: Math.max(0, start - 12), behavior: 'smooth' })
     }
   }
+  if (id === 'variables') renderVariables()
   planHeld = id !== 'goals'
   syncPlanFreeze()
 }

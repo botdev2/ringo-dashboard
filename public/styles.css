@@ -614,6 +614,12 @@ td:first-child { color: var(--text); }
   color: var(--muted);
   font-size: 14px;
 }
+.plan-panel > a {
+  display: inline-block;
+  margin: 0 0 10px;
+  color: var(--market);
+  word-break: break-all;
+}
 .plan-lines .logo { color: var(--faint); flex: none; }
 .plan-lines .logo svg { width: 14px; height: 14px; margin-top: 3px; }
 .pacing { display: grid; gap: 14px; margin-top: 8px; }
@@ -703,6 +709,16 @@ li { padding: 8px 0; border-bottom: 1px solid var(--line); color: var(--muted); 
 .table-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
 .table-scroll th:first-child,
 .table-scroll td:first-child { position: sticky; left: 0; background: var(--card); }
+
+#variables .window-bar { justify-content: space-between; }
+.vars-download { color: var(--market); font-size: 13px; text-decoration: none; border: 1px solid var(--line); border-radius: 8px; padding: 6px 12px; }
+.vars-body { padding: 4px 16px 16px; }
+.vars-empty { color: var(--faint); margin: 16px 0; }
+.vars-group { margin: 16px 0 4px; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--faint); font-weight: 400; }
+.vars-cell { display: flex; align-items: center; gap: 8px; }
+.vars-value { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 12px; max-width: 360px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; flex: 1 1 auto; min-width: 0; }
+.vars-value.shown { white-space: normal; word-break: break-all; max-width: none; }
+.vars-btn { flex: none; border: 1px solid var(--line); border-radius: 6px; background: transparent; color: var(--muted); padding: 3px 9px; font: inherit; font-size: 12px; }
 
 @media (max-width: 900px) {
   html { -webkit-text-size-adjust: 100%; }
