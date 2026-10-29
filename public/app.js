@@ -7,7 +7,8 @@ const members = [
   { name: 'Aaron', mark: 'AA' },
   { name: 'Wahid', mark: 'WA' },
 ]
-const dueAt = new Date('2026-10-31T23:59:59+02:00').getTime()
+/** Milestone label only — LeadDesk path has no hard desk deadline on this page. */
+const dueClockLabel = { en: 'LIVE', fi: 'LIVE' }
 
 const clips = [
   // { id: 'welcome', title: 'Welcome', file: 'welcome.mp4' },
@@ -87,8 +88,8 @@ const copy = {
     recorderError: 'Could not record: {error}',
     stack: 'Technical Stack',
     participants: 'Participants',
-    readyOn: 'Ready 31.10.2026',
-    dueLabel: 'Time to completion',
+    readyOn: 'LeadDesk competitor path open',
+    dueLabel: 'Project status',
     left: 'left',
     dueNow: 'deadline passed',
     budget: 'Budget',
@@ -141,7 +142,7 @@ const copy = {
     archTitle: 'Technical architecture',
     archPeople: 'People',
     archPeopleBody: 'Callers and sellers',
-    tabGoalsHint: 'What is already in place, and what is still open until 31.10.2026.',
+    tabGoalsHint: 'Where the salvaged product stands now, and how it aims to compete with LeadDesk.',
     tabVariables: 'Variables',
     tabVariablesHint: 'Environment variables and secrets of the salvaged Ringo Market app on this server.',
     varsTitle: 'ringomarket-salvaged',
@@ -217,8 +218,8 @@ const copy = {
     recorderError: 'Tallennin: {error}',
     stack: 'Tekninen toteutus',
     participants: 'Osallistujat',
-    readyOn: 'Valmis 31.10.2026',
-    dueLabel: 'Aika valmistumiseen',
+    readyOn: 'LeadDesk-kilpailijan polku auki',
+    dueLabel: 'Projektin tila',
     left: 'jäljellä',
     dueNow: 'määräaika mennyt',
     budget: 'Budjetti',
@@ -271,7 +272,7 @@ const copy = {
     archTitle: 'Tekninen arkkitehtuuri',
     archPeople: 'Ihmiset',
     archPeopleBody: 'Soittajat ja myyjät',
-    tabGoalsHint: 'Mikä on jo käytössä, ja mikä on kesken 31.10.2026 asti.',
+    tabGoalsHint: 'Missä pelastettu tuote on nyt, ja miten se aikoo kilpailla LeadDeskin kanssa.',
     tabVariables: 'Muuttujat',
     tabVariablesHint: 'Tämän palvelimen pelastetun Ringo Market -sovelluksen ympäristömuuttujat ja salaisuudet.',
     varsTitle: 'ringomarket-salvaged',
@@ -386,7 +387,11 @@ function sourceTone(key, source) {
 function wordmark(id) {
   const node = document.querySelector(id)
   node.classList.add('wordmark')
-  node.textContent = t('title')
+  node.replaceChildren()
+  const brand = document.createElement('span')
+  brand.className = 'brand-mark'
+  brand.textContent = 'Ringo'
+  node.append(brand, document.createTextNode(' Market'))
 }
 
 function renderLegend() {
@@ -511,27 +516,44 @@ function langSwitch(parent) {
 const plan = {
   en: {
     title: 'Objectives and roadmap',
-    now: 'Current objectives',
-    road: 'Roadmap',
+    nowLabel: 'Where we are',
+    leadDeskLabel: 'Competing with LeadDesk',
     predictive: 'Predictive calling',
-    tracking: 'Tracking, ready 31.10.2026',
-    due: 'Everything still open is ready on 31.10.2026.',
-    connect: 'Connection',
-    states: { done: 'In place', next: 'Next', wait: 'Waiting', later: 'Later', due: '31.10.2026' },
-    objectives: [
-      ['done', 'Show Ringo Market DB, soittamo, and Staging together, with the latest call on each.'],
-      ['done', 'Name the seller, call centre, and operator behind the calls, leads, and sales.'],
-      ['done', 'Record new calls, leads, and sales as they arrive, and keep phone numbers and personal details off this page.'],
-      ['due', 'Connect the Ringo Market page to the Calling Facilitator. The picture is already drawn. The addresses come when they are ready.'],
-      ['due', 'Show predictive calling in plain numbers: how many extra lines are open, how often a person answers with nobody free, and when calling drops to one line.'],
+    due: 'Salvaged product is live for browsing. Carrier dialing stays dark until Telnyx keys and a signed-off market flag are added.',
+    states: { done: 'In place', next: 'Next', wait: 'Waiting', later: 'Later', due: 'Open' },
+    nowLead:
+      '29.10.2026. Ringo Market runs as a salvaged Next.js app on this server, pointed at the live Neon database. Admins, team leaders, agents and clients each have a real dashboard. One admin login can View as any of those accounts.',
+    nowLines: [
+      'App: https://ringomarket-salvaged.62.83.41.82.sslip.io — Coolify, branch main, healthy.',
+      'Source: private botdev2/ringomarket_salvaged (from aaronmkael/ringomarket). Latest work includes caller themes, Settings above Report, TL wallboard + report builder, campaign call modes, and admin View as.',
+      'Login for testing: admin sauli@ringomarket.com (password in server secrets). Use bottom-right View as to open any Admin, Team Leader or Agent.',
+      'What works now: browse Admin / TL / Agent / Client UIs on real data. What does not: new outbound dialing, SMS/email send, Google OAuth, AI assistant — Telnyx and most product env keys are unset on purpose.',
+      'This project desk still watches the three Postgres backends (Ringo Market DB live, soittamo retired, Staging empty).',
     ],
-    steps: [
-      ['done', 'Picture', 'The three databases, the sellers, the last 14 days, and new calls as they arrive.'],
-      ['due', 'Predictive calling', 'Show how Ringo Market DB paces calls now, and how soittamo used to.'],
-      ['due', 'Tracking', 'How often people answer, how many answers are machines, how long a connection waits, how sellers turn calls into sales, and how long callers sit waiting.'],
+    leadDeskLead:
+      'Owner decision 29.10.2026: Ringo Market becomes a LeadDesk competitor — sell contact-centre software (and win call centres on the marketplace), not only a commission marketplace.',
+    leadDeskSections: [
+      {
+        title: 'Already shipped toward that path',
+        lines: [
+          'TL wallboard and report builder (/tl/wallboard, /tl/reports).',
+          'Campaign call modes: manual / progressive / predictive (Soittotilat). Fake predictive mockup removed.',
+          'Caller themes: eight palettes under Settings → Appearance; Wiki documents themes, Settings and call modes.',
+          'Admin View as: one account opens any Admin, Team Leader or Agent live dashboard.',
+        ],
+      },
+      {
+        title: 'Still open (Operation LeadDesk phases)',
+        lines: [
+          'Phase 0 — faster deploys, staging with carrier on test numbers only, backups, green CI.',
+          'Phase 1 — public API, signed webhooks, Zapier/Make-friendly CRM hooks.',
+          'Phase 2 — TV wallboard link, scheduled reports, QA alerts and scorecards on top of existing AI call scores.',
+          'Phase 3 — richer retries, list segments, branched script editor.',
+          'Phases 4–7 — inbound/IVR, omnichannel, SIP flexibility, WFM, production SLA — only after 0–3.',
+        ],
+      },
     ],
     lead: 'Predictive calling rings more lines than there are free callers. Most lines are not answered by a person. The extra lines are there so that, when a person does answer, a caller is already free. If the person answers and no caller is free, that call is left waiting. We call that an abandoned call.',
-    where: 'Ringo Market DB keeps each round of calling: how many lines were tried, how many reached a person, how many were left with nobody free, how many extra lines were open, and the running share of abandoned answers against a limit. If that share gets too high, calling drops to one line per free caller until it cools. soittamo kept an older count: calls made, answers, people, machines, abandoned calls, and a short recent stretch of the same.',
     pacingTitle: 'The pacing formula',
     pacingCaption: 'How Ringo Market DB chooses the lines.',
     pacingPlain: 'Lines to ring are the free callers times the extra lines, while the share of answered calls left waiting stays at or under the saved limit. Extra lines are one divided by how often a person answers, held between the lowest and the highest this round allows. How often a person answers is the calls joined to a caller plus the calls left waiting, divided by the lines tried. A machine, or a line nobody answered, stays in the lines tried and is not counted as a person. The share left waiting is the calls left waiting divided by every person who answered. Above the saved limit, ring one line per free caller.',
@@ -544,54 +566,56 @@ const plan = {
     defShare: 'Share left waiting',
     defSharePlain: 'Calls left waiting, divided by every person who answered. The saved limit on a Ringo Market DB round is often 3%.',
     legend: 'L lines to ring · N free callers · R extra lines · A how often someone answers · T lines tried · C calls joined to a caller · B calls left waiting · r min lowest allowed · r max highest allowed · S share left waiting · S* saved limit',
-    formulas: [
-      ['How often someone answers', '(people reached + calls left waiting) ÷ lines tried', 'The share of tries that reached a person. Lines nobody answered, and answering machines, stay in the count of tries. This is the share the Calling Facilitator uses.'],
-      ['Extra lines', 'keep it between the lowest and highest allowed, around 1 ÷ how often someone answers', 'Lines to ring = free callers × extra lines. If one try in five reaches a person, about five lines are rung. The Calling Facilitator will not go under its lowest setting or over its highest.'],
-      ['Calls left waiting', 'calls left waiting ÷ (calls left waiting + calls joined to a caller)', 'People who answered and were not joined to a caller, divided by every person who answered. This running share is compared with the limit saved for that round of calling. Many markets keep it near 3% of answered calls. The saved limit is the one this desk uses.'],
-      ['soittamo’s recent stretch', 'abandoned calls in the stretch ÷ calls made in the stretch', 'This counts abandoned calls per call made, so the number looks smaller than the share of people who answered and were left waiting. The limit should use that answer-based share.'],
-      ['Back to one line', 'if too many answered calls are left waiting, ring only one line per free caller', 'No extra lines until the share cools, or someone turns the extra lines back on.'],
-      ['People, not machines', 'people ÷ (people + machines)', 'Was the answer a person or a machine. A machine should not take a caller. soittamo counted both. Ringo Market DB notes the result on each try.'],
-    ],
-    updateLog: 'Update Log',
-    updateLead: '28.10.2026. The salvaged Next.js app is live on this server.',
+    updateLog: 'Update log',
+    updateLead: 'Development on the salvaged app, late October 2026.',
     updateLines: [
-      'Copied from aaronmkael/ringomarket main, commit fd3d1d11 (22.10.2026), into the private repository botdev2/ringomarket_salvaged as one commit, 86f2f35. The old pull-request history was left behind.',
-      'The first push to GitHub was refused until that login was allowed to write Actions workflow files. After that, main was pushed.',
-      'Coolify on this server built it with Nixpacks from that repository, branch main. The app listens on port 3000.',
-      'The first deploy finished at 20:19 on 27.10.2026. A second deploy of the same commit finished at 01:00 on 28.10.2026. The app is healthy.',
-    ],
-    tracks: [
-      'How long a person waits after answering, including the short message played when nobody is free',
-      'Abandoned calls by campaign and country, and whether that short message was played',
-      'When extra lines were turned off, why, and how long only one line stays open',
-      'How sellers convert: sales ÷ calls',
-      'How long a caller sits free, waiting for a person',
-      'How full the callers’ time is: talk time ÷ (talk time + waiting)',
+      '27–28.10 — Salvage live on Coolify from botdev2/ringomarket_salvaged; Neon database hooked for real users and campaigns.',
+      '29.10 — Caller themes + Settings above Report; Wiki updated; LeadDesk competitor decision recorded.',
+      '29.10 — TL Predictive mockup removed; Wallboard and Build a report promoted under Daily → Reports with UI polish.',
+      '29.10 — Admin View as FAB (Admin / Team Leader / Agent, searchable real accounts). Sauli admin account seeded.',
+      'Carrier still dark: no TELNYX_* / CARRIER_TELNYX_MARKETS on salvage. Dialing and new recordings wait on keys + explicit OK.',
     ],
   },
   fi: {
     title: 'Tavoitteet ja tiekartta',
-    now: 'Nykyiset tavoitteet',
-    road: 'Tiekartta',
+    nowLabel: 'Missä ollaan',
+    leadDeskLabel: 'Kilpailu LeadDeskin kanssa',
     predictive: 'Ennakoiva soitto',
-    tracking: 'Seuranta, valmis 31.10.2026',
-    due: 'Kaikki kesken oleva on valmis 31.10.2026.',
-    connect: 'Yhteys',
-    states: { done: 'Käytössä', next: 'Seuraavaksi', wait: 'Odottaa', later: 'Myöhemmin', due: '31.10.2026' },
-    objectives: [
-      ['done', 'Näytä Ringo Market DB, soittamo ja Staging yhdessä, ja jokaisen viimeisin puhelu.'],
-      ['done', 'Nimeä myyjä, puhelukeskus ja operaattori puheluiden, liidien ja kauppojen takana.'],
-      ['done', 'Tallenna uudet puhelut, liidit ja kaupat sitä mukaa kun ne syntyvät, ilman puhelinnumeroita ja henkilötietoja.'],
-      ['due', 'Yhdistä Ringo Marketin sivu soitonvälittäjään. Kuva on jo valmis. Osoitteet tulevat, kun ne annetaan.'],
-      ['due', 'Näytä ennakoiva soitto selvin luvuin: montako ylimääräistä linjaa on auki, kuinka usein ihminen vastaa eikä soittajaa ole vapaana, ja milloin soitto pudotetaan yhteen linjaan.'],
+    due: 'Pelastettu tuote on selattavissa. Operaattorisoitto pysyy kiinni, kunnes Telnyx-avaimet ja allekirjoitettu markkinalippu lisätään.',
+    states: { done: 'Käytössä', next: 'Seuraavaksi', wait: 'Odottaa', later: 'Myöhemmin', due: 'Auki' },
+    nowLead:
+      '29.10.2026. Ringo Market pyörii pelastettuna Next.js-sovelluksena tällä palvelimella, live Neon -tietokantaan kytkettynä. Adminilla, tiiminvetäjällä, agentilla ja asiakkaalla on oikea kojelauta. Yhdellä admin-tunnuksella voi avata minkä tahansa niistä (View as).',
+    nowLines: [
+      'Sovellus: https://ringomarket-salvaged.62.83.41.82.sslip.io — Coolify, haara main, kunnossa.',
+      'Lähde: yksityinen botdev2/ringomarket_salvaged (aaronmkael/ringomarketista). Uusin työ: soittajan teemat, Asetukset Raportoi-yläpuolella, TL-seinätaulu + raporttirakentaja, kampanjan soittotilat ja admin View as.',
+      'Testikirjautuminen: admin sauli@ringomarket.com (salasana palvelimen salaisuuksissa). Oikeasta alakulmasta View as avaa minkä tahansa Admin / TL / Agent -tilin.',
+      'Toimii nyt: Admin / TL / Agent / Client -käyttöliittymät oikealla datalla. Ei toimi: uudet lähtevät soitot, SMS/sähköposti, Google-kirjautuminen, AI-assistentti — Telnyx ja useimmat tuoteavaimet on jätetty pois tarkoituksella.',
+      'Tämä projektipöytä seuraa edelleen kolmea Postgres-taustaa (Ringo Market DB live, soittamo poistettu, Staging tyhjä).',
     ],
-    steps: [
-      ['done', 'Kuva', 'Kolme tietokantaa, myyjät, viimeiset 14 päivää ja uudet puhelut sitä mukaa kun ne tulevat.'],
-      ['due', 'Ennakoiva soitto', 'Näytetään, miten Ringo Market DB tahdistaa soitot nyt, ja miten soittamo teki sen aiemmin.'],
-      ['due', 'Seuranta', 'Kuinka usein vastataan, montako vastausta on koneita, kauanko kytkentää odotetaan, miten myyjät päätyvät kauppaan, ja kauanko soittaja istuu vapaana.'],
+    leadDeskLead:
+      'Omistajan päätös 29.10.2026: Ringo Marketista tulee LeadDesk-kilpailija — myydään contact center -ohjelmistoa (ja voitetaan call centereitä myös marketplacella), ei vain komissiomarkkinapaikkaa.',
+    leadDeskSections: [
+      {
+        title: 'Jo toimitettu tällä polulla',
+        lines: [
+          'TL-seinätaulu ja raporttirakentaja (/tl/wallboard, /tl/reports).',
+          'Kampanjan soittotilat: manuaalinen / progressive / predictive. Feikki predictive-mockup poistettu.',
+          'Soittajan teemat: kahdeksan palettia Asetukset → Ulkoasu; Wiki kuvaa teemat, Asetukset ja soittotilat.',
+          'Admin View as: yksi tili avaa minkä tahansa Admin-, TL- tai Agent-kojelaudan live-datalla.',
+        ],
+      },
+      {
+        title: 'Vielä auki (Operation LeadDesk -vaiheet)',
+        lines: [
+          'Vaihe 0 — nopeammat deployt, staging testinumeroilla, varmuuskopiot, vihreä CI.',
+          'Vaihe 1 — julkinen API, allekirjoitetut webhookit, Zapier/Make-ystävälliset CRM-kytkennät.',
+          'Vaihe 2 — TV-linkki seinätauluun, ajastetut raportit, QA-hälytykset ja pistekortit olemassa olevan AI-pisteytyksen päälle.',
+          'Vaihe 3 — rikkaammat uudelleensoitot, listasegmentit, haarautuva skriptieditori.',
+          'Vaiheet 4–7 — saapuvat/IVR, monikanava, SIP, WFM, tuotannon SLA — vasta 0–3 jälkeen.',
+        ],
+      },
     ],
     lead: 'Ennakoiva soitto soittaa useampia linjoja kuin vapaita soittajia on. Suurin osa linjoista ei päädy ihmiselle. Ylimääräiset linjat ovat sitä varten, että ihmisen vastatessa soittaja on jo vapaa. Jos ihminen vastaa eikä soittajaa ole vapaana, puhelu jää odottamaan. Sitä kutsutaan hylätyksi puheluksi.',
-    where: 'Ringo Market DB pitää kirjaa jokaisesta soittojaksosta: montako linjaa yritettiin, montako tavoitti ihmisen, montako jäi ilman vapaata soittajaa, montako ylimääräistä linjaa oli auki, ja miten hylättyjen vastausten osuus liikkuu rajaa vasten. Jos osuus nousee liian korkeaksi, soitto pudotetaan yhteen linjaan vapaata soittajaa kohden, kunnes osuus jäähtyy. soittamo piti vanhempaa lukua: soitetut, vastaukset, ihmiset, koneet, hylätyt puhelut ja lyhyt tuore jakso samoista.',
     pacingTitle: 'Tahdistuksen kaava',
     pacingCaption: 'Näin Ringo Market DB valitsee linjat.',
     pacingPlain: 'Soitettavat linjat ovat vapaat soittajat kerrottuna ylimääräisillä linjoilla, niin kauan kuin odottamaan jääneiden osuus vastanneista pysyy tallennetussa rajassa tai sen alla. Ylimääräiset linjat ovat yksi jaettuna sillä, kuinka usein ihminen vastaa, ja ne pysyvät tämän soittojakson alimman ja ylimmän sallitun välissä. Kuinka usein ihminen vastaa saadaan, kun soittajalle kytketyt ja odottamaan jääneet lasketaan yhteen ja jaetaan yritetyillä linjoilla. Kone tai linja, johon kukaan ei vastannut, jää yritettyjen joukkoon eikä sitä lasketa ihmiseksi. Odottamaan jääneiden osuus on odottamaan jääneet jaettuna kaikilla vastanneilla. Kun osuus nousee yli tallennetun rajan, soi vain yksi linja vapaata soittajaa kohden.',
@@ -604,29 +628,14 @@ const plan = {
     defShare: 'Odottamaan jääneiden osuus',
     defSharePlain: 'Odottamaan jääneet jaettuna kaikilla vastanneilla. Ringo Market DB:n tallennettu raja on usein 3 %.',
     legend: 'L soitetavat linjat · N vapaat soittajat · R ylimääräiset linjat · A kuinka usein joku vastaa · T yritetyt linjat · C soittajalle kytketyt · B odottamaan jääneet · r min alin sallittu · r max ylin sallittu · S odottamaan jääneiden osuus · S* tallennettu raja',
-    formulas: [
-      ['Kuinka usein joku vastaa', '(tavoitetut ihmiset + odottamaan jääneet) ÷ yritetyt linjat', 'Osuus yrityksistä, jotka tavoittivat ihmisen. Linjat, joihin kukaan ei vastannut, ja puhelinvastaajat jäävät yritysten joukkoon. Tätä osuutta soitonvälittäjä käyttää.'],
-      ['Ylimääräiset linjat', 'pysy alimman ja ylimmän sallitun välissä, noin 1 ÷ kuinka usein joku vastaa', 'Soitot = vapaat soittajat × ylimääräiset linjat. Jos joka viides yritys tavoittaa ihmisen, linjoja soitetaan noin viisi. Soitonvälittäjä ei laske alle alimman eikä nouse yli ylimmän asetuksen.'],
-      ['Odottamaan jääneet', 'odottamaan jääneet ÷ (odottamaan jääneet + soittajalle kytketyt)', 'Ihmiset, jotka vastasivat eikä heitä kytketty soittajalle, jaettuna kaikilla vastanneilla. Tätä liikkuvaa osuutta verrataan sille soittojaksolle tallennettuun rajaan. Monilla markkinoilla katto on noin 3 % vastanneista. Tallennettu raja on se, jota soitonvälittäjä käyttää.'],
-      ['soittamon tuore jakso', 'jakson hylätyt puhelut ÷ jakson soitot', 'Tämä laskee hylätyt puhelut per soitto, joten luku näyttää pienemmältä kuin niiden osuus, jotka vastasivat ja jäivät odottamaan. Rajan pitäisi käyttää tuota vastauksiin perustuvaa osuutta.'],
-      ['Takaisin yhteen linjaan', 'jos liian moni vastannut jää odottamaan, soi vain yksi linja vapaata soittajaa kohden', 'Ei ylimääräisiä linjoja, ennen kuin osuus jäähtyy tai joku kytkee ylimääräiset linjat takaisin.'],
-      ['Ihmiset, eivät koneet', 'ihmiset ÷ (ihmiset + koneet)', 'Oliko vastaus ihminen vai kone. Koneen ei pidä viedä soittajaa. soittamo laski molemmat. Ringo Market DB merkitsee tuloksen jokaiseen yritykseen.'],
-    ],
     updateLog: 'Päivitysloki',
-    updateLead: '28.10.2026. Pelastettu Next.js-sovellus on käynnissä tällä palvelimella.',
+    updateLead: 'Kehitys pelastetussa sovelluksessa, lokakuun loppu 2026.',
     updateLines: [
-      'Kopioitu aaronmkael/ringomarket-päähaarasta, commit fd3d1d11 (22.10.2026), yksityiseen tietovarastoon botdev2/ringomarket_salvaged yhdeksi commitiksi, 86f2f35. Vanha pull request -historia jätettiin pois.',
-      'Ensimmäinen push GitHubiin hylättiin, kunnes kirjautuminen sai luvan kirjoittaa Actions-työnkulkuja. Sen jälkeen main työnnettiin.',
-      'Tämän palvelimen Coolify rakensi sen Nixpacksilla tuosta tietovarastosta, haarasta main. Sovellus kuuntelee porttia 3000.',
-      'Ensimmäinen käyttöönotto valmistui 27.10.2026 klo 20.19. Sama commit otettiin käyttöön uudelleen, ja se valmistui 28.10.2026 klo 01.00. Sovellus on kunnossa.',
-    ],
-    tracks: [
-      'Kauanko ihminen odottaa vastattuaan, mukaan lukien lyhyt viesti, joka soi kun soittajaa ei ole vapaana',
-      'Hylätyt puhelut kampanjoittain ja maittain, ja soitettiinko tuo lyhyt viesti',
-      'Milloin ylimääräiset linjat suljettiin, miksi, ja kauanko vain yksi linja pysyy auki',
-      'Miten myyjät päätyvät kauppaan: kaupat ÷ puhelut',
-      'Kauanko soittaja istuu vapaana odottaen ihmistä',
-      'Miten täynnä soittajien aika on: puheaika ÷ (puheaika + odotus)',
+      '27.–28.10 — Salvage live Coolifyssa botdev2/ringomarket_salvagedista; Neon kytketty oikeisiin käyttäjiin ja kampanjoihin.',
+      '29.10 — Soittajan teemat + Asetukset Raportoi-yläpuolelle; Wiki päivitetty; LeadDesk-kilpailijapäätös kirjattu.',
+      '29.10 — TL Predictive-mockup pois; Seinätaulu ja Raportin rakennus Daily → Raportit -osioon, UI hiottu.',
+      '29.10 — Admin View as -nappi (Admin / TL / Agent, haettavat oikeat tilit). Saulin admin-tili luotu.',
+      'Operaattori yhä pimeä: ei TELNYX_* / CARRIER_TELNYX_MARKETS salvagessa. Soitto ja uudet tallenteet odottavat avaimia + eksplisiittistä OK:ta.',
     ],
   },
 }
@@ -715,13 +724,25 @@ function planGoals(text) {
   return [
     {
       state: 'done',
-      name: text.updateLog,
-      paragraphs: [text.updateLead],
-      lines: text.updateLines,
+      name: text.nowLabel,
+      paragraphs: [text.nowLead],
+      lines: text.nowLines,
       link: {
         href: 'https://ringomarket-salvaged.62.83.41.82.sslip.io/login',
         label: 'https://ringomarket-salvaged.62.83.41.82.sslip.io/login',
       },
+    },
+    {
+      state: 'next',
+      name: text.leadDeskLabel,
+      paragraphs: [text.leadDeskLead],
+      sections: text.leadDeskSections,
+    },
+    {
+      state: 'done',
+      name: text.updateLog,
+      paragraphs: [text.updateLead],
+      lines: text.updateLines,
     },
     {
       state: 'due',
@@ -838,12 +859,29 @@ function renderPlan() {
       const list = el('ul', null, 'plan-lines')
       for (const line of goal.lines) {
         const item = document.createElement('li')
-        const mark = svgEl(goal.state === 'due' ? 'track' : 'done')
+        const mark = svgEl(goal.state === 'due' || goal.state === 'next' ? 'track' : 'done')
         mark.classList.add('tiny')
         item.append(mark, el('span', line))
         list.append(item)
       }
       panel.append(list)
+    }
+    for (const section of goal.sections || []) {
+      const block = el('div', null, 'plan-section')
+      if (section.title) block.append(el('h3', section.title))
+      if (section.body) block.append(el('p', section.body))
+      if (section.lines) {
+        const list = el('ul', null, 'plan-lines')
+        for (const line of section.lines) {
+          const item = document.createElement('li')
+          const mark = svgEl(goal.state === 'due' || goal.state === 'next' ? 'track' : 'done')
+          mark.classList.add('tiny')
+          item.append(mark, el('span', line))
+          list.append(item)
+        }
+        block.append(list)
+      }
+      panel.append(block)
     }
     panels.append(panel)
   })
@@ -1043,22 +1081,9 @@ function paintDue() {
   const left = document.querySelector('#due-left')
   const when = document.querySelector('#due-when')
   if (!clock || !left || !when) return
+  clock.textContent = dueClockLabel[lang] || dueClockLabel.en
+  left.textContent = lang === 'fi' ? 'salvage käynnissä' : 'salvage online'
   when.textContent = t('readyOn')
-  const ms = dueAt - Date.now()
-  if (ms <= 0) {
-    clock.textContent = lang === 'fi' ? '00 pv 00:00:00' : '00d 00:00:00'
-    left.textContent = t('dueNow')
-    return
-  }
-  const total = Math.floor(ms / 1000)
-  const days = Math.floor(total / 86400)
-  const hours = Math.floor(total / 3600) % 24
-  const minutes = Math.floor(total / 60) % 60
-  const seconds = total % 60
-  clock.textContent = lang === 'fi'
-    ? `${pad(days)} pv ${pad(hours)}:${pad(minutes)}:${pad(seconds)}`
-    : `${pad(days)}d ${pad(hours)}:${pad(minutes)}:${pad(seconds)}`
-  left.textContent = t('left')
 }
 
 function renderMembers() {
