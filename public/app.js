@@ -391,7 +391,7 @@ function wordmark(id) {
   const brand = document.createElement('span')
   brand.className = 'brand-mark'
   brand.textContent = 'Ringo'
-  node.append(brand, document.createTextNode(' Market'))
+  node.append(document.createTextNode('Project: '), brand, document.createTextNode(' Market'))
 }
 
 function renderLegend() {
